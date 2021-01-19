@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic.base import View
 
-from .models import Workers
+from .models import Workers, Category
+
 
 # Create your views here.
 

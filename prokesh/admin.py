@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UnitsMeasurement, Workers, WorkTime, Goods, Customers, Smesi, Suppliers, Remote
+from .models import UnitsMeasurement, Workers, WorkTime, Goods, Customers, Smesi, Suppliers, Remote, Category
 
 # Register your models here.
 
@@ -11,3 +11,4 @@ admin.site.register(Customers)
 admin.site.register(Smesi)
 admin.site.register(Suppliers)
 admin.site.register(Remote)
+admin.site.register(Category)
