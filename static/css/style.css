@@ -402,24 +402,8 @@ li > a:only-child:after {
     -ms-background-size: cover;
     background-size: cover;
     position: relative;
-    min-height: 20em;
-    border-radius: 50%;
-  transform: scale(.85);
-  animation: pulse 2s ease-in-out infinite;
+    min-height: 30em;
 }
-
-@keyframes pulse {
-  from {
-    transform: scale(.85);
-  }
-  50% {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(.85);
-  }
-}
-
 /*-- place holder --*/
 
 .banner-form ::-webkit-input-placeholder {

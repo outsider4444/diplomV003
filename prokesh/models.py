@@ -3,6 +3,7 @@ from datetime import datetime
 
 
 # Create your models here.
+from django.urls import reverse
 
 
 def default_datetime():
@@ -44,9 +45,14 @@ class Workers(models.Model):
     category = models.CharField('Категория', max_length=50)
     salary = models.PositiveIntegerField('Оклад', help_text='Вводить в рублях')
     url = models.SlugField(max_length=150, default='worker_', unique=True)
+    # статус увольнения
+    fired = models.BooleanField("Уволен", default=False)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("worker_detail", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = 'Сотрудник'

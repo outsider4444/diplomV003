@@ -1,15 +1,24 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 
-from .models import Workers, Category
+from .models import Workers, Category, WorkTime
 
 
 # Create your views here.
 
 
-class WorkerView(View):
+class WorkerView(ListView):
     """Список сотрудников"""
+    model = Workers
+    queryset = Workers.objects.filter(fired=False)
+    template_name = "workers/worker_list.html"
 
-    def get(self, request):
-        workers = Workers.objects.all()
-        return render(request, "workers/worker_list.html", {"worker_list": workers})
+
+class WorkerDetailView(View):
+    """Полная информация о сотруднике"""
+
+    def get(self, request, slug):
+        worker = Workers.objects.get(url=slug)
+        worker_time = WorkTime.objects.get(worker_name_id=worker.id)
+        return render(request, "workers/worker_detail.html", {"worker": worker, "worker_time": worker_time})
