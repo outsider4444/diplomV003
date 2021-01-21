@@ -1,8 +1,8 @@
 {% extends 'workers/base.html' %}
-{% block title %} {{ worker.name }} {% endblock title %}
-{% block header_title %} {{ worker.name }} {% endblock header_title %}
+{% block title %} {{ smesi.code }} {% endblock title %}
+{% block header_title %} {{ smesi.code }} {% endblock header_title %}
 
-{% block worker %}
+{% block smesi %}
     <!-- product right -->
     <div class="left-ads-display col-lg-8">
         {#                Изменить стили #}
@@ -18,7 +18,7 @@
                 {#                            <h5 class="editContent"></h5>#}
                 <ul style="margin-top: 15px">
                     <li style="list-style: none">
-                        <span><b>Email: </b> {{ worker.email }}</span></li>
+                        <span><b>Email: </b> {{ worker.email }} </span></li>
                     <li style="list-style: none">
                         <span><b>День рождения: </b> {{ worker.birthday }}</span>
                     </li>
@@ -204,4 +204,4 @@
         </div>
     </div>
     <!-- //contact -->
-{% endblock worker %}
+{% endblock smesi %}

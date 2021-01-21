@@ -143,8 +143,6 @@ nav ul li {
     font-weight: 700;
     font-size: 0.8em;
     letter-spacing: 2px;
-    padding-left: 0;
-    padding-right: 0;
     padding: 10px 0;
     margin: 0px 1em;
     color: #fff;
@@ -382,7 +380,6 @@ li > a:only-child:after {
 /* header */
 
 /*--/banner --*/
-
 .main-banner {
     background: url(../zapchasti-dvigatel-kolenval.jpg)no-repeat center;
     -webkit-background-size: cover;
@@ -402,7 +399,12 @@ li > a:only-child:after {
     -ms-background-size: cover;
     background-size: cover;
     position: relative;
-    min-height: 30em;
+    min-height: 20em;
+}
+.bg1{
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 0px;
+    background-image: url('../zapchasti-dvigatel-kolenval.jpg');
 }
 /*-- place holder --*/
 
