@@ -1,77 +1,55 @@
-{% extends 'smesi/base.html' %}
-{% block title %}Смесь: {{ smesi.code }} {% endblock title %}
-{% block header_title %}Смесь: {{ smesi.code }} {% endblock header_title %}
+{% extends 'goods/base.html' %}
+{% block title %}Изделие: {{ goods.code }} {% endblock title %}
+{% block header_title %}Изделие: {{ goods.code }} {% endblock header_title %}
 
-{% block smesi %}
+{% block goods %}
     <!-- product right -->
-    <div class="left-ads-display col-lg-8">
+    <div class="left-ads-display col-lg-8" style="padding-left: 300px">
         {#                Изменить стили #}
-        <div class="row" style="margin-left: 300px">
+        <div class="row">
             {#                        <div class="desc1-left col-md-6">#}
             {#                            <img src="{{ movie.poster.url }}" class="img-fluid" alt="">#}
             {#                        </div>#}
             <div class="desc1-right col-md-6 pl-lg-4" >
-                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
-                    {{ smesi.code }}
-                </h3>
+{#                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">#}
+{#                    {{ smesi.code }}#}
+{#                </h3>#}
 {#                <span>{{ worker.category }}</span>#}
                 {#                            <h5 class="editContent"></h5>#}
                 <ul style="margin-top: 15px">
                     <li style="list-style: none">
-                        <span><b>Количество на складе: </b> {{ smesi.value }} </span></li>
+                        <span><b>Период чистки: </b> {{ goods.cleaning_period }} </span></li>
                     <li style="list-style: none">
-                        <span><b>Вес: </b> {{ smesi.weight }}</span>
+                        <span><b>Номер гнезда: </b> {{ goods.number_nest }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Дата изготовления: </b>
-                                    {{ smesi.date }}
-                        </span>
+                    <li style="list-style: none"><span><b>Процент массы: </b>{{ goods.percent_mass }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>ФИО отвественного сотрудника: </b>
-                        {% for sotr in smesi.worker_name.all %}
-                                    <br>{{ sotr.name }}
+                    <li style="list-style: none"><span><b>Вес чистой детали: </b>{{ goods.weight_clean }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Норма с ковром: </b>{{ goods.norma_with_carpet }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Расход смеси: </b>{{ goods.consumption_smesi }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Норма на одного человека: </b>{{ goods.one_person_norma }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Норма на двух человек: </b>{{ goods.two_person_norma }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Лимит брака: </b>{{ goods.defect_limit }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Средняя температура: </b>{{ goods.min_temperature }} - {{ goods.max_temperature }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Средняя выдержка: </b>{{ goods.min_malt }} - {{ goods.max_malt }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Среднее давление: </b>{{ goods.min_pressure }} - {{ goods.max_pressure }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Средняя твердость: </b>{{ goods.min_strength }} - {{ goods.max_strength }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Единицы измерения: </b>
+                        {% for unit in goods.measurement.all %}
+                            {{ unit.unit }}
                         {% endfor %}
-                        </span>
+                    </span>
                     </li>
-                    {#                    <li style="list-style: none"><span><b>Норма времени: </b>#}
-                    {#                                    {{ smesi.valid }}#}
-                    {#                                    </span>#}
-                    {#                    </li>#}
-                    {#                    <li style="list-style: none"><span><b>Отработанное время: </b>#}
-                    {#                                    {{ worker_time.done_time }}#}
-                    {#                                    </span>#}
-                    {#                    </li>#}
-                    {#                    <li style="list-style: none"><span><b>Пропущенно времени: </b>#}
-                    {#                                    {{ worker_time.lose_time }}#}
-                    {#                                    </span>#}
-                    {#                    </li>#}
-                    {#                    <li style="list-style: none"><span><b>Дата отпуска: </b>#}
-                    {#                                    {{ worker_time.date_vacation }}#}
-                    {#                                    </span>#}
-                    {#                    </li>#}
-                    {#                                <li style="list-style: none"><span><b>Премьера в мире:</b> {{ movie.world_premiere }}</span>#}
-                    {#                                </li>#}
-                    {#                                <li style="list-style: none">#}
-                    {#                                    <span><b>Бюджет:</b> ${{ movie.budget }}</span></li>#}
-                    {#                                <li style="list-style: none">#}
-                    {#                                    <span><b>Сборы в США:</b> ${{ movie.fees_in_usa }}</span></li>#}
-                    {#                                <li style="list-style: none"><span><b>Сборы в мире:</b> ${{ movie.fess_in_world }}</span>#}
-                    {#                                </li>#}
-                    {#                                <li style="list-style: none">#}
-                    {#                                    <a href="#"><b>Рейтинг:</b>#}
-                    {#                                        <span class="fa fa-star" aria-hidden="true"#}
-                    {#                                              style="outline: none; cursor: inherit;"></span>#}
-                    {#                                        <span class="fa fa-star" aria-hidden="true"#}
-                    {#                                              style="outline: none; cursor: inherit;"></span>#}
-                    {#                                        <span class="fa fa-star" aria-hidden="true"#}
-                    {#                                              style="outline: none; cursor: inherit;"></span>#}
-                    {#                                        <span class="fa fa-star" aria-hidden="true"#}
-                    {#                                              style="outline: none; cursor: inherit;"></span>#}
-                    {#                                        <span class="fa fa-star" aria-hidden="true"#}
-                    {#                                              style="outline: none; cursor: inherit;"></span>#}
-                    {#                                        <span class="editContent"#}
-                    {#                                              style="outline: none; cursor: inherit;">5.0</span>#}
-                    {#                                    </a>#}
-                    {#                                </li>#}
                     <div class="share-desc">
                         {#                                    <div class="share">#}
                         {#                                        <h4 class="editContent"#}
@@ -136,7 +114,7 @@
             <div class="single-form-left">
                 <!-- contact form grid -->
 {#                Изменить стили #}
-                <div class="contact-single" style="margin-left: 300px">
+                <div class="contact-single" >
                     <h3 class="editContent" style="outline: none; cursor: inherit;">
                                     <span class="sub-tittle editContent"
                                           style="outline: none; cursor: inherit;"></span>Оставить
@@ -210,4 +188,4 @@
         </div>
     </div>
     <!-- //contact -->
-{% endblock smesi %}
+{% endblock goods %}

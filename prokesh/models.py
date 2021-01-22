@@ -89,6 +89,9 @@ class Smesi(models.Model):
     def __str__(self):
         return self.code
 
+    def get_absolute_url(self):
+        return reverse("smesi_detail", kwargs={"slug": self.url})
+
     class Meta:
         verbose_name = 'Смесь'
         verbose_name_plural = 'Смеси'
@@ -121,6 +124,9 @@ class Goods(models.Model):
 
     def __str__(self):
         return self.code
+
+    def get_absolute_url(self):
+        return reverse("goods_detail", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = 'Изделие'
