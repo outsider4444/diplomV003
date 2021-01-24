@@ -167,6 +167,9 @@ class Suppliers(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("suppliers_detail", kwargs={"slug": self.url})
+
     class Meta:
         verbose_name = 'Поставщик'
         verbose_name_plural = 'Поставщики'
@@ -183,6 +186,9 @@ class Customers(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("customers_detail", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = 'Заказчик'

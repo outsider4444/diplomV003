@@ -1,0 +1,38 @@
+{% extends 'suppliers/base.html' %}
+
+{% block title %} Список поставщиков {% endblock title %}
+{% block header_title %} Список поставщиков {% endblock header_title %}
+
+{% block suppliers %}
+    <!-- product right -->
+    <div class="left-ads-display col-lg-9">
+        <div class="row">
+            {% for suppliers in suppliers_list %}
+                <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{{ suppliers.get_absolute_url }}" class="editContent" >
+                                    {{ suppliers.name }}
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{{ suppliers.get_absolute_url }}"><span class="money editContent" >{{ suppliers.name }}</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!--<div class="grid-img-right mt-4 text-right bg bg1" >
+            <span class="money editContent" >Flat 50% Off</span>
+            <a href="moviesingle.html" class="btn" >Now</a>
+        </div>-->
+    </div>
+    <!-- //contact -->
+{% endblock suppliers %}

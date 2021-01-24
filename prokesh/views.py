@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 
-from .models import Workers, Category, WorkTime, Smesi, Goods
+from .models import Workers, Category, WorkTime, Smesi, Goods, Suppliers
 
 
 # Create your views here.
@@ -33,6 +33,7 @@ class SmesiView(ListView):
 
 class SmesiDetailView(View):
     """Полная информация о смеси"""
+
     # model = Smesi
     # slug_field = "url"
 
@@ -50,8 +51,26 @@ class GoodsView(ListView):
 
 class GoodsDetailView(View):
     """Полная информация об изделии"""
+
     # model = Goods
     # slug_field = "url"
     def get(self, request, slug):
         goods = Goods.objects.get(url=slug)
         return render(request, "goods/goods_detail.html", {"goods": goods})
+
+
+class SuppliersView(ListView):
+    """Список поставщиков"""
+    model = Suppliers
+    queryset = Suppliers.objects.all()
+    template_name = "suppliers/suppliers_list.html"
+
+
+class SuppliersDetailView(View):
+    """Полная информация об изделии"""
+
+    # model = Goods
+    # slug_field = "url"
+    def get(self, request, slug):
+        suppliers = Suppliers.objects.get(url=slug)
+        return render(request, "suppliers/suppliers_detail.html", {"suppliers": suppliers})

@@ -8972,4 +8972,16 @@ a.text-dark:hover, a.text-dark:focus {
     border: 1px solid #ddd !important;
   }
 }
+@media (max-width: 992px){
+  .left-side{
+    padding-left: 200px;
+  }
+  .search-bar {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 25%;
+      flex: 0 0 25%;
+      max-width: 100%;
+      /*margin-left: 200px;*/
+  }
+}
 /*# sourceMappingURL=bootstrap.css.map */
