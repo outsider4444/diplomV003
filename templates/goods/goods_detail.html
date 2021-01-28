@@ -45,9 +45,7 @@
                     <li style="list-style: none"><span><b>Средняя твердость: </b>{{ goods.min_strength }} - {{ goods.max_strength }}</span>
                     </li>
                     <li style="list-style: none"><span><b>Единицы измерения: </b>
-                        {% for unit in goods.measurement.all %}
-                            {{ unit.unit }}
-                        {% endfor %}
+                            {{ goods.measurement }}
                     </span>
                     </li>
                     <div class="share-desc">
