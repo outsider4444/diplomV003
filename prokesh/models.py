@@ -24,7 +24,7 @@ class UnitsMeasurement(models.Model):
 class Workers(models.Model):
     """Сотрудники"""
     name = models.CharField('ФИО', max_length=100)
-    photo = models.ImageField("Фотография сотрудника", upload_to="workers/", blank=True)
+    image = models.ImageField("Фотография сотрудника", upload_to="workers/", blank=True, default="")
     email = models.EmailField('Email')
     birthday = models.DateField('Дата рождения')
     category = models.CharField('Категория', max_length=50)
