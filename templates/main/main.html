@@ -1,0 +1,137 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Главная {% endblock title %}
+{% block header_title %} Главная {% endblock header_title %}
+
+{% block main %}
+    <!-- product right -->
+    <div class="left-ads-display col-lg-9">
+        <div class="row">
+
+                <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{% url "worker_list" %}" class="editContent" >
+                                    Сотрудники
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{% url "worker_list" %}"><span class="money editContent" >Список сотрудников</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{% url "smesi_list" %}" class="editContent" >
+                                    Смеси
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{% url "smesi_list" %}"><span class="money editContent" >Список смесей</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{% url "goods_list" %}" class="editContent" >
+                                    Изделия
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{% url "goods_list" %}"><span class="money editContent" >Список изделий</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{% url "suppliers_list" %}" class="editContent" >
+                                    Поставщики
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{% url "suppliers_list" %}"><span class="money editContent" >Список поставщиков</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{% url "customers_list" %}" class="editContent" >
+                                    Заказчики
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{% url "customers_list" %}"><span class="money editContent" >Список заказчиков</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{% url "remote_list" %}" class="editContent" >
+                                    Списанное
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{% url "remote_list" %}"><span class="money editContent" >Список списанного</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <!--<div class="grid-img-right mt-4 text-right bg bg1" >
+            <span class="money editContent" >Flat 50% Off</span>
+            <a href="moviesingle.html" class="btn" >Now</a>
+        </div>-->
+    </div>
+    <!-- //contact -->
+{% endblock main %}

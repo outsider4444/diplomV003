@@ -1,11 +1,17 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 
-from .models import Workers, Category, WorkTime, Smesi, Goods, Suppliers
+from .models import Workers, WorkTime, Smesi, Goods, Suppliers, Customers, Remote
 
 
 # Create your views here.
+
+class MainView(ListView):
+    """Главное меню"""
+    model = Customers
+    template_name = "main/main.html"
 
 
 class WorkerView(ListView):
@@ -74,3 +80,37 @@ class SuppliersDetailView(View):
     def get(self, request, slug):
         suppliers = Suppliers.objects.get(url=slug)
         return render(request, "suppliers/suppliers_detail.html", {"suppliers": suppliers})
+
+
+class CustomersView(ListView):
+    """Список заказчиков"""
+    model = Customers
+    queryset = Customers.objects.all()
+    template_name = "customers/customers_list.html"
+
+
+class CustomersDetailView(View):
+    """Полная информация о заказчиках"""
+
+    # model = Goods
+    # slug_field = "url"
+    def get(self, request, slug):
+        customers = Customers.objects.get(url=slug)
+        return render(request, "customers/customers_detail.html", {"customers": customers})
+
+
+class RemoteView(ListView):
+    """Список списанного"""
+    model = Remote
+    queryset = Remote.objects.all()
+    template_name = "remote/remote_list.html"
+
+
+class RemoteDetailView(View):
+    """Полная информация о списанном"""
+
+    # model = Goods
+    # slug_field = "url"
+    def get(self, request, slug):
+        remote = Remote.objects.get(url=slug)
+        return render(request, "remote/remote_detail.html", {"remote": remote})

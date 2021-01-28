@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime
 
-
 # Create your models here.
 from django.urls import reverse
 
@@ -10,27 +9,12 @@ def default_datetime():
     return datetime.now()
 
 
-class Category(models.Model):
-    """Категории"""
-    name = models.CharField("Категория", max_length=150)
-    description = models.TextField("Описание")
-    url = models.SlugField(max_length=160, unique=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
-
-
 class UnitsMeasurement(models.Model):
-    """Единицы измерения"""
-    unit = models.CharField('Единица измерения', max_length=120)
-    short_unit = models.CharField('Сокращение', max_length=10, default='')
+    short_unit = models.CharField('Единица измерения', max_length=10)
+    url = models.SlugField(max_length=150, default='unit_', unique=True)
 
     def __str__(self):
-        return self.unit
+        return self.short_unit
 
     class Meta:
         verbose_name = 'Единица измерения'
@@ -40,6 +24,7 @@ class UnitsMeasurement(models.Model):
 class Workers(models.Model):
     """Сотрудники"""
     name = models.CharField('ФИО', max_length=100)
+    photo = models.ImageField("Фотография сотрудника", upload_to="workers/", blank=True)
     email = models.EmailField('Email')
     birthday = models.DateField('Дата рождения')
     category = models.CharField('Категория', max_length=50)
@@ -61,7 +46,7 @@ class Workers(models.Model):
 
 class WorkTime(models.Model):
     """Время работы сотрудников"""
-    worker_name = models.ForeignKey(Workers, verbose_name='Код сотрудника', on_delete=models.CASCADE)
+    worker_name = models.ForeignKey(Workers, verbose_name='ФИО сотрудника', on_delete=models.CASCADE)
     standard_time = models.IntegerField('Норма времени')
     done_time = models.IntegerField('Выполненное время')
     lose_time = models.IntegerField('Пропущенно времени')
@@ -119,7 +104,7 @@ class Goods(models.Model):
     max_pressure = models.IntegerField('Максимальное давление')
     min_strength = models.IntegerField('Минимальная твердость')
     max_strength = models.IntegerField('Максимальная твердость')
-    measurement = models.ManyToManyField(UnitsMeasurement, verbose_name='Единицы измерения')
+    measurement = models.ForeignKey(UnitsMeasurement, verbose_name='Единицы измерения', on_delete=models.PROTECT)
     url = models.SlugField(max_length=150, default='goods_', unique=True)
 
     def __str__(self):
@@ -135,19 +120,22 @@ class Goods(models.Model):
 
 class Remote(models.Model):
     """Списанные смеси и изделия"""
-    code_smesi = models.ManyToManyField(Smesi, verbose_name='Код смеси')
+    code_smesi = models.OneToOneField(Smesi, verbose_name='Код смеси', on_delete=models.PROTECT, blank=True)
     delete_date = models.DateField('Дата списания', default=default_datetime)
     name = models.CharField('Название', max_length=120)
-    code_goods = models.ManyToManyField(Goods, verbose_name='Код изделия')
+    code_goods = models.OneToOneField(Goods, verbose_name='Код изделия', on_delete=models.PROTECT, blank=True)
     value = models.IntegerField('Количество')
     norma = models.IntegerField('Норма')
     scrap_materials = models.IntegerField('Брак сырья')
     costs_material = models.IntegerField('Затраты сырья')
-    measurement = models.ManyToManyField(UnitsMeasurement, verbose_name='Единицы измерения')
+    measurement = models.OneToOneField(UnitsMeasurement, verbose_name='Единицы измерения', on_delete=models.PROTECT)
     url = models.SlugField(max_length=150, default='remote_', unique=True)
 
     def __str__(self):
         return str(self.id)
+
+    def get_absolute_url(self):
+        return reverse("remote_detail", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = 'Списанное'
@@ -180,7 +168,7 @@ class Customers(models.Model):
     name = models.CharField('Имя заказчика', max_length=120)
     email = models.EmailField('Email', unique=True)
     date = models.DateField('Дата заказа', default=default_datetime)
-    code_goods = models.ManyToManyField(Goods, verbose_name='Код изделия')
+    code_goods = models.OneToOneField(Goods, verbose_name='Код изделия', on_delete=models.PROTECT)
     values = models.IntegerField('Количество')
     url = models.SlugField(max_length=150, default='customer_', unique=True)
 
