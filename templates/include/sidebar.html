@@ -11,26 +11,12 @@
     <div class="left-side my-4">
         <h3 class="sear-head editContent">Категории</h3>
         <ul class="w3layouts-box-list">
+            {% if "worker_list" %}
             <li class="editContent">
                 <input type="checkbox" class="checked" name="">
                 <span class="span editContent">Сотрудники</span>
             </li>
-            <li class="editContent">
-                <input type="checkbox" class="checked">
-                <span class="span editContent">Заказчики</span>
-            </li>
-            <li class="editContent" >
-                <input type="checkbox" class="checked">
-                <span class="span editContent" >Поставщики</span>
-            </li>
-            <li class="editContent">
-                <input type="checkbox" class="checked">
-                <span class="span editContent">Изделия</span>
-            </li>
-            <li class="editContent">
-                <input type="checkbox" class="checked">
-                <span class="span editContent">Смеси</span>
-            </li>
+            {% endif %}
         </ul>
     </div>
 </div>

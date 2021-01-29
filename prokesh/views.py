@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
@@ -8,20 +9,26 @@ from .models import Workers, WorkTime, Smesi, Goods, Suppliers, Customers, Remot
 
 # Create your views here.
 
+
 class MainView(ListView):
     """Главное меню"""
     model = Customers
     template_name = "main/main.html"
 
 
-class WorkerView(ListView):
+class WorkerCategory:
+    def get_category(self):
+        return Workers.objects.filter(fired=False)
+
+
+class WorkerView(WorkerCategory, ListView):
     """Список сотрудников"""
     model = Workers
     queryset = Workers.objects.filter(fired=False)
     template_name = "workers/worker_list.html"
 
 
-class WorkerDetailView(View):
+class WorkerDetailView(WorkerCategory, View):
     """Полная информация о сотруднике"""
 
     def get(self, request, slug):
@@ -114,3 +121,27 @@ class RemoteDetailView(View):
     def get(self, request, slug):
         remote = Remote.objects.get(url=slug)
         return render(request, "remote/remote_detail.html", {"remote": remote})
+
+
+# Отдел фильтров
+
+class FilterWorkerView(WorkerCategory, ListView):
+    """Фильтр сотрудников"""
+    template_name = "workers/worker_list.html"
+
+    def get_queryset(self):
+        queryset = Workers.objects.filter(category__in=self.request.GET.get("category"))
+        return queryset
+
+
+class JsonFilterWorkerView(ListView):
+    """Фильтр фильмов в json"""
+    def get_queryset(self):
+        queryset = Workers.objects.filter(
+            Q(category__in=self.request.GET.getlist("category"))
+        ).values("name", "category", "url", "image")
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        queryset = list(self.get_queryset())
+        return JsonResponse({"workers": queryset}, safe=False)
