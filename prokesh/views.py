@@ -17,7 +17,7 @@ class MainView(ListView):
 
 
 class WorkerCategory:
-
+    """Должности сотрудников"""
     def get_category(self):
         return Workers.objects.filter(fired=False).values("category").distinct()
 
