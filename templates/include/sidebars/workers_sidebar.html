@@ -8,20 +8,21 @@
         </form>
     </div>
     <!--preference -->
-    <form action="{% url "worker_filter" %}" method="get" name="filter">
-
-        <div class="left-side my-4">
-            <h3 class="sear-head editContent">Фильтры</h3>
-            <ul class="w3layouts-box-list">
-                {% for worker in view.get_category %}
-                    <li class="editContent">
-                        <input type="checkbox" class="checked" name="category" value="{{ worker.category }}">
-                        <span class="span editContent">{{ worker.category }}</span>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    <button type="submit">Поиск</button>
-    </form>
+<form action="{% url 'worker_filter' %}" method="get" name="filter">
+    <div class="left-side my-4">
+        <h3 class="sear-head editContent">Фильтры</h3>
+        <ul class="w3layouts-box-list">
+            {% for work in view.get_category %}
+                <li class="editContent">
+                    <input type="checkbox" class="checked" name="category" value="{{ work.category }}">
+                    <span class="span editContent">{{ work.category }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- // preference -->
+    <!-- discounts -->
+    <button type="submit">Найти</button>
+</form>
 </div>
 <!-- //product left -->

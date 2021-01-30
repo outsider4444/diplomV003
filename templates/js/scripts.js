@@ -31,7 +31,7 @@ function render(data) {
 }
 
 let html = '\
-{{#workers}}\
+{{#worker_list}}\
     <div class="col-md-4 product-men">\
         <div class="product-shoe-info editContent text-center mt-lg-4">\
             <div class="men-thumb-item">\
@@ -46,14 +46,7 @@ let html = '\
                         <span class="money editContent">{{ category }}</span>\
                     </div>\
                 </div>\
-                <ul class="stars">\
-                    <li><a href="#"><span class="fa fa-star" aria-hidden="true"></span></a></li>\
-                    <li><a href="#"><span class="fa fa-star" aria-hidden="true"></span></a></li>\
-                    <li><a href="#"><span class="fa fa-star-half-o" aria-hidden="true"></span></a></li>\
-                    <li><a href="#"><span class="fa fa-star-half-o" aria-hidden="true"></span></a></li>\
-                    <li><a href="#"><span class="fa fa-star-o" aria-hidden="true"></span></a></li>\
-                </ul>\
             </div>\
         </div>\
     </div>\
-{{/movies}}'
+{{/worker_list}}'

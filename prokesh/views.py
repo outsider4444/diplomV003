@@ -17,8 +17,9 @@ class MainView(ListView):
 
 
 class WorkerCategory:
+
     def get_category(self):
-        return Workers.objects.filter(fired=False)
+        return Workers.objects.filter(fired=False).values("category").distinct()
 
 
 class WorkerView(WorkerCategory, ListView):
@@ -124,18 +125,25 @@ class RemoteDetailView(View):
 
 
 # Отдел фильтров
-
 class FilterWorkerView(WorkerCategory, ListView):
     """Фильтр сотрудников"""
     template_name = "workers/worker_list.html"
 
     def get_queryset(self):
-        queryset = Workers.objects.filter(category__in=self.request.GET.get("category"))
+        queryset = Workers.objects.filter(
+            Q(category__in=self.request.GET.getlist("category"))
+        ).distinct()
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["category"] = ''.join([f"category={x}&" for x in self.request.GET.getlist("category")])
+        return context
 
 
 class JsonFilterWorkerView(ListView):
     """Фильтр фильмов в json"""
+
     def get_queryset(self):
         queryset = Workers.objects.filter(
             Q(category__in=self.request.GET.getlist("category"))
@@ -144,4 +152,17 @@ class JsonFilterWorkerView(ListView):
 
     def get(self, request, *args, **kwargs):
         queryset = list(self.get_queryset())
-        return JsonResponse({"workers": queryset}, safe=False)
+        return JsonResponse({"worker": queryset}, safe=False)
+
+
+class Search(ListView):
+    """Поиск фильмов"""
+    paginate_by = 3
+
+    def get_queryset(self):
+        return Workers.objects.filter(title__icontains=self.request.GET.get("q").capitalize())
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context

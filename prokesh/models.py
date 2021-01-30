@@ -29,7 +29,9 @@ class Workers(models.Model):
     birthday = models.DateField('Дата рождения')
     category = models.CharField('Категория', max_length=50)
     salary = models.PositiveIntegerField('Оклад', help_text='Вводить в рублях')
-    url = models.SlugField(max_length=150, default='worker_', unique=True)
+    url = models.SlugField(max_length=150, default='worker_', unique=True, help_text='Не забудьте добавить запись в '
+                                                                                     'таблицу Время работы '
+                                                                                     'сотрудника!')
     # статус увольнения
     fired = models.BooleanField("Уволен", default=False)
 
