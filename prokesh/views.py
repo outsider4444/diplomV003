@@ -1,5 +1,4 @@
 from django.db.models import Q
-from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
@@ -16,12 +15,21 @@ class MainView(ListView):
     template_name = "main/main.html"
 
 
+# Выводы для фильтров
 class WorkerCategory:
     """Должности сотрудников"""
+
     def get_category(self):
         return Workers.objects.filter(fired=False).values("category").distinct()
 
 
+class SupplierDate:
+    """Дата поставки поставщиков"""
+
+    def get_supdate(self):
+        return Suppliers.objects.values("date").distinct()
+
+# основная информация
 class WorkerView(WorkerCategory, ListView):
     """Список сотрудников"""
     model = Workers
@@ -48,9 +56,6 @@ class SmesiView(ListView):
 class SmesiDetailView(View):
     """Полная информация о смеси"""
 
-    # model = Smesi
-    # slug_field = "url"
-
     def get(self, request, slug):
         smesi = Smesi.objects.get(url=slug)
         return render(request, "smesi/smesi_detail.html", {"smesi": smesi})
@@ -66,8 +71,6 @@ class GoodsView(ListView):
 class GoodsDetailView(View):
     """Полная информация об изделии"""
 
-    # model = Goods
-    # slug_field = "url"
     def get(self, request, slug):
         goods = Goods.objects.get(url=slug)
         return render(request, "goods/goods_detail.html", {"goods": goods})
@@ -83,8 +86,6 @@ class SuppliersView(ListView):
 class SuppliersDetailView(View):
     """Полная информация об изделии"""
 
-    # model = Goods
-    # slug_field = "url"
     def get(self, request, slug):
         suppliers = Suppliers.objects.get(url=slug)
         return render(request, "suppliers/suppliers_detail.html", {"suppliers": suppliers})
@@ -100,8 +101,6 @@ class CustomersView(ListView):
 class CustomersDetailView(View):
     """Полная информация о заказчиках"""
 
-    # model = Goods
-    # slug_field = "url"
     def get(self, request, slug):
         customers = Customers.objects.get(url=slug)
         return render(request, "customers/customers_detail.html", {"customers": customers})
@@ -117,8 +116,6 @@ class RemoteView(ListView):
 class RemoteDetailView(View):
     """Полная информация о списанном"""
 
-    # model = Goods
-    # slug_field = "url"
     def get(self, request, slug):
         remote = Remote.objects.get(url=slug)
         return render(request, "remote/remote_detail.html", {"remote": remote})
@@ -141,26 +138,29 @@ class FilterWorkerView(WorkerCategory, ListView):
         return context
 
 
-class JsonFilterWorkerView(ListView):
-    """Фильтр фильмов в json"""
+class FilterSupplierView(SupplierDate, ListView):
+    """Фильтр поставщиков"""
+    template_name = "suppliers/suppliers_list.html"
 
     def get_queryset(self):
-        queryset = Workers.objects.filter(
-            Q(category__in=self.request.GET.getlist("category"))
-        ).values("name", "category", "url", "image")
+        queryset = Suppliers.objects.filter(
+            Q(date__in=self.request.GET.getlist("date"))
+        ).distinct()
         return queryset
 
-    def get(self, request, *args, **kwargs):
-        queryset = list(self.get_queryset())
-        return JsonResponse({"worker": queryset}, safe=False)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["date"] = ''.join([f"date={x}&" for x in self.request.GET.getlist("date")])
+        return context
 
 
-class Search(ListView):
-    """Поиск фильмов"""
-    paginate_by = 3
+# Отдел поиска
+class SearchWorker(ListView):
+    """Поиск сотрудников"""
+    template_name = "workers/worker_list.html"
 
     def get_queryset(self):
-        return Workers.objects.filter(title__icontains=self.request.GET.get("q").capitalize())
+        return Workers.objects.filter(name__icontains=self.request.GET.get("q"))
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

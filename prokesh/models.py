@@ -70,7 +70,7 @@ class Smesi(models.Model):
     date = models.DateField('Дата изготовления', default=default_datetime)
     valid = models.DateField('Годен до')
     # протестировать
-    worker_name = models.ManyToManyField(Workers, verbose_name='ФИО сотрудника')
+    worker_name = models.OneToOneField(Workers, verbose_name='ФИО сотрудника', on_delete=models.PROTECT)
     url = models.SlugField(max_length=150, default='smesi_', unique=True)
 
     def __str__(self):
@@ -151,7 +151,7 @@ class Suppliers(models.Model):
     email = models.EmailField('Email', unique=True)
     code_smesi = models.ManyToManyField(Smesi, verbose_name='Код смеси')
     value = models.PositiveSmallIntegerField('Количество')
-    date = models.DateField('Дата поставки', default=default_datetime)
+    date = models.DateField('Дата поставки', blank=True, default='',)
     url = models.SlugField(max_length=150, default='supplier_', unique=True)
 
     def __str__(self):

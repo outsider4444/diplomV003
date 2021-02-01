@@ -19,7 +19,9 @@
                         <span><b>Email: </b> {{ suppliers.email }}</span></li>
                     <li style="list-style: none">
                         <span><b>Код смеси: </b>
-                                {{ suppliers.code_smesi }}
+                            {% for sup in suppliers.code_smesi.all %}
+                                {{ sup.code }}
+                            {% endfor %}
                         </span>
                     </li>
                     <li style="list-style: none"><span><b>Количество: </b>

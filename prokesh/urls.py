@@ -3,9 +3,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+
     # Фильтры
-    path('worker_list/json-filter/', views.JsonFilterWorkerView.as_view(), name='json_filter'),
+    path("suppliers_list/suppliers_filter/", views.FilterSupplierView.as_view(), name="suppliers_filter"),
     path("worker_list/worker_filter/", views.FilterWorkerView.as_view(), name="worker_filter"),
+
+
+    # Поиск
+    path('worker_list/worker_search/', views.SearchWorker.as_view(), name='worker_search'),
 
     # Подробности
     path('smesi_list/<slug:slug>/', views.SmesiDetailView.as_view(), name="smesi_detail"),
@@ -15,7 +20,7 @@ urlpatterns = [
     path('remote_list/<slug:slug>/', views.RemoteDetailView.as_view(), name='remote_detail'),
     path('worker_list/<slug:slug>/', views.WorkerDetailView.as_view(), name="worker_detail"),
 
-    # Страницы
+    # Список
     path('smesi_list/', views.SmesiView.as_view(), name='smesi_list'),
     path('goods_list/', views.GoodsView.as_view(), name='goods_list'),
     path('suppliers_list/', views.SuppliersView.as_view(), name='suppliers_list'),
@@ -23,5 +28,6 @@ urlpatterns = [
     path('remote_list/', views.RemoteView.as_view(), name='remote_list'),
     path("worker_list/", views.WorkerView.as_view(), name='worker_list'),
 
+    # Главная страница
     path("", views.MainView.as_view(), name="main")
 ]
