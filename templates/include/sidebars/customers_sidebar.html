@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="side-bar col-lg-3">
 
-</body>
-</html>
+    <div class="search-bar w3layouts-newsletter">
+        <h3 class="sear-head editContent" >Поиск заказчиков</h3>
+        <form action="{% url "suppliers_search" %}" method="get" class="d-flex editContent" >
+            <input type="search" placeholder="Введите ФИО заказчика ..." name="q" class="form-control" required="">
+            <button type="submit" class="btn1 btn" ><span class="fa fa-search" aria-hidden="true" ></span></button>
+        </form>
+    </div>
+    <!--preference -->
+    <form action="{% url 'customers_filter' %}" method="get" name="filter">
+        <div class="left-side my-4">
+            <h3 class="sear-head editContent">Года заказов</h3>
+            <ul class="w3layouts-box-list">
+                {% for cus in view.get_cusdate %}
+                    <li class="editContent">
+                        <input type="checkbox" class="checked" name="date" value="{{ cus.date.year }}">
+                        <span class="span editContent">{{ cus.date.year }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- // preference -->
+        <!-- discounts -->
+        <button type="submit">Найти</button>
+    </form>
+</div>
+<!-- //product left -->

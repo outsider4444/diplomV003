@@ -29,9 +29,11 @@ class Workers(models.Model):
     birthday = models.DateField('Дата рождения')
     category = models.CharField('Категория', max_length=50)
     salary = models.PositiveIntegerField('Оклад', help_text='Вводить в рублях')
-    url = models.SlugField(max_length=150, default='worker_', unique=True, help_text='Не забудьте добавить запись в '
-                                                                                     'таблицу Время работы '
-                                                                                     'сотрудника!')
+    standard_time = models.IntegerField('Норма времени')
+    done_time = models.IntegerField('Выполненное время')
+    lose_time = models.IntegerField('Пропущенно времени')
+    date_vacation = models.DateField('Дата отпуска')
+    url = models.SlugField(max_length=150, default='worker_', unique=True,)
     # статус увольнения
     fired = models.BooleanField("Уволен", default=False)
 
@@ -44,22 +46,6 @@ class Workers(models.Model):
     class Meta:
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
-
-
-class WorkTime(models.Model):
-    """Время работы сотрудников"""
-    worker_name = models.ForeignKey(Workers, verbose_name='ФИО сотрудника', on_delete=models.CASCADE)
-    standard_time = models.IntegerField('Норма времени')
-    done_time = models.IntegerField('Выполненное время')
-    lose_time = models.IntegerField('Пропущенно времени')
-    date_vacation = models.DateField('Дата отпуска')
-
-    def __str__(self):
-        return str(self.worker_name)
-
-    class Meta:
-        verbose_name = 'Время работы сотрудника'
-        verbose_name_plural = 'Время работы сотрудников'
 
 
 class Smesi(models.Model):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UnitsMeasurement, Workers, WorkTime, Goods, Customers, Smesi, Suppliers, Remote
+from .models import UnitsMeasurement, Workers, Goods, Customers, Smesi, Suppliers, Remote
 
 
 # Register your models here.
@@ -11,12 +11,33 @@ class WorkersAdmin(admin.ModelAdmin):
     list_display_links = ("name",)
     search_fields = ("name", "category")
     list_editable = ("fired",)
+    fieldsets = (
+        (None, {
+            "fields": ("name", "url")
+        }),
 
+        (None, {
+            "fields": ("image",)
+        }),
+        (None, {
+            "fields": (("birthday", "email"),)
+        }),
+        (None, {
+            "fields": (("category", "salary"),)
+        }),
 
-@admin.register(WorkTime)
-class WorkTimeAdmin(admin.ModelAdmin):
-    list_display = ("worker_name", "standard_time", "date_vacation")
-    search_fields = ("worker_name",)
+        (None, {
+            "fields": (("standard_time", "done_time", "lose_time"),)
+        }),
+
+        (None, {
+            "fields": ("date_vacation", )
+        }),
+        (None, {
+            "fields": ("fired",)
+        }),
+
+    )
 
 
 @admin.register(Goods)
@@ -51,6 +72,9 @@ class GoodsAdmin(admin.ModelAdmin):
         }),
         (None, {
             "fields": (("min_strength", "max_strength"),)
+        }),
+        (None, {
+            "fields": ("measurement",)
         }),
     )
 

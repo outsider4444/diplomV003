@@ -2,20 +2,20 @@
 
     <div class="search-bar w3layouts-newsletter">
         <h3 class="sear-head editContent" >Поиск поставщиков</h3>
-        <form action="{% url "worker_search" %}" method="get" class="d-flex editContent" >
-            <input type="search" placeholder="Введите название..." name="q" class="form-control" required="">
+        <form action="{% url "suppliers_search" %}" method="get" class="d-flex editContent" >
+            <input type="search" placeholder="Введите ФИО поставщика ..." name="q" class="form-control" required="">
             <button type="submit" class="btn1 btn" ><span class="fa fa-search" aria-hidden="true" ></span></button>
         </form>
     </div>
     <!--preference -->
     <form action="{% url 'suppliers_filter' %}" method="get" name="filter">
         <div class="left-side my-4">
-            <h3 class="sear-head editContent">Даты поставок</h3>
+            <h3 class="sear-head editContent">Года поставок</h3>
             <ul class="w3layouts-box-list">
-                {% for sup in suppliers_list %}
+                {% for sup in view.get_supdate %}
                     <li class="editContent">
-                        <input type="checkbox" class="checked" name="date" value="{{ sup.date.year }}-{{ sup.date.month }}-{{ sup.date.day }}">
-                        <span class="span editContent">{{ sup.date }}</span>
+                        <input type="checkbox" class="checked" name="date" value="{{ sup.date.year }}">
+                        <span class="span editContent">{{ sup.date.year }}</span>
                     </li>
                 {% endfor %}
             </ul>

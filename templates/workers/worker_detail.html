@@ -1,56 +1,43 @@
 {% extends 'workers/base.html' %}
-{% block title %} {{ worker.name }} {% endblock title %}
-{% block header_title %} {{ worker.name }} {% endblock header_title %}
+{% block title %} {{ workers.name }} {% endblock title %}
+{% block header_title %} {{ workers.name }} {% endblock header_title %}
 
 {% block worker %}
     <!-- product right -->
     <div class="left-ads-display col-lg-8">
         {#                Изменить стили #}
-        <div class="row" >
-        {% if worker.image %}
+        <div class="row">
+        {% if workers.image %}
             <div class="desc1-left col-md-6">
                 <img src="{{ worker.image.url }}" class="img-fluid" alt="">
             </div>
         {% endif %}
             <div class="desc1-right col-md-6 pl-lg-4" >
-                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
-                    {{ worker.name }}
+                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">{{ workers.name }}
                 </h3>
-                <span>{{ worker.category }}</span>
+                <span>{{ workers.category }}</span>
                 {#                            <h5 class="editContent"></h5>#}
                 <ul style="margin-top: 15px">
                     <li style="list-style: none">
-                        <span><b>Email: </b> {{ worker.email }}</span></li>
+                        <span><b>Email: </b>{{ workers.email }}</span>
+                    </li>
                     <li style="list-style: none">
-                        <span><b>День рождения: </b> {{ worker.birthday }}</span>
+                        <span><b>День рождения: </b> {{ workers.birthday }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Оклад: </b>
-                                    {{ worker.salary }}
-                                    </span>
+                    <li style="list-style: none">
+                        <span><b>Оклад: </b>{{ workers.salary }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Норма времени: </b>
-                        {% if worker_time.standard_time %}
-                            {{ worker_time.standard_time }}
-                        {% endif %}
-                                    </span>
+                    <li style="list-style: none">
+                        <span><b>Норма времени: </b>{{ workers.standard_time }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Отработанное время: </b>
-                        {% if worker_time.done_time %}
-                            {{ worker_time.done_time }}
-                        {% endif %}
-                                    </span>
+                    <li style="list-style: none">
+                        <span><b>Отработанное время: </b>{{ workers.done_time }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Пропущенно времени: </b>
-                        {% if worker_time.lose_time %}
-                            {{ worker_time.lose_time }}
-                        {% endif %}
-                        </span>
+                    <li style="list-style: none">
+                        <span><b>Пропущенно времени: </b>{{ workers.lose_time }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Дата отпуска: </b>
-                        {% if worker_time.date_vacation %}
-                            {{ worker_time.date_vacation }}
-                        {% endif %}
-                        </span>
+                    <li style="list-style: none">
+                        <span><b>Дата отпуска: </b>{{ workers.date_vacation }}</span>
                     </li>
                     <div class="share-desc">
                         <div class="clearfix"></div>

@@ -1,9 +1,7 @@
 from django.db.models import Q
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from django.views.generic.base import View
 
-from .models import Workers, WorkTime, Smesi, Goods, Suppliers, Customers, Remote
+from .models import Workers, Smesi, Goods, Suppliers, Customers, Remote
 
 
 # Create your views here.
@@ -24,10 +22,28 @@ class WorkerCategory:
 
 
 class SupplierDate:
-    """Дата поставки поставщиков"""
+    """Даты поставки поставщиков"""
 
     def get_supdate(self):
         return Suppliers.objects.values("date").distinct()
+
+
+class CustomersDate:
+    """Даты поставки поставщиков"""
+
+    def get_cusdate(self):
+        return Customers.objects.values("date").distinct()
+
+
+class SmesiWorkerDate:
+    """Даты изготовления смесей и сотрудники"""
+
+    def get_smesiyears(self):
+        return Smesi.objects.values("date").distinct()
+
+    def get_smesiworker(self):
+        return Smesi.objects.all()
+
 
 # основная информация
 class WorkerView(WorkerCategory, ListView):
@@ -37,28 +53,25 @@ class WorkerView(WorkerCategory, ListView):
     template_name = "workers/worker_list.html"
 
 
-class WorkerDetailView(WorkerCategory, View):
+class WorkerDetailView(DetailView, WorkerCategory):
     """Полная информация о сотруднике"""
-
-    def get(self, request, slug):
-        worker = Workers.objects.get(url=slug)
-        worker_time = WorkTime.objects.get(worker_name_id=worker.id)
-        return render(request, "workers/worker_detail.html", {"worker": worker, "worker_time": worker_time})
+    model = Workers
+    slug_field = "url"
+    template_name = 'workers/worker_detail.html'
 
 
-class SmesiView(ListView):
+class SmesiView(SmesiWorkerDate, ListView):
     """Список смесей"""
     model = Smesi
     queryset = Smesi.objects.all()
     template_name = 'smesi/smesi_list.html'
 
 
-class SmesiDetailView(View):
+class SmesiDetailView(SmesiWorkerDate, DetailView):
     """Полная информация о смеси"""
-
-    def get(self, request, slug):
-        smesi = Smesi.objects.get(url=slug)
-        return render(request, "smesi/smesi_detail.html", {"smesi": smesi})
+    model = Smesi
+    slug_field = "url"
+    template_name = 'smesi/smesi_detail.html'
 
 
 class GoodsView(ListView):
@@ -68,42 +81,39 @@ class GoodsView(ListView):
     template_name = "goods/goods_list.html"
 
 
-class GoodsDetailView(View):
+class GoodsDetailView(DetailView):
     """Полная информация об изделии"""
+    model = Goods
+    slug_field = "url"
+    template_name = "goods/goods_detail.html"
 
-    def get(self, request, slug):
-        goods = Goods.objects.get(url=slug)
-        return render(request, "goods/goods_detail.html", {"goods": goods})
 
-
-class SuppliersView(ListView):
+class SuppliersView(SupplierDate, ListView):
     """Список поставщиков"""
     model = Suppliers
     queryset = Suppliers.objects.all()
     template_name = "suppliers/suppliers_list.html"
 
 
-class SuppliersDetailView(View):
+class SuppliersDetailView(SupplierDate, DetailView):
     """Полная информация об изделии"""
+    model = Suppliers
+    slug_field = "url"
+    template_name = "suppliers/suppliers_detail.html"
 
-    def get(self, request, slug):
-        suppliers = Suppliers.objects.get(url=slug)
-        return render(request, "suppliers/suppliers_detail.html", {"suppliers": suppliers})
 
-
-class CustomersView(ListView):
+class CustomersView(ListView, CustomersDate):
     """Список заказчиков"""
     model = Customers
     queryset = Customers.objects.all()
     template_name = "customers/customers_list.html"
 
 
-class CustomersDetailView(View):
+class CustomersDetailView(DetailView, CustomersDate):
     """Полная информация о заказчиках"""
-
-    def get(self, request, slug):
-        customers = Customers.objects.get(url=slug)
-        return render(request, "customers/customers_detail.html", {"customers": customers})
+    model = Customers
+    slug_field = "url"
+    template_name = "customers/customers_detail.html"
 
 
 class RemoteView(ListView):
@@ -113,12 +123,11 @@ class RemoteView(ListView):
     template_name = "remote/remote_list.html"
 
 
-class RemoteDetailView(View):
+class RemoteDetailView(DetailView):
     """Полная информация о списанном"""
-
-    def get(self, request, slug):
-        remote = Remote.objects.get(url=slug)
-        return render(request, "remote/remote_detail.html", {"remote": remote})
+    model = Remote
+    slug_field = "url"
+    template_name = "remote/remote_detail.html"
 
 
 # Отдел фильтров
@@ -144,7 +153,7 @@ class FilterSupplierView(SupplierDate, ListView):
 
     def get_queryset(self):
         queryset = Suppliers.objects.filter(
-            Q(date__in=self.request.GET.getlist("date"))
+            Q(date__year__in=self.request.GET.getlist("date"))
         ).distinct()
         return queryset
 
@@ -154,13 +163,60 @@ class FilterSupplierView(SupplierDate, ListView):
         return context
 
 
+class FilterSmesiView(SmesiWorkerDate, ListView):
+    """Фильтр смесей"""
+    template_name = "smesi/smesi_list.html"
+
+    def get_queryset(self):
+        queryset = Smesi.objects.filter(
+            Q(date__year__in=self.request.GET.getlist("date")) |
+            Q(worker_name__name__in=self.request.GET.getlist("worker_name"))
+        ).distinct()
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["date"] = ''.join([f"date={x}&" for x in self.request.GET.getlist("date")])
+        context["worker_name"] = ''.join([f"worker_name={x}&" for x in self.request.GET.getlist("worker_name")])
+        return context
+
+
+class FilterCustomersView(CustomersDate, ListView):
+    """Фильтр заказчиков"""
+    template_name = "customers/customers_list.html"
+
+    def get_queryset(self):
+        queryset = Customers.objects.filter(
+            Q(date__year__in=self.request.GET.getlist("date"))
+        ).distinct()
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["date"] = ''.join([f"date={x}&" for x in self.request.GET.getlist("date")])
+        return context
+
 # Отдел поиска
+
 class SearchWorker(ListView):
     """Поиск сотрудников"""
     template_name = "workers/worker_list.html"
 
     def get_queryset(self):
         return Workers.objects.filter(name__icontains=self.request.GET.get("q"))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
+class SearchSuppliers(ListView):
+    """Поиск поставщиков"""
+    template_name = "suppliers/suppliers_list.html"
+
+    def get_queryset(self):
+        return Suppliers.objects.filter(name__icontains=self.request.GET.get("q"))
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
