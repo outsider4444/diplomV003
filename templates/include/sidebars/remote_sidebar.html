@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="side-bar col-lg-3">
 
-</body>
-</html>
+    <div class="search-bar w3layouts-newsletter">
+        <h3 class="sear-head editContent" >Поиск списанного</h3>
+        <form action="{% url "worker_search" %}" method="get" class="d-flex editContent" >
+            <input type="search" placeholder="Введите название списанного..." name="q" class="form-control" required="">
+            <button type="submit" class="btn1 btn" ><span class="fa fa-search" aria-hidden="true" ></span></button>
+        </form>
+    </div>
+    <!--preference -->
+    <form action="{% url 'smesi_filter' %}" method="get" name="filter">
+        <div class="left-side my-4">
+            <h3 class="sear-head editContent">Дата списания</h3>
+            <ul class="w3layouts-box-list">
+                    <li class="editContent">
+                        <input type="date" class="checked" name="date" value="2021-01-01">
+{#                        <span class="span editContent">{{ smesi.date.year }}</span>#}
+                    </li>
+            </ul>
+        </div>
+        <!-- // preference -->
+        <!-- discounts -->
+        <button type="submit">Найти</button>
+    </form>
+</div>
+<!-- //product left -->

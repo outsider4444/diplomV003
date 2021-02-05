@@ -10,14 +10,12 @@
     <!--preference -->
     <form action="{% url 'suppliers_filter' %}" method="get" name="filter">
         <div class="left-side my-4">
-            <h3 class="sear-head editContent">Года поставок</h3>
+            <h3 class="sear-head editContent">Дата поставок</h3>
             <ul class="w3layouts-box-list">
-                {% for sup in view.get_supdate %}
-                    <li class="editContent">
-                        <input type="checkbox" class="checked" name="date" value="{{ sup.date.year }}">
-                        <span class="span editContent">{{ sup.date.year }}</span>
-                    </li>
-                {% endfor %}
+                <li class="editContent">
+                    <input type="date" class="" name="date" value="2021-01-01">
+                    {#                        <span class="span editContent">{{ sup.date.year }}</span>#}
+                </li>
             </ul>
         </div>
         <!-- // preference -->

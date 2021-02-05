@@ -10,14 +10,12 @@
     <!--preference -->
     <form action="{% url 'smesi_filter' %}" method="get" name="filter">
         <div class="left-side my-4">
-            <h3 class="sear-head editContent">Года изготовления</h3>
+            <h3 class="sear-head editContent">Дата изготовления</h3>
             <ul class="w3layouts-box-list">
-                {% for smesi in view.get_smesiyears %}
                     <li class="editContent">
-                        <input type="checkbox" class="checked" name="date" value="{{ smesi.date.year }}">
-                        <span class="span editContent">{{ smesi.date.year }}</span>
+                        <input type="date" class="checked" name="date" value="2021-01-01">
+{#                        <span class="span editContent">{{ smesi.date.year }}</span>#}
                     </li>
-                {% endfor %}
             </ul>
             <h3 class="sear-head editContent">ФИО сотрудников</h3>
             <ul class="w3layouts-box-list">

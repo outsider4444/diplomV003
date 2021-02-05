@@ -153,7 +153,7 @@ class FilterSupplierView(SupplierDate, ListView):
 
     def get_queryset(self):
         queryset = Suppliers.objects.filter(
-            Q(date__year__in=self.request.GET.getlist("date"))
+            Q(date__in=self.request.GET.getlist("date"))
         ).distinct()
         return queryset
 
@@ -169,7 +169,7 @@ class FilterSmesiView(SmesiWorkerDate, ListView):
 
     def get_queryset(self):
         queryset = Smesi.objects.filter(
-            Q(date__year__in=self.request.GET.getlist("date")) |
+            Q(date__in=self.request.GET.getlist("date")) |
             Q(worker_name__name__in=self.request.GET.getlist("worker_name"))
         ).distinct()
         return queryset
@@ -187,7 +187,7 @@ class FilterCustomersView(CustomersDate, ListView):
 
     def get_queryset(self):
         queryset = Customers.objects.filter(
-            Q(date__year__in=self.request.GET.getlist("date"))
+            Q(date__in=self.request.GET.getlist("date"))
         ).distinct()
         return queryset
 

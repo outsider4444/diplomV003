@@ -10,14 +10,9 @@
     <!--preference -->
     <form action="{% url 'customers_filter' %}" method="get" name="filter">
         <div class="left-side my-4">
-            <h3 class="sear-head editContent">Года заказов</h3>
+            <h3 class="sear-head editContent">Дата заказа</h3>
             <ul class="w3layouts-box-list">
-                {% for cus in view.get_cusdate %}
-                    <li class="editContent">
-                        <input type="checkbox" class="checked" name="date" value="{{ cus.date.year }}">
-                        <span class="span editContent">{{ cus.date.year }}</span>
-                    </li>
-                {% endfor %}
+                    <input type="date" class="checked" name="date" value="2021-01-01">
             </ul>
         </div>
         <!-- // preference -->
