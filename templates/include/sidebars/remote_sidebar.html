@@ -8,24 +8,29 @@
         </form>
     </div>
     <!--preference -->
-    <form action="{% url 'smesi_filter' %}" method="get" name="filter">
+    <form action="{% url 'remote_filter' %}" method="get" name="filter">
         <div class="left-side my-4">
             <h3 class="sear-head editContent">Дата списания</h3>
             <ul class="w3layouts-box-list">
-                    <li class="editContent">
-                        <input type="date" class="checked" name="date" value="2021-01-01">
-{#                        <span class="span editContent">{{ smesi.date.year }}</span>#}
-                    </li>
-
+                <li class="editContent">
+                    <input type="date" class="checked" name="date" value="2021-01-01">
+                </li>
             </ul>
-            <h3 class="sear-head editContent">Название изделия</h3>
+            <h3 class="sear-head editContent">Название смеси</h3>
             <ul class="w3layouts-box-list">
-                    <li class="editContent">
-                        {% for smes in remote_list %}
-                            <input type="checkbox" class="checked" name="date" value="2021-01-01">
-                            <span class="span editContent">{{ smes.code_smesi }}</span>
-                        {% endfor %}
-                    </li>
+                <li class="editContent">
+                    {% for smes in view.get_remotesmesi %}
+                        <input type="checkbox" class="checked" name="code_smesi" value="{{ smes.code_smesi }}">
+                        <span class="span editContent">{{ smes.code_smesi }}</span>
+                    {% endfor %}
+                </li>
+                <h3 class="sear-head editContent">Название изделия</h3>
+                <li class="editContent">
+                    {% for smes in view.get_remotegoods %}
+                        <input type="checkbox" class="checked" name="code_goods" value="{{ smes.code_goods }}">
+                        <span class="span editContent">{{ smes.code_goods }}</span>
+                    {% endfor %}
+                </li>
             </ul>
         </div>
         <!-- // preference -->

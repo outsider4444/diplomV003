@@ -5,9 +5,6 @@ from django.views.generic import ListView, DetailView
 from .models import Workers, Smesi, Goods, Suppliers, Customers, Remote
 
 
-# Create your views here.
-
-
 class MainView(ListView):
     """Главное меню"""
     model = Customers
@@ -46,12 +43,23 @@ class SmesiWorkerDate:
         return Smesi.objects.all()
 
 
+class RemoteSmesiGoods:
+    """Коды смесей и изделий"""
+
+    def get_remotesmesi(self):
+        return Remote.objects.values("code_smesi").distinct()
+
+    def get_remotegoods(self):
+        return Remote.objects.values("code_goods").distinct()
+
+
 # основная информация
 class WorkerView(WorkerCategory, ListView):
     """Список сотрудников"""
     model = Workers
     queryset = Workers.objects.filter(fired=False)
     template_name = "workers/worker_list.html"
+    paginate_by = 1
 
 
 class WorkerDetailView(DetailView, WorkerCategory):
@@ -66,6 +74,7 @@ class SmesiView(SmesiWorkerDate, ListView):
     model = Smesi
     queryset = Smesi.objects.all()
     template_name = 'smesi/smesi_list.html'
+    paginate_by = 1
 
 
 class SmesiDetailView(SmesiWorkerDate, DetailView):
@@ -80,6 +89,7 @@ class GoodsView(ListView):
     model = Goods
     queryset = Goods.objects.all()
     template_name = "goods/goods_list.html"
+    paginate_by = 1
 
 
 class GoodsDetailView(DetailView):
@@ -94,6 +104,7 @@ class SuppliersView(SupplierDate, ListView):
     model = Suppliers
     queryset = Suppliers.objects.all()
     template_name = "suppliers/suppliers_list.html"
+    paginate_by = 1
 
 
 class SuppliersDetailView(SupplierDate, DetailView):
@@ -108,6 +119,7 @@ class CustomersView(ListView, CustomersDate):
     model = Customers
     queryset = Customers.objects.all()
     template_name = "customers/customers_list.html"
+    paginate_by = 1
 
 
 class CustomersDetailView(DetailView, CustomersDate):
@@ -117,14 +129,15 @@ class CustomersDetailView(DetailView, CustomersDate):
     template_name = "customers/customers_detail.html"
 
 
-class RemoteView(ListView):
+class RemoteView(ListView, RemoteSmesiGoods):
     """Список списанного"""
     model = Remote
     queryset = Remote.objects.all()
     template_name = "remote/remote_list.html"
+    paginate_by = 1
 
 
-class RemoteDetailView(DetailView):
+class RemoteDetailView(DetailView, RemoteSmesiGoods):
     """Полная информация о списанном"""
     model = Remote
     slug_field = "url"
@@ -194,6 +207,26 @@ class FilterSmesiView(SmesiWorkerDate, ListView):
         context = super().get_context_data(*args, **kwargs)
         context["date"] = ''.join([f"date={x}&" for x in self.request.GET.getlist("date")])
         context["worker_name"] = ''.join([f"worker_name={x}&" for x in self.request.GET.getlist("worker_name")])
+        return context
+
+
+class FilterRemoteView(RemoteSmesiGoods, ListView):
+    """Фильтр списанного"""
+    template_name = "remote/remote_list.html"
+
+    def get_queryset(self):
+        queryset = Remote.objects.filter(
+            Q(delete_date__in=self.request.GET.getlist("date")) |
+            Q(code_goods=self.request.GET.get("code_goods")) |
+            Q(code_smesi=self.request.GET.get("code_smesi"))
+        ).distinct()
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["date"] = ''.join([f"date={x}&" for x in self.request.GET.getlist("date")])
+        context["code_goods"] = ''.join([f"code_goods={x}&" for x in self.request.GET.getlist("code_goods")])
+        context["code_smesi"] = ''.join([f"code_smesi={x}&" for x in self.request.GET.getlist("code_smesi")])
         return context
 
 
