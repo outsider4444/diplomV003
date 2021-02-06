@@ -16,6 +16,16 @@
                         <input type="date" class="checked" name="date" value="2021-01-01">
 {#                        <span class="span editContent">{{ smesi.date.year }}</span>#}
                     </li>
+
+            </ul>
+            <h3 class="sear-head editContent">Название изделия</h3>
+            <ul class="w3layouts-box-list">
+                    <li class="editContent">
+                        {% for smes in remote_list %}
+                            <input type="checkbox" class="checked" name="date" value="2021-01-01">
+                            <span class="span editContent">{{ smes.code_smesi }}</span>
+                        {% endfor %}
+                    </li>
             </ul>
         </div>
         <!-- // preference -->
