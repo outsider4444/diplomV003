@@ -8,15 +8,26 @@
         </form>
     </div>
     <!--preference -->
-    <form action="{% url 'suppliers_filter' %}" method="get" name="filter">
+    <form action="{% url 'goods_filter' %}" method="get" name="filter">
         <div class="left-side my-4">
             <h3 class="sear-head editContent">Фильтры</h3>
             <ul class="w3layouts-box-list">
-                    <li class="editContent">
-                        <span class="span editContent">Минимальная температура</span>
-                        <input type="number" class="" name="temperature" value="">
-
-                    </li>
+                <li class="editContent">
+                    <span class="span editContent">Минимальная температура</span>
+                    <input type="number" class="" name="temp" value="1" min="0">
+                </li>
+                <li class="editContent">
+                    <span class="span editContent">Минимальная выдержка</span>
+                    <input type="number" class="" name="malt" value="1" min="0">
+                </li>
+                <li class="editContent">
+                    <span class="span editContent">Минимальное давление</span>
+                    <input type="number" class="" name="pres" value="1" min="0">
+                </li>
+                <li class="editContent">
+                    <span class="span editContent">Минимальная твердость</span>
+                    <input type="number" class="" name="strength" value="1" min="0">
+                </li>
             </ul>
         </div>
         <!-- // preference -->

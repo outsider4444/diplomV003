@@ -5,10 +5,12 @@ from . import views
 urlpatterns = [
 
     # Фильтры
+    path("worker_list/json-filter/", views.JsonFilterMoviesView.as_view(), name="json_filter"),
     path("smesi_list/smesi_filter/", views.FilterSmesiView.as_view(), name="smesi_filter"),
     path("suppliers_list/suppliers_filter/", views.FilterSupplierView.as_view(), name="suppliers_filter"),
     path("worker_list/worker_filter/", views.FilterWorkerView.as_view(), name="worker_filter"),
     path("customers_list/customers_filter/", views.FilterCustomersView.as_view(), name="customers_filter"),
+    path("goods_list/goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
 
     # Поиск
     path('worker_list/worker_search/', views.SearchWorker.as_view(), name='worker_search'),

@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import JsonResponse
 from django.views.generic import ListView, DetailView
 
 from .models import Workers, Smesi, Goods, Suppliers, Customers, Remote
@@ -131,6 +132,21 @@ class RemoteDetailView(DetailView):
 
 
 # Отдел фильтров
+class JsonFilterMoviesView(ListView):
+    """Фильтр фильмов в json"""
+    template_name = "workers/worker_list.html"
+
+    def get_queryset(self):
+        queryset = Workers.objects.filter(
+            Q(category__in=self.request.GET.getlist("category"))
+        ).distinct().values("name", "category", "url", "image")
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        queryset = list(self.get_queryset())
+        return JsonResponse({"workers": queryset}, safe=False)
+
+
 class FilterWorkerView(WorkerCategory, ListView):
     """Фильтр сотрудников"""
     template_name = "workers/worker_list.html"
@@ -194,6 +210,28 @@ class FilterCustomersView(CustomersDate, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["date"] = ''.join([f"date={x}&" for x in self.request.GET.getlist("date")])
+        return context
+
+
+class FilterGoodsView(ListView):
+    """Фильтр изделий"""
+    template_name = "goods/goods_list.html"
+
+    def get_queryset(self):
+        queryset = Goods.objects.filter(
+            Q(min_temperature__gte=int(self.request.GET.get("temp"))) |
+            Q(min_malt__gte=int(self.request.GET.get("malt"))) |
+            Q(min_pressure__gte=int(self.request.GET.get("pres"))) |
+            Q(min_strength__gte=int(self.request.GET.get("strength")))
+        ).distinct()
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["temp"] = ''.join([f"temp={x}&" for x in self.request.GET.getlist("temp")])
+        context["malt"] = ''.join([f"malt={x}&" for x in self.request.GET.getlist("malt")])
+        context["pres"] = ''.join([f"pres={x}&" for x in self.request.GET.getlist("pres")])
+        context["strength"] = ''.join([f"strength={x}&" for x in self.request.GET.getlist("strength")])
         return context
 
 # Отдел поиска
