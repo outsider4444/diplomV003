@@ -165,9 +165,13 @@ class FilterWorkerView(WorkerCategory, ListView):
     template_name = "workers/worker_list.html"
 
     def get_queryset(self):
-        queryset = Workers.objects.filter(
-            Q(category__in=self.request.GET.getlist("category"))
-        ).distinct()
+        category = self.request.GET.getlist("category")
+        if not category:
+            queryset = Workers.objects.all()
+        else:
+            queryset = Workers.objects.filter(
+                Q(category__in=category)
+            ).distinct()
         return queryset
 
     def get_context_data(self, *args, **kwargs):
@@ -181,9 +185,13 @@ class FilterSupplierView(SupplierDate, ListView):
     template_name = "suppliers/suppliers_list.html"
 
     def get_queryset(self):
-        queryset = Suppliers.objects.filter(
-            Q(date__in=self.request.GET.getlist("date"))
-        ).distinct()
+        date = self.request.GET.getlist("date")
+        if not date:
+            queryset = Suppliers.objects.all()
+        else:
+            queryset = Suppliers.objects.filter(
+                Q(date__in=date)
+            ).distinct()
         return queryset
 
     def get_context_data(self, *args, **kwargs):
@@ -215,11 +223,31 @@ class FilterRemoteView(RemoteSmesiGoods, ListView):
     template_name = "remote/remote_list.html"
 
     def get_queryset(self):
-        queryset = Remote.objects.filter(
-            Q(delete_date__in=self.request.GET.getlist("date")) |
-            Q(code_goods=self.request.GET.get("code_goods")) |
-            Q(code_smesi=self.request.GET.get("code_smesi"))
-        ).distinct()
+        delete_date = self.request.GET.getlist("date")
+        code_goods = self.request.GET.getlist("code_goods")
+        code_smesi = self.request.GET.getlist("code_smesi")
+        if delete_date == [] and code_goods == [] and code_smesi == []:
+            queryset = Remote.objects.all()
+        elif delete_date != [] and code_goods != [] and code_smesi != []:
+            queryset = Remote.objects.filter(
+                Q(delete_date__in=delete_date) |
+                Q(code_smesi__in=code_smesi) &
+                Q(code_goods__in=code_goods)
+            ).distinct()
+        elif code_smesi != []:
+            queryset = Remote.objects.filter(
+                Q(delete_date__in=delete_date) |
+                Q(code_smesi__in=code_smesi)
+            ).distinct()
+        elif code_goods != []:
+            queryset = Remote.objects.filter(
+                Q(delete_date__in=delete_date) |
+                Q(code_goods__in=code_goods)
+            ).distinct()
+        else:
+            queryset = Remote.objects.filter(
+                Q(delete_date__in=delete_date)
+            ).distinct()
         return queryset
 
     def get_context_data(self, *args, **kwargs):
@@ -235,9 +263,13 @@ class FilterCustomersView(CustomersDate, ListView):
     template_name = "customers/customers_list.html"
 
     def get_queryset(self):
-        queryset = Customers.objects.filter(
-            Q(date__in=self.request.GET.getlist("date"))
-        ).distinct()
+        date = self.request.GET.getlist("date")
+        if not date:
+            queryset = Customers.objects.all()
+        else:
+            queryset = Customers.objects.filter(
+                Q(date__in=date)
+            ).distinct()
         return queryset
 
     def get_context_data(self, *args, **kwargs):
@@ -251,12 +283,59 @@ class FilterGoodsView(ListView):
     template_name = "goods/goods_list.html"
 
     def get_queryset(self):
-        queryset = Goods.objects.filter(
-            Q(min_temperature__gte=int(self.request.GET.get("temp"))) |
-            Q(min_malt__gte=int(self.request.GET.get("malt"))) |
-            Q(min_pressure__gte=int(self.request.GET.get("pres"))) |
-            Q(min_strength__gte=int(self.request.GET.get("strength")))
-        ).distinct()
+        temp = self.request.GET.get("temp")
+        malt = self.request.GET.get("malt")
+        pres = self.request.GET.get("pres")
+        strength = self.request.GET.get("strength")
+        if temp == "" and malt == "" and pres == "" and strength == "":
+            queryset = Goods.objects.all()
+        elif temp != "" and malt != "" and pres != "" and strength != "":
+            queryset = Goods.objects.filter(
+                Q(min_temperature__lte=int(temp)) &
+                Q(min_malt__lte=int(malt)) &
+                Q(min_pressure__lte=int(pres)) &
+                Q(min_strength__lte=int(strength))
+            ).distinct()
+        elif temp != "" and malt != "" and pres != "":
+            queryset = Goods.objects.filter(
+                Q(min_temperature__lte=int(temp)) &
+                Q(min_malt__lte=int(malt)) &
+                Q(min_pressure__lte=int(pres))
+            ).distinct()
+        elif temp != "" and malt != "" and strength != "":
+            queryset = Goods.objects.filter(
+                Q(min_temperature__lte=int(temp)) &
+                Q(min_malt__lte=int(malt)) &
+                Q(min_strength__lte=int(strength))
+            ).distinct()
+        elif temp != "" and pres != "" and strength != "":
+            queryset = Goods.objects.filter(
+                Q(min_temperature__lte=int(temp)) &
+                Q(min_pressure__lte=int(pres)) &
+                Q(min_strength__lte=int(strength))
+            ).distinct()
+        elif malt != "" and pres != "" and strength != "":
+            queryset = Goods.objects.filter(
+                Q(min_malt__lte=int(malt)) &
+                Q(min_pressure__lte=int(pres)) &
+                Q(min_strength__lte=int(strength))
+            ).distinct()
+        elif temp != "":
+            queryset = Goods.objects.filter(
+                Q(min_temperature__lte=int(temp))
+            ).distinct()
+        elif malt != "":
+            queryset = Goods.objects.filter(
+                Q(min_malt__lte=int(malt))
+            ).distinct()
+        elif pres != "":
+            queryset = Goods.objects.filter(
+                Q(min_pressure__lte=int(pres))
+            ).distinct()
+        elif strength != "":
+            queryset = Goods.objects.filter(
+                Q(min_strength__lte=int(strength))
+            ).distinct()
         return queryset
 
     def get_context_data(self, *args, **kwargs):
