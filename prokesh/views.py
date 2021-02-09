@@ -205,10 +205,23 @@ class FilterSmesiView(SmesiWorkerDate, ListView):
     template_name = "smesi/smesi_list.html"
 
     def get_queryset(self):
-        queryset = Smesi.objects.filter(
-            Q(date__in=self.request.GET.getlist("date")) |
-            Q(worker_name__name__in=self.request.GET.getlist("worker_name"))
-        ).distinct()
+        date = self.request.GET.getlist("date")
+        worker_name = self.request.GET.getlist("worker_name")
+        if date == [] and worker_name == []:
+            queryset = Smesi.objects.all()
+        elif date:
+            queryset = Smesi.objects.filter(
+                Q(date__in=date)
+            ).distinct()
+        elif worker_name:
+            queryset = Smesi.objects.filter(
+                Q(worker_name__name__in=worker_name)
+            ).distinct()
+        else:
+            queryset = Smesi.objects.filter(
+                Q(date__in=date) &
+                Q(worker_name__name__in=worker_name)
+            ).distinct()
         return queryset
 
     def get_context_data(self, *args, **kwargs):
@@ -346,9 +359,10 @@ class FilterGoodsView(ListView):
         context["strength"] = ''.join([f"strength={x}&" for x in self.request.GET.getlist("strength")])
         return context
 
+
 # Отдел поиска
 
-class SearchWorker(ListView):
+class SearchWorker(ListView, WorkerCategory):
     """Поиск сотрудников"""
     template_name = "workers/worker_list.html"
 
@@ -361,12 +375,25 @@ class SearchWorker(ListView):
         return context
 
 
-class SearchSuppliers(ListView):
+class SearchSuppliers(ListView, SupplierDate):
     """Поиск поставщиков"""
     template_name = "suppliers/suppliers_list.html"
 
     def get_queryset(self):
         return Suppliers.objects.filter(name__icontains=self.request.GET.get("q"))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
+class SearchSmesi(ListView, SmesiWorkerDate):
+    """Поиск поставщиков"""
+    template_name = "smesi/smesi_list.html"
+
+    def get_queryset(self):
+        return Smesi.objects.filter(code__icontains=self.request.GET.get("q"))
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
