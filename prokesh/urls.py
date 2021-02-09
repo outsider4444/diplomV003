@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
@@ -33,6 +33,9 @@ urlpatterns = [
     path('customers_list/', views.CustomersView.as_view(), name='customers_list'),
     path('remote_list/', views.RemoteView.as_view(), name='remote_list'),
     path("worker_list/", views.WorkerView.as_view(), name='worker_list'),
+
+    #
+    path("accounts/", include("allauth.urls")),
 
     # Главная страница
     path("", views.MainView.as_view(), name="main")

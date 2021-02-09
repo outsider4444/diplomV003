@@ -389,7 +389,7 @@ class SearchSuppliers(ListView, SupplierDate):
 
 
 class SearchSmesi(ListView, SmesiWorkerDate):
-    """Поиск поставщиков"""
+    """Поиск смесей"""
     template_name = "smesi/smesi_list.html"
 
     def get_queryset(self):
