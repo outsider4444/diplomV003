@@ -399,3 +399,16 @@ class SearchSmesi(ListView, SmesiWorkerDate):
         context = super().get_context_data(*args, **kwargs)
         context["q"] = f'q={self.request.GET.get("q")}&'
         return context
+
+
+class SearchCustomers(ListView):
+    """Поиск поставщиков"""
+    template_name = "customers/customers_list.html"
+
+    def get_queryset(self):
+        return Customers.objects.filter(name__icontains=self.request.GET.get("q"))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
