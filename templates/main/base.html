@@ -4,9 +4,14 @@
     <section class="ab-info-main py-md-5 py-4 editContent" style="padding-left: 1rem; padding-right: 1rem;">
         <div class="container-fluid py-md-3">
             <div class="row">
+
+                {% if user.is_authenticated %}
                 {% block main %}
 
                 {% endblock main %}
+                {% else %}
+                    <h3>Для просмотра информации пожалуйста авторизируйтесь</h3>
+                {% endif %}
             </div>
         </div>
     </section>

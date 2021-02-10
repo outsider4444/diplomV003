@@ -68,14 +68,16 @@
                         <div class="agileinfo_social_icons">
                             <h3 class="footer-title text-uppercase editContent mb-lg-4 mb-3" >Страницы</h3>
                             <ul class="list-unstyled w3layouts-icons">
-
-                            <li><a href="{% url "worker_list" %}">Сотрудники</a></li>
-                            <li><a href="{% url "smesi_list" %}">Смеси</a></li>
-                            <li><a href="{% url "goods_list" %}">Изделия</a></li>
-                            <li><a href="{% url "suppliers_list" %}">Поставщики</a></li>
-                            <li><a href="{% url "customers_list" %}">Заказчики</a></li>
-                            <li><a href="{% url "remote_list" %}">Списанное</a></li>
-
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url "worker_list" %}">Сотрудники</a></li>
+                                    <li><a href="{% url "smesi_list" %}">Смеси</a></li>
+                                    <li><a href="{% url "goods_list" %}">Изделия</a></li>
+                                    <li><a href="{% url "suppliers_list" %}">Поставщики</a></li>
+                                    <li><a href="{% url "customers_list" %}">Заказчики</a></li>
+                                    <li><a href="{% url "remote_list" %}">Списанное</a></li>
+                                {% else %}
+                                    <li><a href="{% url "main" %}">Главная страница</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                         <!-- social icons -->
