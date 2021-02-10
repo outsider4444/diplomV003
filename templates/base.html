@@ -77,7 +77,11 @@
         <div class="banner-info">
             {#                        <p class="editContent" ></p>#}
             <h3 class="mb-4 editContent" style="cursor: default">
+            {% if user.is_authenticated %}
                 {% block header_title %} {% endblock %}
+            {% else %}
+                Вы не авторизированы!
+            {% endif %}
             </h3>
             {#        <div class="ban-buttons">#}
             {##}
