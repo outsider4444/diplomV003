@@ -402,7 +402,7 @@ class SearchSmesi(ListView, SmesiWorkerDate):
 
 
 class SearchCustomers(ListView):
-    """Поиск поставщиков"""
+    """Поиск заказчиков"""
     template_name = "customers/customers_list.html"
 
     def get_queryset(self):
