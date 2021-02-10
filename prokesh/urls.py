@@ -35,7 +35,7 @@ urlpatterns = [
     path('remote_list/', views.RemoteView.as_view(), name='remote_list'),
     path("worker_list/", views.WorkerView.as_view(), name='worker_list'),
 
-    #
+    # Авторизация
     path("accounts/", include("allauth.urls")),
 
     # Главная страница
