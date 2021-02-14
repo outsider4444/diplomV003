@@ -166,11 +166,21 @@ class FilterWorkerView(WorkerCategory, ListView):
 
     def get_queryset(self):
         category = self.request.GET.getlist("category")
-        if not category:
+        cof_proisvod = self.request.GET.get("cof_proisvod")
+        if category == [] and cof_proisvod == "":
             queryset = Workers.objects.all()
-        else:
+        elif category:
             queryset = Workers.objects.filter(
                 Q(category__in=category)
+            ).distinct()
+        elif cof_proisvod:
+            queryset = Workers.objects.filter(
+                Q(cof_proisvod=cof_proisvod)
+            ).distinct()
+        else:
+            queryset = Workers.objects.filter(
+                Q(category__in=category) &
+                Q(cof_proisvod=cof_proisvod)
             ).distinct()
         return queryset
 
@@ -415,6 +425,34 @@ class SearchCustomers(ListView):
 
     def get_queryset(self):
         return Customers.objects.filter(name__icontains=self.request.GET.get("q"))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
+class SearchRemote(ListView, RemoteSmesiGoods):
+    """Поиск списанного"""
+    template_name = "remote/remote_list.html"
+
+    def get_queryset(self):
+        return Remote.objects.filter(Q(code_smesi__code__icontains=self.request.GET.get("q")) |
+                                     Q(code_goods__code__icontains=self.request.GET.get("q"))
+                                     )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
+class SearchGoods(ListView):
+    """Поиск заказчиков"""
+    template_name = "goods/goods_list.html"
+
+    def get_queryset(self):
+        return Goods.objects.filter(name__icontains=self.request.GET.get("q"))
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

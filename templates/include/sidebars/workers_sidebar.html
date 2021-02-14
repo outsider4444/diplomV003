@@ -10,7 +10,7 @@
     <!--preference -->
     <form action="{% url 'worker_filter' %}" method="get" name="filter">
         <div class="left-side my-4">
-            <h3 class="sear-head editContent">Должности</h3>
+            <h3 class="sear-head editContent" >Должности</h3>
             <ul class="w3layouts-box-list">
                 {% for worker in view.get_category %}
                     <li class="editContent">
@@ -18,6 +18,13 @@
                         <span class="span editContent">{{ worker.category }}</span>
                     </li>
                 {% endfor %}
+            </ul>
+        <h3 class="sear-head editContent">Производительность</h3>
+            <ul class="w3layouts-box-list">
+                <li class="editContent">
+                    <input type="number" name="cof_proisvod" value="" min="0" placeholder="Указать в % ...">
+                    <span class="span editContent">%</span>
+                </li>
             </ul>
         </div>
         <button type="submit">Найти</button>

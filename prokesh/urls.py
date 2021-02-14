@@ -18,6 +18,7 @@ urlpatterns = [
     path('suppliers_list/suppliers_search/', views.SearchSuppliers.as_view(), name='suppliers_search'),
     path('smesi_list/smesi_search/', views.SearchSmesi.as_view(), name='smesi_search'),
     path('customers_list/customers_search/', views.SearchCustomers.as_view(), name='customers_search'),
+    path('remote_list/remote_search/', views.SearchRemote.as_view(), name='remote_search'),
 
     # Подробности
     path('worker_list/<slug:slug>/', views.WorkerDetailView.as_view(), name="worker_detail"),
