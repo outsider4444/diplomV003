@@ -32,6 +32,7 @@ class Workers(models.Model):
     standard_time = models.IntegerField('Норма времени')
     done_time = models.IntegerField('Выполненное время')
     lose_time = models.IntegerField('Пропущенно времени')
+    cof_proisvod = models.IntegerField('Коэфициент производительности', help_text='Указывать в процентах')
     date_vacation = models.DateField('Дата отпуска')
     url = models.SlugField(max_length=150, default='worker_', unique=True,)
     # статус увольнения
@@ -56,7 +57,7 @@ class Smesi(models.Model):
     date = models.DateField('Дата изготовления', default=default_datetime)
     valid = models.DateField('Годен до')
     # протестировать
-    worker_name = models.OneToOneField(Workers, verbose_name='ФИО сотрудника', on_delete=models.PROTECT)
+    # worker_name = models.OneToOneField(Workers, verbose_name='ФИО сотрудника', on_delete=models.PROTECT)
     url = models.SlugField(max_length=150, default='smesi_', unique=True)
 
     def __str__(self):
@@ -93,6 +94,7 @@ class Goods(models.Model):
     min_strength = models.IntegerField('Минимальная твердость')
     max_strength = models.IntegerField('Максимальная твердость')
     measurement = models.ForeignKey(UnitsMeasurement, verbose_name='Единицы измерения', on_delete=models.PROTECT)
+    # worker_name = models.OneToOneField(Workers, verbose_name='ФИО сотрудника', on_delete=models.PROTECT)
     url = models.SlugField(max_length=150, default='goods_', unique=True)
 
     def __str__(self):

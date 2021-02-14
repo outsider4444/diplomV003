@@ -11,7 +11,9 @@
                 <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="men-thumb-item">
-                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                            <a href="{% url "worker_list" %}" class="editContent" >
+                                <img src="../../media/main/workers_2.jpg" class="img-fluid" alt="" >
+                            </a>
                         </div>
                         <div class="item-info-product">
                             <h4 class="">
@@ -19,11 +21,6 @@
                                     Сотрудники
                                 </a>
                             </h4>
-                            <div class="product_price">
-                                <div class="grid-price">
-                                    <a href="{% url "worker_list" %}"><span class="money editContent" >Список сотрудников</span></a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -50,20 +47,15 @@
 
             <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
-                        <div class="men-thumb-item">
-                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
-                        </div>
+                        <a href="{% url "goods_list" %}" class="editContent" >
+                                <img src="../../media/main/goods.jpg" class="img-fluid" alt="" heaight="1200px">
+                        </a>
                         <div class="item-info-product">
                             <h4 class="">
                                 <a href="{% url "goods_list" %}" class="editContent" >
                                     Изделия
                                 </a>
                             </h4>
-                            <div class="product_price">
-                                <div class="grid-price">
-                                    <a href="{% url "goods_list" %}"><span class="money editContent" >Список изделий</span></a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,6 +119,7 @@
                         </div>
                     </div>
                 </div>
+
         </div>
         <!--<div class="grid-img-right mt-4 text-right bg bg1" >
             <span class="money editContent" >Flat 50% Off</span>

@@ -206,23 +206,31 @@ class FilterSmesiView(SmesiWorkerDate, ListView):
 
     def get_queryset(self):
         date = self.request.GET.getlist("date")
-        worker_name = self.request.GET.getlist("worker_name")
-        if date == [] and worker_name == []:
+        if not date:
             queryset = Smesi.objects.all()
-        elif date:
+        else:
             queryset = Smesi.objects.filter(
                 Q(date__in=date)
             ).distinct()
-        elif worker_name:
-            queryset = Smesi.objects.filter(
-                Q(worker_name__name__in=worker_name)
-            ).distinct()
-        else:
-            queryset = Smesi.objects.filter(
-                Q(date__in=date) &
-                Q(worker_name__name__in=worker_name)
-            ).distinct()
-        return queryset
+            return queryset
+        # date = self.request.GET.getlist("date")
+        # worker_name = self.request.GET.getlist("worker_name")
+        # if date == [] and worker_name == []:
+        #     queryset = Smesi.objects.all()
+        # elif date:
+        #     queryset = Smesi.objects.filter(
+        #         Q(date__in=date)
+        #     ).distinct()
+        # elif worker_name:
+        #     queryset = Smesi.objects.filter(
+        #         Q(worker_name__name__in=worker_name)
+        #     ).distinct()
+        # else:
+        #     queryset = Smesi.objects.filter(
+        #         Q(date__in=date) &
+        #         Q(worker_name__name__in=worker_name)
+        #     ).distinct()
+        # return queryset
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

@@ -29,7 +29,9 @@ class WorkersAdmin(admin.ModelAdmin):
         (None, {
             "fields": (("standard_time", "done_time", "lose_time"),)
         }),
-
+        (None, {
+            "fields": ("cof_proisvod",)
+        }),
         (None, {
             "fields": ("date_vacation", )
         }),
@@ -51,6 +53,10 @@ class GoodsAdmin(admin.ModelAdmin):
         (None, {
             "fields": (("cleaning_period", "number_nest"),)
         }),
+        # (None, {
+        #     "fields": ("worker_name",)
+        # }),
+
         (None, {
             "fields": (("percent_mass", "weight_clean"),)
         }),
