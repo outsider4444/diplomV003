@@ -20,6 +20,7 @@ urlpatterns = [
     path('customers_list/customers_search/', views.SearchCustomers.as_view(), name='customers_search'),
     path('remote_list/remote_search/', views.SearchRemote.as_view(), name='remote_search'),
 
+
     # Подробности
     path('worker_list/<slug:slug>/', views.WorkerDetailView.as_view(), name="worker_detail"),
     path('smesi_list/<slug:slug>/', views.SmesiDetailView.as_view(), name="smesi_detail"),
@@ -28,6 +29,7 @@ urlpatterns = [
     path('customers_list/<slug:slug>/', views.CustomersDetailView.as_view(), name='customers_detail'),
     path('remote_list/<slug:slug>/', views.RemoteDetailView.as_view(), name='remote_detail'),
 
+
     # Список
     path('smesi_list/', views.SmesiView.as_view(), name='smesi_list'),
     path('goods_list/', views.GoodsView.as_view(), name='goods_list'),
@@ -35,6 +37,9 @@ urlpatterns = [
     path('customers_list/', views.CustomersView.as_view(), name='customers_list'),
     path('remote_list/', views.RemoteView.as_view(), name='remote_list'),
     path("worker_list/", views.WorkerView.as_view(), name='worker_list'),
+    # path("calendar/", views.CalendarView.as_view(), name='calendar'),
+
+
 
     # Авторизация
     path("accounts/", include("allauth.urls")),

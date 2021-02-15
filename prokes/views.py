@@ -1,8 +1,9 @@
 from django.db.models import Q
 from django.http import JsonResponse
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View
+from django.shortcuts import render
 
-from .models import Workers, Smesi, Goods, Suppliers, Customers, Remote
+from .models import Workers, Smesi, Goods, Suppliers, Customers, Remote, GoodsCalendar, GoodsForm
 
 
 class MainView(ListView):
@@ -89,14 +90,18 @@ class GoodsView(ListView):
     model = Goods
     queryset = Goods.objects.all()
     template_name = "goods/goods_list.html"
-    paginate_by = 1
+    paginate_by = 5
 
 
-class GoodsDetailView(DetailView):
+class GoodsDetailView(View):
     """Полная информация об изделии"""
-    model = Goods
-    slug_field = "url"
-    template_name = "goods/goods_detail.html"
+    # model = Goods
+    # slug_field = "url"
+    # template_name = "goods/goods_detail.html"
+    def get(self, request, slug):
+        goods = Goods.objects.get(url=slug)
+        calendar = GoodsCalendar.objects.filter(code_goods=goods.code).order_by("month")
+        return render(request, "goods/goods_detail.html", {"calendar": calendar, "goods": goods})
 
 
 class SuppliersView(SupplierDate, ListView):
@@ -104,7 +109,7 @@ class SuppliersView(SupplierDate, ListView):
     model = Suppliers
     queryset = Suppliers.objects.all()
     template_name = "suppliers/suppliers_list.html"
-    paginate_by = 1
+    paginate_by = 5
 
 
 class SuppliersDetailView(SupplierDate, DetailView):

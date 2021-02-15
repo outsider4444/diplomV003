@@ -1,10 +1,54 @@
-Просто формочка для вывода календарика
-<table>
-    {% for v in goods_form %}
+{% extends "goods/goods_detail.html" %}
+<table border="1px">
     <tr>
-        {% for vv in goods_form %}
-            <td>{{ vv }}</td>
+        <td>Дата</td>
+        {% for date in calendar %}
+            <td>
+                {{ date.month }}
+            </td>
         {% endfor %}
     </tr>
-    {% endfor %}
+    <tr>
+        <td>Отлито шт.</td>
+        {% for info in calendar %}
+            <td>{{ info.lith }}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <td>Брак шт.</td>
+        {% for info in calendar %}
+            <td>{{ info.remote }}%</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <td>Брак %</td>
+        {% for info in calendar %}
+            <td>{{ info.remote_percent }}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <td>Смена выработки на 1 человека в СРЕДНЕМ</td>
+        {% for info in calendar %}
+            <td>{{ info.one_man_sr }}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <td>Смена выработки на 1 человека МАКСИМАЛЬНО</td>
+        {% for info in calendar %}
+            <td>{{ info.one_man_max }}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <td>Смена выработки на 2 человек в СРЕДНЕМ</td>
+        {% for info in calendar %}
+            <td>{{ info.two_man_sr }}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <td>Смена выработки на 2 человека МАКСИМАЛЬНО</td>
+        {% for info in calendar %}
+            <td>{{ info.two_man_max }}</td>
+        {% endfor %}
+    </tr>
+
 </table>

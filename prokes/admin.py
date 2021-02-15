@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UnitsMeasurement, Workers, Goods, Customers, Smesi, Suppliers, Remote
+from .models import UnitsMeasurement, Workers, Goods, Customers, Smesi, Suppliers, Remote, GoodsForm, GoodsCalendar
 
 
 # Register your models here.
@@ -33,7 +33,7 @@ class WorkersAdmin(admin.ModelAdmin):
             "fields": ("cof_proisvod",)
         }),
         (None, {
-            "fields": ("date_vacation", )
+            "fields": ("date_vacation",)
         }),
         (None, {
             "fields": ("fired",)
@@ -44,21 +44,18 @@ class WorkersAdmin(admin.ModelAdmin):
 
 @admin.register(Goods)
 class GoodsAdmin(admin.ModelAdmin):
-    list_display = ("code", "cleaning_period", "number_nest")
+    list_display = ("code",)
     search_fields = ("code",)
     fieldsets = (
         (None, {
             "fields": ("code", "url")
-        }),
-        (None, {
-            "fields": (("cleaning_period", "number_nest"),)
         }),
         # (None, {
         #     "fields": ("worker_name",)
         # }),
 
         (None, {
-            "fields": (("percent_mass", "weight_clean"),)
+            "fields": ("weight_clean",)
         }),
         (None, {
             "fields": (("norma_with_carpet", "consumption_smesi", "defect_limit"),)
@@ -113,4 +110,10 @@ class SuppliersAdmin(admin.ModelAdmin):
 admin.site.register(UnitsMeasurement)
 
 
+@admin.register(GoodsCalendar)
+class GoodsCalendarAdmin(admin.ModelAdmin):
+    list_display = ("code_goods", "month")
+    search_fields = ("code_goods",)
 
+
+admin.site.register(GoodsForm)

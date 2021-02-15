@@ -108,7 +108,7 @@ class Goods(models.Model):
 class GoodsForm(models.Model):
     """Формы деталей"""
     code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.PROTECT)
-    duplicate = models.CharField("Название(дубликат)")
+    duplicate = models.CharField("Название(дубликат)", max_length=150)
     cleaning_period = models.FloatField("Период чистки")
     number_nest = models.FloatField("Номер гнезда")
     percent_mass = models.IntegerField("Процент массы")
@@ -132,19 +132,24 @@ class GoodsCalendar(models.Model):
     lith = models.IntegerField("Отлито шт.")
     remote = models.IntegerField("Брак шт.")
     # добавить в процентах вычисляемое поле
-    one_man_sr = models.CharField("Смена выработки на 1 человека в СРЕДНЕМ")
-    one_man_max = models.CharField("Смена выработки на 1 человека МАКСИМАЛЬНО")
-    two_man_sr = models.CharField("Смена выработки на 2 человек в СРЕДНЕМ")
-    two_man_max = models.CharField("Смена выработки на 2 человека МАКСИМАЛЬНО")
+    remote_percent = models.FloatField("Брак %")
+    ###
+    one_man_sr = models.CharField("Смена выработки на 1 человека в СРЕДНЕМ", max_length=150)
+    one_man_max = models.CharField("Смена выработки на 1 человека МАКСИМАЛЬНО", max_length=150)
+    two_man_sr = models.CharField("Смена выработки на 2 человек в СРЕДНЕМ", max_length=150)
+    two_man_max = models.CharField("Смена выработки на 2 человека МАКСИМАЛЬНО", max_length=150)
+    url = models.SlugField()
+    # url = models.SlugField()
 
     def __str__(self):
-        return self.code_goods
+        return str(self.month)
 
-    # def get_absolute_url(self):
-    #     return reverse("goods_calendar", kwargs={"slug": self.url})
+    def get_absolute_url(self):
+        return reverse("goods_calendar", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = "Календарь изделий"
+        verbose_name_plural = "Календарь изделий"
 
 
 class Remote(models.Model):
