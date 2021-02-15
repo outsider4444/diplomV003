@@ -453,11 +453,11 @@ class SearchRemote(ListView, RemoteSmesiGoods):
 
 
 class SearchGoods(ListView):
-    """Поиск заказчиков"""
+    """Поиск изделий"""
     template_name = "goods/goods_list.html"
 
     def get_queryset(self):
-        return Goods.objects.filter(name__icontains=self.request.GET.get("q"))
+        return Goods.objects.filter(code__icontains=self.request.GET.get("q"))
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

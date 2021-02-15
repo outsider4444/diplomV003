@@ -138,14 +138,9 @@ class GoodsCalendar(models.Model):
     one_man_max = models.CharField("Смена выработки на 1 человека МАКСИМАЛЬНО", max_length=150)
     two_man_sr = models.CharField("Смена выработки на 2 человек в СРЕДНЕМ", max_length=150)
     two_man_max = models.CharField("Смена выработки на 2 человека МАКСИМАЛЬНО", max_length=150)
-    url = models.SlugField()
-    # url = models.SlugField()
 
     def __str__(self):
         return str(self.month)
-
-    def get_absolute_url(self):
-        return reverse("goods_calendar", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = "Календарь изделий"
