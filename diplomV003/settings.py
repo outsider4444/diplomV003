@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-
-    'prokesh',
+    'prokes',
     'allauth',
     'allauth.account',
 ]

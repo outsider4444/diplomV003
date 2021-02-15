@@ -1,0 +1,10 @@
+Просто формочка для вывода календарика
+<table>
+    {% for v in goods_form %}
+    <tr>
+        {% for vv in goods_form %}
+            <td>{{ vv }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
