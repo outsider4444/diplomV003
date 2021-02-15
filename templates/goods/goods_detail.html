@@ -6,16 +6,10 @@
     <!-- product right -->
     <div class="left-ads-display col-lg-8">
         {#                Изменить стили #}
-        <div class="row">
-            {#                        <div class="desc1-left col-md-6">#}
-            {#                            <img src="{{ movie.poster.url }}" class="img-fluid" alt="">#}
-            {#                        </div>#}
+        <div class="container">
+
             <div class="desc1-right col-md-6 pl-lg-4" >
-{#                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">#}
-{#                    {{ smesi.code }}#}
-{#                </h3>#}
-{#                <span>{{ worker.category }}</span>#}
-                {#                            <h5 class="editContent"></h5>#}
+
                 <ul style="margin-top: 15px">
                     <li style="list-style: none"><span><b>Вес чистой детали: </b>{{ goods.weight_clean }}</span>
                     </li>
@@ -41,73 +35,76 @@
                             {{ goods.measurement }}
                     </span>
                     </li>
-                    <div class="share-desc">
-                        <div class="clearfix">
-<table border="1px">
-    <tr>
-        <td>Дата</td>
-        {% for date in calendar %}
-            <td>
-                {{ date.month }}
-            </td>
-        {% endfor %}
-    </tr>
-    <tr>
-        <td>Отлито шт.</td>
-        {% for info in calendar %}
-            <td>{{ info.lith }}</td>
-        {% endfor %}
-    </tr>
-    <tr>
-        <td>Брак шт.</td>
-        {% for info in calendar %}
-            <td>{{ info.remote }}%</td>
-        {% endfor %}
-    </tr>
-    <tr>
-        <td>Брак %</td>
-        {% for info in calendar %}
-            <td>{{ info.remote_percent }}</td>
-        {% endfor %}
-    </tr>
-    <tr>
-        <td>Смена выработки на 1 человека в СРЕДНЕМ</td>
-        {% for info in calendar %}
-            <td>{{ info.one_man_sr }}</td>
-        {% endfor %}
-    </tr>
-    <tr>
-        <td>Смена выработки на 1 человека МАКСИМАЛЬНО</td>
-        {% for info in calendar %}
-            <td>{{ info.one_man_max }}</td>
-        {% endfor %}
-    </tr>
-    <tr>
-        <td>Смена выработки на 2 человек в СРЕДНЕМ</td>
-        {% for info in calendar %}
-            <td>{{ info.two_man_sr }}</td>
-        {% endfor %}
-    </tr>
-    <tr>
-        <td>Смена выработки на 2 человека МАКСИМАЛЬНО</td>
-        {% for info in calendar %}
-            <td>{{ info.two_man_max }}</td>
-        {% endfor %}
-    </tr>
 
-</table>
-                        </div>
-                    </div>
                 </ul>
             </div>
         </div>
-        <div class="row sub-para-w3layouts mt-5">
-        {#                    <hr>#}
-        <div class="row">
-            <div class="single-form-left">
-
+        {#                        # таблица#}
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-responsive">
+                    <tr>
+                        <td>Дата</td>
+                        <td>Всего</td>
+                        {% for date in calendar %}
+                            <td>
+                                {{ date.month.month }} - {{ date.month.year }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Отлито шт.</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.lith }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Брак шт.</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.remote }}%</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Брак %</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.remote_percent }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Смена выработки на 1 человека в СРЕДНЕМ</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.one_man_sr }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Смена выработки на 1 человека МАКСИМАЛЬНО</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.one_man_max }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Смена выработки на 2 человек в СРЕДНЕМ</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.two_man_sr }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Смена выработки на 2 человека МАКСИМАЛЬНО</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.two_man_max }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
+
     <!-- //contact -->
 {% endblock goods %}
