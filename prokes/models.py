@@ -25,7 +25,7 @@ class Goods(models.Model):
     """Изделия"""
     code = models.CharField('Код изделия', max_length=120, primary_key=True)
     # сделать фото необязательным
-    image = models.ImageField("Фотография изделия", upload_to="goods/", blank=True, default="")
+    image = models.ImageField("Фотография изделия", upload_to="goods/", blank=True)
     # изменить позже
     weight_clean = models.FloatField('Вес чистой детали', default=0)
     norma_with_carpet = models.IntegerField('Норма с ковром', default=0)

@@ -4,10 +4,10 @@ from . import views
 
 urlpatterns = [
     # Отправка нового в БД
-    path("<int:pk>/", views.AddGoods.as_view(), name="add_goods"),
+    # path("add_goods/", views.AddGoods.as_view(), name="add_goods"),
 
     # Форма создания
-    path("goods_new/", views.GoodsNew.as_view(), name="goods_new"),
+    path("goods_new/", views.GoodsNew, name="goods_new"),
 
     # Фильтры
     path("goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
@@ -17,7 +17,7 @@ urlpatterns = [
     path('goods_search/', views.SearchGoods.as_view(), name='goods_search'),
 
     # Подробности
-    path("<slug:slug>/", views.GoodsDetailView.as_view(), name="goods_detail"),
+    path("<slug:slug>/", views.goodsdetailview, name="goods_detail"),
     # path('goods_list/<slug:slug>/', views.GoodsDetailView.as_view(), name='goods_detail'),
 
 

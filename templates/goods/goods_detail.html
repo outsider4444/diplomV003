@@ -1,4 +1,13 @@
 {% extends 'goods/base.html' %}
+{% block header_image %}
+    {% if goods.image %}
+         {{ goods.image.url }}
+    {% else %}
+        ../../media/header_image.jpg
+    {% endif %}
+{% endblock header_image %}
+
+{% load static %}
 {% block title %}Изделие: {{ goods.code }} {% endblock title %}
 {% block header_title %}Изделие: {{ goods.code }} {% endblock header_title %}
 
@@ -102,9 +111,43 @@
                         {% endfor %}
                     </tr>
                 </table>
+{#            Добавить информацию в календарь#}
+            <h3>Добавить месяц в календарь</h3>
+                <form method="post" enctype="multipart/form-data" name="calendar" onchange="remote_calculate()">
+                    {% csrf_token %}
+                    <div hidden>{{ form.code_goods }}</div>
+
+                    Введите дату: {{ form.month }}<br>
+                    Отлито шт. :{{ form.lith }}<br>
+                    Брак шт. :{{ form.remote }}<br>
+                    Брак % :{{ form.remote_percent }}<br>
+                    Смена выработки на 1 человека в СРЕДНЕМ:{{ form.one_man_sr }}<br>
+                    Смена выработки на 1 человека МАКСИМАЛЬНО:{{ form.one_man_max }}<br>
+                    Смена выработки на 2 человек в СРЕДНЕМ:{{ form.two_man_sr }}<br>
+                    Смена выработки на 2 человека МАКСИМАЛЬНО:{{ form.two_man_max }}<br>
+
+                    <span>{{ error }}</span>
+
+                    <button type="submit">Подтвердить</button>
+                </form>
+
             </div>
         </div>
-
     </div>
     <!-- //contact -->
+<script>
+    let code_goods = document.getElementById("id_code_goods");
+    document.getElementById('id_remote_percent').readOnly = true;
+    for(i=0; i<code_goods.options.length; i++){
+        if(code_goods.options[i].value == "{{ goods.code }}"){
+            code_goods.selectedIndex = i;
+        }
+    }
+
+    function  remote_calculate() {
+        calendar.remote_percent.value = (100/calendar.lith.value) * calendar.remote.value
+        }
+    }
+
+</script>
 {% endblock goods %}

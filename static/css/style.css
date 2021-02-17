@@ -382,7 +382,7 @@ li > a:only-child:after {
 /*--/banner --*/
 
 .main-banner {
-    background: url('../zapchasti-dvigatel-kolenval.jpg') no-repeat center;
+    background: url('../../media/header_image.jpg') no-repeat center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -393,7 +393,7 @@ li > a:only-child:after {
 }
 
 .main-banner.inner {
-    background: url('../zapchasti-dvigatel-kolenval.jpg') no-repeat center;
+    background: url('../../media/header_image.jpg') no-repeat center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -406,7 +406,7 @@ li > a:only-child:after {
 .bg1 {
     background-color: rgba(0, 0, 0, 0);
     margin-top: 0;
-    background-image: url('../zapchasti-dvigatel-kolenval.jpg');
+    background-image: url('../../media/header_image.jpg');
 }
 
 /*-- place holder --*/

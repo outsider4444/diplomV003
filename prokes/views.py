@@ -1,10 +1,13 @@
 from django.db.models import Q
 from django.http import JsonResponse
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, View, CreateView
 from django.shortcuts import render, redirect
-from .forms import GoodsForm
+from requests import request
+
+from .forms import GoodsForm, CalendarForm
 
 from .models import Goods, GoodsCalendar, UnitsMeasurement
+
 
 class GoodsView(ListView):
     """Список изделий"""
@@ -14,34 +17,49 @@ class GoodsView(ListView):
     paginate_by = 5
 
 
-class GoodsDetailView(View):
+def goodsdetailview(request, slug):
     """Полная информация об изделии"""
     # model = Goods
     # slug_field = "url"
     # template_name = "goods/goods_detail.html"
-    def get(self, request, slug):
-        goods = Goods.objects.get(url=slug)
-        calendar = GoodsCalendar.objects.filter(code_goods=goods.code).order_by("month")
-        return render(request, "goods/goods_detail.html", {"calendar": calendar, "goods": goods})
+    error = ""
+    goods = Goods.objects.get(url=slug)
+    calendar = GoodsCalendar.objects.filter(code_goods=goods.code).order_by("month")
+    month = GoodsCalendar.objects.all()
+    if request.method == "POST":
+        form = CalendarForm(request.POST)
+        form.code_goods = goods.code
+        if form.is_valid():
+            form.save()
+            return redirect("goods_list")
+        else:
+            error = "Форма неверно заполнена"
+    form = CalendarForm()
+    return render(request, "goods/goods_detail.html", {"calendar": calendar, "goods": goods,
+                                                       "form": form, "error": error})
 
 
-class GoodsNew(View):
+def GoodsNew(request):
     """Создание нового изделия"""
-    def get(self, request):
-        goods = Goods.objects.all()
-        measurement = UnitsMeasurement.objects.all()
-        return render(request, "goods/goods_new.html", {"measurement": measurement, "goods": goods})
+    error = ""
+    if request.method == "POST":
+        form = GoodsForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("goods_list")
+        else:
+            error = "Форма неверно заполнена"
+    form = GoodsForm()
+    return render(request, "goods/goods_new.html", {"form": form, "error": error})
+    # def get(self, request):
+    #     goods = Goods.objects.all()
+    #     measurement = UnitsMeasurement.objects.all()
+    #     return render(request, "goods/goods_new.html", {"measurement": measurement, "goods": goods})
 
 
 class AddGoods(View):
     """Добавить издилие в список изделий"""
-    def post(self, request, pk):
-        form = GoodsForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.goods_id = pk
-            form.save
-        return redirect("/")
+    pass
 
 
 class FilterGoodsView(ListView):
