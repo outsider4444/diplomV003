@@ -80,7 +80,7 @@ class GoodsForm(models.Model):
 
 class GoodsCalendar(models.Model):
     """Календарь создания изделий"""
-    code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.PROTECT)
+    code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
     month = models.DateField("Месяц", help_text="Вписывать только месяц и год, день оставлть '01' ")
     lith = models.IntegerField("Отлито шт.")
     remote = models.IntegerField("Брак шт.")
