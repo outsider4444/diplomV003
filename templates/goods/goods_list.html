@@ -3,10 +3,15 @@
 {% block title %} Список изделий {% endblock title %}
 {% block header_title %} Список изделий {% endblock header_title %}
 
+{% block header_image %}
+<div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
+{% endblock header_image %}
+
 {% block goods %}
-        <form>
-            <input type="button" onclick='location.href="{% url "goods_new" %}"' value="Создать новое изделие">
-        </form>
+    <form>
+        <input type="button" onclick='location.href="{% url "goods_new" %}"' value="Создать новое изделие">
+    </form>
+
     <!-- product right -->
     <div class="left-ads-display col-lg-9">
         <div class="row">

@@ -17,7 +17,7 @@ class GoodsView(ListView):
     paginate_by = 5
 
 
-def goodsdetailview(request, slug):
+def GoodsDetailView(request, slug):
     """Полная информация об изделии"""
     # model = Goods
     # slug_field = "url"

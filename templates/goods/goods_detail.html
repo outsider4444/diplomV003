@@ -1,9 +1,10 @@
 {% extends 'goods/base.html' %}
 {% block header_image %}
     {% if goods.image %}
-         {{ goods.image.url }}
+        <div class="main-banner bg bg1" id="home" style="background: url('{{ goods.image.url }}')">
     {% else %}
-        ../../media/header_image.jpg
+        <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
+
     {% endif %}
 {% endblock header_image %}
 
