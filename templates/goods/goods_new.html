@@ -1,0 +1,18 @@
+{% extends "goods/base.html" %}
+{% block content %}
+
+    <form method="post" action="{% url "add_goods" goods.id%}">
+    {% csrf_token %}
+        <span>Введите код изделия</span>
+            <input name="code" class="editContent"><br>
+        <span>Выберите фото изделия(необязательно)</span>
+            <input type="file" name="image" class="editContent"><br>
+        <span>Введите url изделия</span>
+            <input name="url" class="editContent"><br>
+        <span>Выберите единицу измерения</span><br>
+        {% for unit in measurement %}
+            <input type="radio" value="{{ unit }}" name="measurement" class="editContent"> <span>{{ unit }}</span><br>
+        {% endfor %}
+    <button type="submit">Подтвердить</button>
+    </form>
+{% endblock content %}
