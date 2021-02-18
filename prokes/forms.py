@@ -14,7 +14,7 @@ class GoodsNewForm(forms.ModelForm):
 
 
 class CalendarForm(forms.ModelForm):
-    """Форма отзыва"""
+    """Форма календаря"""
     class Meta:
         model = GoodsCalendar
         fields = ("code_goods", "month", "lith", "remote", "remote_percent",
@@ -26,7 +26,7 @@ class CalendarForm(forms.ModelForm):
 
 
 class GoodsForm(forms.ModelForm):
-    """Форма отзыва"""
+    """Форма изделий"""
     class Meta:
         model = Goods
         fields = ("code", "image", "weight_clean", "weight_clean", "norma_with_carpet",

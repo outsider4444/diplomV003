@@ -3,7 +3,10 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    # Обновление информации
+    # Форма удаления
+    path("<slug:slug>/delete/", views.GoodsDeleteView.as_view(), name="goods_delete"),
+
+    # Форма обновления
     path("<slug:slug>/update/", views.GoodsUpdateView.as_view(), name="goods_update"),
 
     # Форма создания
@@ -18,7 +21,6 @@ urlpatterns = [
     # Подробности
     path("<slug:slug>/", views.GoodsDetailView, name="goods_detail"),
     # path('goods_list/<slug:slug>/', views.GoodsDetailView.as_view(), name='goods_detail'),
-
 
     # Список
     path("", views.GoodsView.as_view(), name="goods_list"),

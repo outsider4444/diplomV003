@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.http import JsonResponse
-from django.views.generic import ListView, DetailView, View, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from requests import request
 
@@ -11,6 +11,7 @@ from .models import Goods, GoodsCalendar
 
 class GoodsView(ListView):
     """Список изделий"""
+
     model = Goods
     queryset = Goods.objects.all()
     template_name = "goods/goods_list.html"
@@ -19,6 +20,7 @@ class GoodsView(ListView):
 
 def GoodsDetailView(request, slug):
     """Полная информация об изделии"""
+
     # model = Goods
     # slug_field = "url"
     # template_name = "goods/goods_detail.html"
@@ -40,15 +42,18 @@ def GoodsDetailView(request, slug):
 
 class GoodsUpdateView(UpdateView):
     """Обновление информации о детали"""
+
     model = Goods
-    template_name = "goods/goods_new.html"
+    template_name = "goods/goods_form/goods_new.html"
     slug_field = "url"
+    form_class = GoodsForm
     fields = ["code", "image", "weight_clean", "weight_clean", "norma_with_carpet",
               "consumption_smesi", "one_person_norma", "defect_limit", "url"]
 
 
 def GoodsNew(request):
     """Создание нового изделия"""
+
     error = ""
     if request.method == "POST":
         form = GoodsNewForm(request.POST, request.FILES)
@@ -58,13 +63,23 @@ def GoodsNew(request):
         else:
             error = "Форма неверно заполнена"
     form = GoodsNewForm()
-    return render(request, "goods/goods_new.html", {"form": form, "error": error})
+    return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error})
     # def get(self, request):
     #     goods = Goods.objects.all()
     #     measurement = UnitsMeasurement.objects.all()
     #     return render(request, "goods/goods_new.html", {"measurement": measurement, "goods": goods})
 
 
+class GoodsDeleteView(DeleteView):
+    """Удаление изделия"""
+    model = Goods
+    slug_field = "url"
+    # Изменить на список изделий
+    success_url = "/"
+    template_name = "goods/goods_form/goods_delete.html"
+
+
+# Фильтры
 class FilterGoodsView(ListView):
     """Фильтр изделий"""
     template_name = "goods/goods_list.html"
@@ -136,7 +151,6 @@ class FilterGoodsView(ListView):
 
 
 # Отдел поиска
-
 class SearchGoods(ListView):
     """Поиск изделий"""
     template_name = "goods/goods_list.html"

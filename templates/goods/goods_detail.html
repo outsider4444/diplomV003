@@ -21,6 +21,7 @@
             <div class="desc1-right col-md-6 pl-lg-4" >
     <form>
         <input type="button" onclick='location.href="{{ goods.get_absolute_url }}update"' value="Редактировать изделие">
+        <input type="button" onclick='location.href="{{ goods.get_absolute_url }}delete"' value="Удалить изделие">
     </form>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none"><span><b>Вес чистой детали: </b>{{ goods.weight_clean }}</span>
