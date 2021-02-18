@@ -19,7 +19,9 @@
         <div class="container">
 
             <div class="desc1-right col-md-6 pl-lg-4" >
-
+    <form>
+        <input type="button" onclick='location.href="{{ goods.get_absolute_url }}update"' value="Редактировать изделие">
+    </form>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none"><span><b>Вес чистой детали: </b>{{ goods.weight_clean }}</span>
                     </li>
@@ -29,23 +31,22 @@
                     </li>
                     <li style="list-style: none"><span><b>Норма на одного человека: </b>{{ goods.one_person_norma }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Норма на двух человек: </b>{{ goods.two_person_norma }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Лимит брака: </b>{{ goods.defect_limit }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Средняя температура: </b>{{ goods.min_temperature }} - {{ goods.max_temperature }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Средняя выдержка: </b>{{ goods.min_malt }} - {{ goods.max_malt }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Среднее давление: </b>{{ goods.min_pressure }} - {{ goods.max_pressure }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Средняя твердость: </b>{{ goods.min_strength }} - {{ goods.max_strength }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Единицы измерения: </b>
-                            {{ goods.measurement }}
-                    </span>
-                    </li>
-
+{#                    <li style="list-style: none"><span><b>Норма на двух человек: </b>{{ goods.two_person_norma }}</span>#}
+{#                    </li>#}
+{#                    <li style="list-style: none"><span><b>Лимит брака: </b>{{ goods.defect_limit }}</span>#}
+{#                    </li>#}
+{#                    <li style="list-style: none"><span><b>Средняя температура: </b>{{ goods.min_temperature }} - {{ goods.max_temperature }}</span>#}
+{#                    </li>#}
+{#                    <li style="list-style: none"><span><b>Средняя выдержка: </b>{{ goods.min_malt }} - {{ goods.max_malt }}</span>#}
+{#                    </li>#}
+{#                    <li style="list-style: none"><span><b>Среднее давление: </b>{{ goods.min_pressure }} - {{ goods.max_pressure }}</span>#}
+{#                    </li>#}
+{#                    <li style="list-style: none"><span><b>Средняя твердость: </b>{{ goods.min_strength }} - {{ goods.max_strength }}</span>#}
+{#                    </li>#}
+{#                    <li style="list-style: none"><span><b>Единицы измерения: </b>#}
+{#                            {{ goods.measurement }}#}
+{#                    </span>#}
+{#                    </li>#}
                 </ul>
             </div>
         </div>
@@ -150,4 +151,5 @@
     }
 
 </script>
+
 {% endblock goods %}

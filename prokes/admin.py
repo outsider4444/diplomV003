@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UnitsMeasurement, Goods, GoodsForm, GoodsCalendar
+from .models import Goods, GoodsForm, GoodsCalendar
 
 
 @admin.register(Goods)
@@ -21,28 +21,28 @@ class GoodsAdmin(admin.ModelAdmin):
             "fields": (("norma_with_carpet", "consumption_smesi", "defect_limit"),)
         }),
         (None, {
-            "fields": (("one_person_norma", "two_person_norma"),)
+            "fields": ("one_person_norma",)
         }),
+        # (None, {
+        #     "fields": (("one_person_norma", "two_person_norma"),)
+        # }),
 
-        (None, {
-            "fields": (("min_temperature", "max_temperature"),)
-        }),
-        (None, {
-            "fields": (("min_malt", "max_malt"),)
-        }),
-        (None, {
-            "fields": (("min_pressure", "max_pressure"),)
-        }),
-        (None, {
-            "fields": (("min_strength", "max_strength"),)
-        }),
-        (None, {
-            "fields": ("measurement",)
-        }),
+        # (None, {
+        #     "fields": (("min_temperature", "max_temperature"),)
+        # }),
+        # (None, {
+        #     "fields": (("min_malt", "max_malt"),)
+        # }),
+        # (None, {
+        #     "fields": (("min_pressure", "max_pressure"),)
+        # }),
+        # (None, {
+        #     "fields": (("min_strength", "max_strength"),)
+        # }),
+        # (None, {
+        #     "fields": ("measurement",)
+        # }),
     )
-
-
-admin.site.register(UnitsMeasurement)
 
 
 @admin.register(GoodsCalendar)

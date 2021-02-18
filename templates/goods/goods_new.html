@@ -1,6 +1,15 @@
 {% extends "goods/base.html" %}
-{% block title %} Создать новое изделие {% endblock title %}
-{% block header_title %} Создать новое изделие {% endblock header_title %}
+
+{#Надпись в Title#}
+{% block title %}
+    Создание/редактирование изделия
+{% endblock title %}
+
+{#Надпись в шапке#}
+{% block header_title %}
+    Создание/редактирование изделия
+{% endblock header_title %}
+
 {% block header_image %}
 <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
 {% endblock header_image %}
@@ -9,10 +18,15 @@
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.code }}<br>
+        Код изделия: {{ form.code }}<br>
         Фотография изделия:{{ form.image }}<br>
-        {{ form.measurement }}<br>
-        {{ form.url }}
+        Веси чистой детали: {{ form.weight_clean }}<br>
+        Норма с ковром: {{ form.norma_with_carpet }}<br>
+        Расход смеси: {{ form.consumption_smesi }}<br>
+        Норма: {{ form.one_person_norma }}<br>
+        Лимит брака: {{ form.defect_limit }}<br>
+        URL: {{ form.url }}<br>
+{#        {{ form.measurement }}<br>#}
 
         <span>{{ error }}</span>
 

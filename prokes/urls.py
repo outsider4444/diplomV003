@@ -3,15 +3,14 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    # Отправка нового в БД
-    # path("add_goods/", views.AddGoods.as_view(), name="add_goods"),
+    # Обновление информации
+    path("<slug:slug>/update/", views.GoodsUpdateView.as_view(), name="goods_update"),
 
     # Форма создания
     path("goods_new/", views.GoodsNew, name="goods_new"),
 
     # Фильтры
     path("goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
-
 
     # Поиск
     path('goods_search/', views.SearchGoods.as_view(), name='goods_search'),
@@ -24,7 +23,6 @@ urlpatterns = [
     # Список
     path("", views.GoodsView.as_view(), name="goods_list"),
     # path('goods_list/', views.GoodsView.as_view(), name='goods_list'),
-
 
     # Авторизация
     path("accounts/", include("allauth.urls")),

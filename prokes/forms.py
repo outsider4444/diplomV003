@@ -4,11 +4,12 @@ from django.forms import DateField
 from .models import Goods, GoodsCalendar
 
 
-class GoodsForm(forms.ModelForm):
-    """Форма отзыва"""
+class GoodsNewForm(forms.ModelForm):
+    """Форма создания нового изделия"""
     class Meta:
         model = Goods
-        fields = ("code", "image", "url", "measurement")
+        fields = ("code", "image", "weight_clean", "weight_clean", "norma_with_carpet",
+                  "consumption_smesi", "one_person_norma", "defect_limit", "url")
         # виджет нужен ТОЛЬКО для вывода стилей
 
 
@@ -22,3 +23,14 @@ class CalendarForm(forms.ModelForm):
             "month": forms.SelectDateWidget,
         }
         # виджет нужен ТОЛЬКО для вывода стилей
+
+
+class GoodsForm(forms.ModelForm):
+    """Форма отзыва"""
+    class Meta:
+        model = Goods
+        fields = ("code", "image", "weight_clean", "weight_clean", "norma_with_carpet",
+                  "consumption_smesi", "one_person_norma", "defect_limit", "url")
+        widgets = {
+            "url": forms.TextInput
+        }
