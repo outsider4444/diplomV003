@@ -149,6 +149,7 @@ class FilterGoodsView(ListView):
         context["strength"] = ''.join([f"strength={x}&" for x in self.request.GET.getlist("strength")])
         return context
 
+
 # Отдел поиска
 class SearchGoods(ListView):
     """Поиск изделий"""
