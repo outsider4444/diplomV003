@@ -4,16 +4,14 @@
 {% block header_title %} Список изделий {% endblock header_title %}
 
 {% block header_image %}
-<div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
+    <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
 {% endblock header_image %}
 
 {% block goods %}
-    <form>
-        <input type="button" onclick='location.href="{% url "goods_create" %}"' value="Создать новое изделие">
-    </form>
 
     <!-- product right -->
     <div class="left-ads-display col-lg-9">
+    <input type="button" onclick='location.href="{% url "goods_create" %}"' value="Создать новое изделие">
         <div class="row">
             {% for goods in goods_list %}
                 <div class="col-md-4 product-men">

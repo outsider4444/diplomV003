@@ -4,9 +4,9 @@ from django.views.generic import ListView, DetailView, View, CreateView, UpdateV
 from django.shortcuts import render, redirect
 from requests import request
 
-from .forms import GoodsForm, CalendarForm, GoodsNewForm
+from .forms import GoodsForm, CalendarForm, FormsGoodsForm
 
-from .models import Goods, GoodsCalendar
+from .models import Goods, GoodsCalendar, GoodsDefaultForm
 
 
 class GoodsView(ListView):
@@ -25,6 +25,7 @@ def GoodsDetailView(request, pk):
     goods = Goods.objects.get(id=pk)
     calendar = GoodsCalendar.objects.filter(code_goods=pk)
     form = CalendarForm()
+    goods_form = GoodsDefaultForm.objects.filter(code_goods=pk)
     if request.method == "POST":
         form = CalendarForm(request.POST)
         form.code_goods = goods.code
@@ -34,7 +35,8 @@ def GoodsDetailView(request, pk):
         else:
             error = "Форма неверно заполнена"
     return render(request, "goods/goods_detail.html", {"calendar": calendar, "goods": goods,
-                                                       "form": form, "error": error})
+                                                       "form": form, "error": error,
+                                                       "goods_form": goods_form})
 
 
 class GoodsUpdateView(UpdateView):
@@ -49,16 +51,16 @@ class GoodsUpdateView(UpdateView):
 
 def GoodsNew(request):
     """Создание нового изделия"""
-
+    form = GoodsForm()
     error = ""
     if request.method == "POST":
-        form = GoodsNewForm(request.POST, request.FILES)
+        form = GoodsForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("goods_list")
         else:
             error = "Форма неверно заполнена"
-    form = GoodsNewForm()
+
     return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error})
     # def get(self, request):
     #     goods = Goods.objects.all()

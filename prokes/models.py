@@ -57,7 +57,7 @@ class Goods(models.Model):
         verbose_name_plural = 'Изделия'
 
 
-class GoodsForm(models.Model):
+class GoodsDefaultForm(models.Model):
     """Формы деталей"""
     code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
     duplicate = models.CharField("Название(дубликат)", max_length=150)
@@ -67,7 +67,7 @@ class GoodsForm(models.Model):
     # url = models.SlugField(max_length=150, blank=True)
 
     def __str__(self):
-        return self.code_goods
+        return str(self.code_goods)
 
     # def get_absolute_url(self):
     #     return reverse("goods_form", kwargs={"slug": self.url})

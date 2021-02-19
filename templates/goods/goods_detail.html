@@ -19,10 +19,12 @@
         <div class="container">
 
             <div class="desc1-right col-md-6 pl-lg-4" >
+
     <form>
         <input type="button" onclick='location.href="update"' value="Редактировать изделие">
         <input type="button" onclick='location.href="delete"' value="Удалить изделие">
     </form>
+
                 <ul style="margin-top: 15px">
                     <li style="list-style: none"><span><b>Вес чистой детали: </b>{{ goods.weight_clean }}</span>
                     </li>
@@ -52,8 +54,21 @@
             </div>
         </div>
 
-<!-- Таблица -->
+
         <div class="container">
+
+            <!-- Форма детали -->
+            <h3>Форма детали</h3>
+            {% for format in goods_form %}
+                Название дубликата: {{ format.duplicate }}<br>
+                Период чистки: {{ format.cleaning_period }}<br>
+                Номер гнезда: {{ format.number_nest }}<br>
+                Процент массы: {{ format.percent_mass }}
+            {% endfor %}
+            <!-- //Форма детали -->
+
+        <!-- Таблица -->
+        <h3>Календарь</h3>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-responsive">
                     <tr>
@@ -137,6 +152,8 @@
                     <button type="submit">Подтвердить</button>
                 </form>
                 <!--//Добавить информацию в календарь -->
+
+
             </div>
         </div>
     </div>

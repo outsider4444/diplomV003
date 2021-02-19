@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Goods, GoodsForm, GoodsCalendar
+from .models import Goods, GoodsDefaultForm, GoodsCalendar
 
 
 @admin.register(Goods)
@@ -54,4 +54,4 @@ class GoodsCalendarAdmin(admin.ModelAdmin):
     search_fields = ("code_goods",)
 
 
-admin.site.register(GoodsForm)
+admin.site.register(GoodsDefaultForm)
