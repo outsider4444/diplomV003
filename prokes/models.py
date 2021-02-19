@@ -23,7 +23,7 @@ def default_datetime():
 
 class Goods(models.Model):
     """Изделия"""
-    code = models.CharField('Код изделия', max_length=120, primary_key=True)
+    code = models.CharField('Код изделия', max_length=120)
     image = models.ImageField("Фотография изделия", upload_to="goods/", blank=True)
     # изменить позже
     weight_clean = models.FloatField('Вес чистой детали', default=0)
@@ -44,13 +44,13 @@ class Goods(models.Model):
     # measurement = models.ForeignKey(UnitsMeasurement, verbose_name='Единицы измерения',
     #                                 on_delete=models.PROTECT)
     # worker_name = models.OneToOneField(Workers, verbose_name='ФИО сотрудника', on_delete=models.PROTECT)
-    url = models.SlugField(max_length=150, default='goods_', unique=True)
+    # url = models.SlugField(max_length=150, default='goods_', unique=True)
 
     def __str__(self):
         return self.code
 
-    def get_absolute_url(self):
-        return reverse("goods_detail", kwargs={"slug": self.url})
+    # def get_absolute_url(self):
+    #     return reverse("goods_detail", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = 'Изделие'
@@ -64,13 +64,13 @@ class GoodsForm(models.Model):
     cleaning_period = models.FloatField("Период чистки")
     number_nest = models.FloatField("Номер гнезда")
     percent_mass = models.IntegerField("Процент массы")
-    url = models.SlugField(max_length=150, blank=True)
+    # url = models.SlugField(max_length=150, blank=True)
 
     def __str__(self):
         return self.code_goods
 
-    def get_absolute_url(self):
-        return reverse("goods_form", kwargs={"slug": self.url})
+    # def get_absolute_url(self):
+    #     return reverse("goods_form", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = "Форма изделия"

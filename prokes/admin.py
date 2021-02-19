@@ -8,8 +8,11 @@ class GoodsAdmin(admin.ModelAdmin):
     search_fields = ("code",)
     fieldsets = (
         (None, {
-            "fields": ("code", "url")
+            "fields": ("code",)
         }),
+        # (None, {
+        #     "fields": ("code", "url")
+        # }),
         (None, {
             "fields": ("image",)
         }),

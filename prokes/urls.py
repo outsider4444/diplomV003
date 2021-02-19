@@ -4,13 +4,13 @@ from . import views
 
 urlpatterns = [
     # Форма удаления
-    path("<slug:slug>/delete/", views.GoodsDeleteView.as_view(), name="goods_delete"),
+    path("<int:pk>/delete/", views.GoodsDeleteView.as_view(), name="goods_delete"),
 
     # Форма обновления
-    path("<slug:slug>/update/", views.GoodsUpdateView.as_view(), name="goods_update"),
+    path("<int:pk>/update/", views.GoodsUpdateView.as_view(), name="goods_update"),
 
     # Форма создания
-    path("goods_new/", views.GoodsNew, name="goods_new"),
+    path("goods_create/", views.GoodsNew, name="goods_create"),
 
     # Фильтры
     path("goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
@@ -19,7 +19,7 @@ urlpatterns = [
     path('goods_search/', views.SearchGoods.as_view(), name='goods_search'),
 
     # Подробности
-    path("<slug:slug>/", views.GoodsDetailView, name="goods_detail"),
+    path("<int:pk>/", views.GoodsDetailView, name="goods_detail"),
     # path('goods_list/<slug:slug>/', views.GoodsDetailView.as_view(), name='goods_detail'),
 
     # Список

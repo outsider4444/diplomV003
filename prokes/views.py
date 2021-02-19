@@ -18,15 +18,13 @@ class GoodsView(ListView):
     paginate_by = 5
 
 
-def GoodsDetailView(request, slug):
+def GoodsDetailView(request, pk):
     """Полная информация об изделии"""
 
-    # model = Goods
-    # slug_field = "url"
-    # template_name = "goods/goods_detail.html"
     error = ""
-    goods = Goods.objects.get(url=slug)
-    calendar = GoodsCalendar.objects.filter(code_goods=goods.code).order_by("month")
+    goods = Goods.objects.get(id=pk)
+    calendar = GoodsCalendar.objects.filter(code_goods=pk)
+    form = CalendarForm()
     if request.method == "POST":
         form = CalendarForm(request.POST)
         form.code_goods = goods.code
@@ -35,20 +33,18 @@ def GoodsDetailView(request, slug):
             return redirect("goods_list")
         else:
             error = "Форма неверно заполнена"
-    form = CalendarForm()
     return render(request, "goods/goods_detail.html", {"calendar": calendar, "goods": goods,
                                                        "form": form, "error": error})
 
 
 class GoodsUpdateView(UpdateView):
-    """Обновление информации о детали"""
+    """Редактирование информации о детали"""
 
     model = Goods
     template_name = "goods/goods_form/goods_new.html"
-    slug_field = "url"
+    success_url = "/"
+    # slug_field = "url"
     form_class = GoodsForm
-    fields = ["code", "image", "weight_clean", "weight_clean", "norma_with_carpet",
-              "consumption_smesi", "one_person_norma", "defect_limit", "url"]
 
 
 def GoodsNew(request):
@@ -73,7 +69,7 @@ def GoodsNew(request):
 class GoodsDeleteView(DeleteView):
     """Удаление изделия"""
     model = Goods
-    slug_field = "url"
+    # slug_field = "url"
     # Изменить на список изделий
     success_url = "/"
     template_name = "goods/goods_form/goods_delete.html"

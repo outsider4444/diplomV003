@@ -20,8 +20,8 @@
 
             <div class="desc1-right col-md-6 pl-lg-4" >
     <form>
-        <input type="button" onclick='location.href="{{ goods.get_absolute_url }}update"' value="Редактировать изделие">
-        <input type="button" onclick='location.href="{{ goods.get_absolute_url }}delete"' value="Удалить изделие">
+        <input type="button" onclick='location.href="update"' value="Редактировать изделие">
+        <input type="button" onclick='location.href="delete"' value="Удалить изделие">
     </form>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none"><span><b>Вес чистой детали: </b>{{ goods.weight_clean }}</span>
@@ -30,7 +30,7 @@
                     </li>
                     <li style="list-style: none"><span><b>Расход смеси: </b>{{ goods.consumption_smesi }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Норма на одного человека: </b>{{ goods.one_person_norma }}</span>
+                    <li style="list-style: none"><span><b>Норма: </b>{{ goods.one_person_norma }}</span>
                     </li>
 {#                    <li style="list-style: none"><span><b>Норма на двух человек: </b>{{ goods.two_person_norma }}</span>#}
 {#                    </li>#}
@@ -51,7 +51,8 @@
                 </ul>
             </div>
         </div>
-        {#                        # таблица#}
+
+<!-- Таблица -->
         <div class="container">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-responsive">
@@ -114,11 +115,13 @@
                         {% endfor %}
                     </tr>
                 </table>
-{#            Добавить информацию в календарь#}
+            <!--// Таблица -->
+
+            <!--Добавить информацию в календарь -->
             <h3>Добавить месяц в календарь</h3>
                 <form method="post" enctype="multipart/form-data" name="calendar" onchange="remote_calculate()">
                     {% csrf_token %}
-                    <div hidden>{{ form.code_goods }}</div>
+                    <div hidden> {{ form.code_goods }} </div>
 
                     Введите дату: {{ form.month }}<br>
                     Отлито шт. :{{ form.lith }}<br>
@@ -133,20 +136,21 @@
 
                     <button type="submit">Подтвердить</button>
                 </form>
-
+                <!--//Добавить информацию в календарь -->
             </div>
         </div>
     </div>
     <!-- //contact -->
 <script>
+    //Скрытый <select> для редактирования календаря
     let code_goods = document.getElementById("id_code_goods");
     document.getElementById('id_remote_percent').readOnly = true;
     for(i=0; i<code_goods.options.length; i++){
-        if(code_goods.options[i].value == "{{ goods.code }}"){
+        if(code_goods.options[i].value == "{{ goods.id }}"){
             code_goods.selectedIndex = i;
         }
     }
-
+    // Расчет процента от брака
     function  remote_calculate() {
         calendar.remote_percent.value = (100/calendar.lith.value) * calendar.remote.value
     }

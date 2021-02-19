@@ -9,7 +9,7 @@
 
 {% block goods %}
     <form>
-        <input type="button" onclick='location.href="{% url "goods_new" %}"' value="Создать новое изделие">
+        <input type="button" onclick='location.href="{% url "goods_create" %}"' value="Создать новое изделие">
     </form>
 
     <!-- product right -->
@@ -25,13 +25,13 @@
                         </div>
                         <div class="item-info-product">
                             <h4 class="">
-                                <a href="{{ goods.get_absolute_url }}" class="editContent" >
+                                <a href="{{ goods.id }}" class="editContent" >
                                     {{ goods.code }}
                                 </a>
                             </h4>
                             <div class="product_price">
                                 <div class="grid-price">
-                                    <a href="{{ goods.get_absolute_url }}"><span class="money editContent" >{{ goods.code }}</span></a>
+                                    <a href="{{ goods.id }}"><span class="money editContent" >{{ goods.code }}</span></a>
                                 </div>
                             </div>
                         </div>

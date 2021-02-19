@@ -9,7 +9,7 @@ class GoodsNewForm(forms.ModelForm):
     class Meta:
         model = Goods
         fields = ("code", "image", "weight_clean", "weight_clean", "norma_with_carpet",
-                  "consumption_smesi", "one_person_norma", "defect_limit", "url")
+                  "consumption_smesi", "one_person_norma", "defect_limit")
         # виджет нужен ТОЛЬКО для вывода стилей
 
 
@@ -30,7 +30,4 @@ class GoodsForm(forms.ModelForm):
     class Meta:
         model = Goods
         fields = ("code", "image", "weight_clean", "weight_clean", "norma_with_carpet",
-                  "consumption_smesi", "one_person_norma", "defect_limit", "url")
-        widgets = {
-            "url": forms.TextInput
-        }
+                  "consumption_smesi", "one_person_norma", "defect_limit")
