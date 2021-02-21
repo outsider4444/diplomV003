@@ -25,7 +25,7 @@ class WorkerView(WorkerCategory, ListView):
     model = Workers
     queryset = Workers.objects.filter(fired=False)
     template_name = "workers/worker_list.html"
-    paginate_by = 1
+    paginate_by = 5
 
 
 def WorkerNew(request):
