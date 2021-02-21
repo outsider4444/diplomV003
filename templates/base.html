@@ -37,7 +37,7 @@
                 <!-- nav -->
                 <nav class="py-4">
                     <div id="logo">
-                        <h1> <a href="{% url 'goods_list' %}" class="editContent" style="outline: none; outline-offset: -2px;
+                        <h1> <a href="{% url 'workers_list' %}" class="editContent" style="outline: none; outline-offset: -2px;
                              color: rgb(255, 255, 255); font-size: 40px;
                               background-color: rgba(0, 0, 0, 0); font-family: &quot;Source Sans Pro&quot;
                               , sans-serif;">PROKES.RUS</a></h1>
@@ -46,7 +46,7 @@
                     <label for="drop" class="toggle">Menu</label>
                     <input type="checkbox" id="drop">
                     <ul class="menu mt-2">
-                        <li class="active"><a href="{% url 'goods_list' %}">Главная</a></li>
+                        <li class="active"><a href="{% url 'workers_list' %}">Главная</a></li>
                         <li>
                             <!-- First Tier Drop Down -->
                             <label for="drop-2" class="toggle">Категории <span class="fa fa-angle-down" aria-hidden="true" ></span> </label>
@@ -54,9 +54,9 @@
                             <input type="checkbox" id="drop-2">
                             {% if user.is_authenticated %}
                                 <ul>
-{#                                    <li><a href="{% url "worker_list" %}">Сотрудники</a></li>#}
+                                    <li><a href="{% url "workers_list" %}">Сотрудники</a></li>
 {#                                    <li><a href="{% url "smesi_list" %}">Смеси</a></li>#}
-                                    <li><a href="{% url "goods_list" %}">Изделия</a></li>
+{#                                    <li><a href="{% url "goods_list" %}">Изделия</a></li>#}
 {#                                    <li><a href="{% url "suppliers_list" %}">Поставщики</a></li>#}
 {#                                    <li><a href="{% url "customers_list" %}">Заказчики</a></li>#}
 {#                                    <li><a href="{% url "remote_list" %}">Списанное</a></li>#}

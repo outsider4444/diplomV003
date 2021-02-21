@@ -2,23 +2,32 @@ from django.db import models
 from datetime import datetime
 
 # Create your models here.
-from django.urls import reverse
 
 
 def default_datetime():
     return datetime.now()
 
 
-# class UnitsMeasurement(models.Model):
-#     short_unit = models.CharField('Единица измерения', max_length=10)
-#     url = models.SlugField(max_length=150, default='unit_', unique=True)
-#
-#     def __str__(self):
-#         return self.short_unit
-#
-#     class Meta:
-#         verbose_name = 'Единица измерения'
-#         verbose_name_plural = 'Единицы измерения'
+class Workers(models.Model):
+    """Сотрудники"""
+    code = models.CharField('Код сотрудника', max_length=100, unique=True)
+    name = models.CharField('ФИО', max_length=100)
+    email = models.EmailField('Email')
+    birthday = models.DateField('Дата рождения')
+    category = models.CharField('Категория', max_length=50)
+    salary = models.PositiveIntegerField('Оклад', help_text='Вводить в рублях')
+    standard_time = models.IntegerField('Норма времени')
+    lose_time = models.IntegerField('Пропущенно времени')
+    cof_proisvod = models.IntegerField('Коэфициент производительности', help_text='Указывать в процентах')
+    # статус увольнения
+    fired = models.BooleanField("Уволен", default=False)
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = 'Сотрудник'
+        verbose_name_plural = 'Сотрудники'
 
 
 class Goods(models.Model):
@@ -31,26 +40,10 @@ class Goods(models.Model):
     consumption_smesi = models.IntegerField('Расход смеси', default=0)
     one_person_norma = models.IntegerField('Норма на одного человека', default=0)
     defect_limit = models.FloatField('Лимит брака', default=0)
-    # two_person_norma = models.IntegerField('Норма на двух чловек', default=0)
-    # # сделать среднее значение
-    # min_temperature = models.IntegerField('Минимальная температура', default=0)
-    # max_temperature = models.IntegerField('Максимальная температура', default=0)
-    # min_malt = models.IntegerField('Минимальная выдержка', default=0)
-    # max_malt = models.IntegerField('Максимальная выдержка', default=0)
-    # min_pressure = models.IntegerField('Минимальное давление', default=0)
-    # max_pressure = models.IntegerField('Максимальное давление', default=0)
-    # min_strength = models.IntegerField('Минимальная твердость', default=0)
-    # max_strength = models.IntegerField('Максимальная твердость', default=0)
-    # measurement = models.ForeignKey(UnitsMeasurement, verbose_name='Единицы измерения',
-    #                                 on_delete=models.PROTECT)
     # worker_name = models.OneToOneField(Workers, verbose_name='ФИО сотрудника', on_delete=models.PROTECT)
-    # url = models.SlugField(max_length=150, default='goods_', unique=True)
 
     def __str__(self):
         return self.code
-
-    # def get_absolute_url(self):
-    #     return reverse("goods_detail", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = 'Изделие'
@@ -68,9 +61,6 @@ class GoodsDefaultForm(models.Model):
 
     def __str__(self):
         return str(self.code_goods)
-
-    # def get_absolute_url(self):
-    #     return reverse("goods_form", kwargs={"slug": self.url})
 
     class Meta:
         verbose_name = "Форма изделия"

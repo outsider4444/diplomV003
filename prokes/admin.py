@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Goods, GoodsDefaultForm, GoodsCalendar
+from .models import Goods, GoodsDefaultForm, GoodsCalendar, Workers
+
+admin.site.register(Workers)
 
 
 @admin.register(Goods)
@@ -10,9 +12,6 @@ class GoodsAdmin(admin.ModelAdmin):
         (None, {
             "fields": ("code",)
         }),
-        # (None, {
-        #     "fields": ("code", "url")
-        # }),
         (None, {
             "fields": ("image",)
         }),
@@ -26,25 +25,6 @@ class GoodsAdmin(admin.ModelAdmin):
         (None, {
             "fields": ("one_person_norma",)
         }),
-        # (None, {
-        #     "fields": (("one_person_norma", "two_person_norma"),)
-        # }),
-
-        # (None, {
-        #     "fields": (("min_temperature", "max_temperature"),)
-        # }),
-        # (None, {
-        #     "fields": (("min_malt", "max_malt"),)
-        # }),
-        # (None, {
-        #     "fields": (("min_pressure", "max_pressure"),)
-        # }),
-        # (None, {
-        #     "fields": (("min_strength", "max_strength"),)
-        # }),
-        # (None, {
-        #     "fields": ("measurement",)
-        # }),
     )
 
 

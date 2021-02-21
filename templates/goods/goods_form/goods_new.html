@@ -16,8 +16,9 @@
 
 {% block goods %}
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
+        <h3>Введите информацию о детали</h3>
         Код изделия: {{ form.code }}<br>
         Фотография изделия:{{ form.image }}<br>
         Веси чистой детали: {{ form.weight_clean }}<br>
@@ -25,11 +26,9 @@
         Расход смеси: {{ form.consumption_smesi }}<br>
         Норма: {{ form.one_person_norma }}<br>
         Лимит брака: {{ form.defect_limit }}<br>
-{#        URL: {{ form.url }}<br>#}
 {#        {{ form.measurement }}<br>#}
 
-        <span>{{ error }}</span>
-
+      <span>{{ error }}</span>
         <button type="submit">Подтвердить</button>
         </form>
 

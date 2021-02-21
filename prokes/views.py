@@ -4,159 +4,194 @@ from django.views.generic import ListView, DetailView, View, CreateView, UpdateV
 from django.shortcuts import render, redirect
 from requests import request
 
-from .forms import GoodsForm, CalendarForm, FormsGoodsForm
+from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm
 
-from .models import Goods, GoodsCalendar, GoodsDefaultForm
-
-
-class GoodsView(ListView):
-    """Список изделий"""
-
-    model = Goods
-    queryset = Goods.objects.all()
-    template_name = "goods/goods_list.html"
-    paginate_by = 5
+from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers
 
 
-def GoodsDetailView(request, pk):
-    """Полная информация об изделии"""
+# Сотрудники
 
-    error = ""
-    goods = Goods.objects.get(id=pk)
-    calendar = GoodsCalendar.objects.filter(code_goods=pk)
-    form = CalendarForm()
-    goods_form = GoodsDefaultForm.objects.filter(code_goods=pk)
-    if request.method == "POST":
-        form = CalendarForm(request.POST)
-        form.code_goods = goods.code
-        if form.is_valid():
-            form.save()
-            return redirect("goods_list")
-        else:
-            error = "Форма неверно заполнена"
-    return render(request, "goods/goods_detail.html", {"calendar": calendar, "goods": goods,
-                                                       "form": form, "error": error,
-                                                       "goods_form": goods_form})
+# Выводы для фильтров
+
+class WorkerCategory:
+    """Должности сотрудников"""
+
+    def get_category(self):
+        return Workers.objects.filter(fired=False).values("category").distinct()
 
 
-class GoodsUpdateView(UpdateView):
-    """Редактирование информации о детали"""
-
-    model = Goods
-    template_name = "goods/goods_form/goods_new.html"
-    success_url = "/"
-    # slug_field = "url"
-    form_class = GoodsForm
+class WorkerView(WorkerCategory, ListView):
+    """Список сотрудников"""
+    model = Workers
+    queryset = Workers.objects.filter(fired=False)
+    template_name = "workers/worker_list.html"
+    paginate_by = 1
 
 
-def GoodsNew(request):
-    """Создание нового изделия"""
-    form = GoodsForm()
+def WorkerNew(request):
+    """Создание нового сотрудника"""
+    form = WorkersForm()
     error = ""
     if request.method == "POST":
-        form = GoodsForm(request.POST, request.FILES)
+        form = WorkersForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("goods_list")
+            return redirect("workers_list")
         else:
             error = "Форма неверно заполнена"
-
-    return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error})
-    # def get(self, request):
-    #     goods = Goods.objects.all()
-    #     measurement = UnitsMeasurement.objects.all()
-    #     return render(request, "goods/goods_new.html", {"measurement": measurement, "goods": goods})
+    return render(request, "workers/workers_form/worker_new.html", {"form": form, "error": error})
 
 
-class GoodsDeleteView(DeleteView):
-    """Удаление изделия"""
-    model = Goods
-    # slug_field = "url"
-    # Изменить на список изделий
-    success_url = "/"
-    template_name = "goods/goods_form/goods_delete.html"
+class WorkerDetailView(DetailView, WorkerCategory):
+    """Полная информация о сотруднике"""
+    model = Workers
+    slug_field = "code"
+    template_name = 'workers/worker_detail.html'
 
-
-# Фильтры
-class FilterGoodsView(ListView):
-    """Фильтр изделий"""
-    template_name = "goods/goods_list.html"
-
-    def get_queryset(self):
-        queryset = ""
-        temp = self.request.GET.get("temp")
-        malt = self.request.GET.get("malt")
-        pres = self.request.GET.get("pres")
-        strength = self.request.GET.get("strength")
-        if temp == "" and malt == "" and pres == "" and strength == "":
-            queryset = Goods.objects.all()
-        elif temp != "" and malt != "" and pres != "" and strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp)) &
-                Q(min_malt__lte=int(malt)) &
-                Q(min_pressure__lte=int(pres)) &
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        elif temp != "" and malt != "" and pres != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp)) &
-                Q(min_malt__lte=int(malt)) &
-                Q(min_pressure__lte=int(pres))
-            ).distinct()
-        elif temp != "" and malt != "" and strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp)) &
-                Q(min_malt__lte=int(malt)) &
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        elif temp != "" and pres != "" and strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp)) &
-                Q(min_pressure__lte=int(pres)) &
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        elif malt != "" and pres != "" and strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_malt__lte=int(malt)) &
-                Q(min_pressure__lte=int(pres)) &
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        elif temp != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp))
-            ).distinct()
-        elif malt != "":
-            queryset = Goods.objects.filter(
-                Q(min_malt__lte=int(malt))
-            ).distinct()
-        elif pres != "":
-            queryset = Goods.objects.filter(
-                Q(min_pressure__lte=int(pres))
-            ).distinct()
-        elif strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        return queryset
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context["temp"] = ''.join([f"temp={x}&" for x in self.request.GET.getlist("temp")])
-        context["malt"] = ''.join([f"malt={x}&" for x in self.request.GET.getlist("malt")])
-        context["pres"] = ''.join([f"pres={x}&" for x in self.request.GET.getlist("pres")])
-        context["strength"] = ''.join([f"strength={x}&" for x in self.request.GET.getlist("strength")])
-        return context
-
-
-# Отдел поиска
-class SearchGoods(ListView):
-    """Поиск изделий"""
-    template_name = "goods/goods_list.html"
-
-    def get_queryset(self):
-        return Goods.objects.filter(code__icontains=self.request.GET.get("q"))
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context["q"] = f'q={self.request.GET.get("q")}&'
-        return context
+# Изделия
+# class GoodsView(ListView):
+#     """Список изделий"""
+#
+#     model = Goods
+#     queryset = Goods.objects.all()
+#     template_name = "goods/goods_list.html"
+#     paginate_by = 5
+#
+#
+# def GoodsDetailView(request, pk):
+#     """Полная информация об изделии"""
+#
+#     error = ""
+#     goods = Goods.objects.get(id=pk)
+#     calendar = GoodsCalendar.objects.filter(code_goods=pk)
+#     form = CalendarForm()
+#     goods_form = GoodsDefaultForm.objects.filter(code_goods=pk)
+#     if request.method == "POST":
+#         form = CalendarForm(request.POST)
+#         form.code_goods = goods.code
+#         if form.is_valid():
+#             form.save()
+#             return redirect("goods_list")
+#         else:
+#             error = "Форма неверно заполнена"
+#     return render(request, "goods/goods_detail.html", {"calendar": calendar, "goods": goods,
+#                                                        "form": form, "error": error,
+#                                                        "goods_form": goods_form})
+#
+#
+# class GoodsUpdateView(UpdateView):
+#     """Редактирование информации о детали"""
+#
+#     model = Goods
+#     template_name = "goods/goods_form/goods_new.html"
+#     success_url = "/"
+#     # slug_field = "url"
+#     form_class = GoodsForm
+#
+#
+# def GoodsNew(request):
+#     """Создание нового изделия"""
+#     form = GoodsForm()
+#     error = ""
+#     if request.method == "POST":
+#         form = GoodsForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("goods_list")
+#         else:
+#             error = "Форма неверно заполнена"
+#     return render(request, "goods/goods_form/goods_new.html", {"form": form,
+#                                                                "error": error})
+#
+#
+# class GoodsDeleteView(DeleteView):
+#     """Удаление изделия"""
+#     model = Goods
+#     # Изменить на список изделий
+#     success_url = "/"
+#     template_name = "goods/goods_form/goods_delete.html"
+#
+#
+# # Фильтры
+# class FilterGoodsView(ListView):
+#     """Фильтр изделий"""
+#     template_name = "goods/goods_list.html"
+#
+#     def get_queryset(self):
+#         queryset = ""
+#         temp = self.request.GET.get("temp")
+#         malt = self.request.GET.get("malt")
+#         pres = self.request.GET.get("pres")
+#         strength = self.request.GET.get("strength")
+#         if temp == "" and malt == "" and pres == "" and strength == "":
+#             queryset = Goods.objects.all()
+#         elif temp != "" and malt != "" and pres != "" and strength != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_temperature__lte=int(temp)) &
+#                 Q(min_malt__lte=int(malt)) &
+#                 Q(min_pressure__lte=int(pres)) &
+#                 Q(min_strength__lte=int(strength))
+#             ).distinct()
+#         elif temp != "" and malt != "" and pres != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_temperature__lte=int(temp)) &
+#                 Q(min_malt__lte=int(malt)) &
+#                 Q(min_pressure__lte=int(pres))
+#             ).distinct()
+#         elif temp != "" and malt != "" and strength != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_temperature__lte=int(temp)) &
+#                 Q(min_malt__lte=int(malt)) &
+#                 Q(min_strength__lte=int(strength))
+#             ).distinct()
+#         elif temp != "" and pres != "" and strength != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_temperature__lte=int(temp)) &
+#                 Q(min_pressure__lte=int(pres)) &
+#                 Q(min_strength__lte=int(strength))
+#             ).distinct()
+#         elif malt != "" and pres != "" and strength != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_malt__lte=int(malt)) &
+#                 Q(min_pressure__lte=int(pres)) &
+#                 Q(min_strength__lte=int(strength))
+#             ).distinct()
+#         elif temp != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_temperature__lte=int(temp))
+#             ).distinct()
+#         elif malt != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_malt__lte=int(malt))
+#             ).distinct()
+#         elif pres != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_pressure__lte=int(pres))
+#             ).distinct()
+#         elif strength != "":
+#             queryset = Goods.objects.filter(
+#                 Q(min_strength__lte=int(strength))
+#             ).distinct()
+#         return queryset
+#
+#     def get_context_data(self, *args, **kwargs):
+#         context = super().get_context_data(*args, **kwargs)
+#         context["temp"] = ''.join([f"temp={x}&" for x in self.request.GET.getlist("temp")])
+#         context["malt"] = ''.join([f"malt={x}&" for x in self.request.GET.getlist("malt")])
+#         context["pres"] = ''.join([f"pres={x}&" for x in self.request.GET.getlist("pres")])
+#         context["strength"] = ''.join([f"strength={x}&" for x in self.request.GET.getlist("strength")])
+#         return context
+#
+#
+# # Отдел поиска
+# class SearchGoods(ListView):
+#     """Поиск изделий"""
+#     template_name = "goods/goods_list.html"
+#
+#     def get_queryset(self):
+#         return Goods.objects.filter(code__icontains=self.request.GET.get("q"))
+#
+#     def get_context_data(self, *args, **kwargs):
+#         context = super().get_context_data(*args, **kwargs)
+#         context["q"] = f'q={self.request.GET.get("q")}&'
+#         return context
