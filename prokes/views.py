@@ -48,6 +48,16 @@ class WorkerDetailView(DetailView, WorkerCategory):
     slug_field = "code"
     template_name = 'workers/worker_detail.html'
 
+
+class WorkerUpdate(UpdateView):
+    """Редактирование информации о детали"""
+
+    model = Workers
+    template_name = "workers/workers_form/worker_new.html"
+    success_url = "/"
+    slug_field = "code"
+    form_class = WorkersForm
+
 # Изделия
 # class GoodsView(ListView):
 #     """Список изделий"""

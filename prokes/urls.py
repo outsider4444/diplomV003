@@ -8,6 +8,7 @@ urlpatterns = [
 
     # Форма обновления
     # path("goods_list/<int:pk>/update/", views.GoodsUpdateView.as_view(), name="goods_update"),
+    path("<int:slug>/update/", views.WorkerUpdate.as_view(), name="workers_update"),
 
     # Форма создания
     # path("goods_list/goods_create/", views.GoodsNew, name="goods_create"),
