@@ -1,16 +1,16 @@
-{% extends 'customers/base.html' %}
-{% block title %} Заказчик:  {{ customer.name }} {% endblock title %}
-{% block header_title %} Заказчик: {{ customer.name }} {% endblock header_title %}
+{% extends 'suppliers/base.html' %}
+{% block title %} Заказщик:  {{ suppliers.name }} {% endblock title %}
+{% block header_title %} Заказщик: {{ suppliers.name }} {% endblock header_title %}
 
 {% block header_image %}
     <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
 {% endblock header_image %}
-{% block customer %}
+{% block suppliers %}
     <!-- product right -->
     <div class="left-ads-display col-lg-8">
 
-<input type="button" onclick='location.href="{% url "customers_create" %}"' value="Добавить информацию о поставках">
-
+<input type="button" onclick='location.href="{% url "suppliers_create" %}"' value="Добавить информацию о поставках">
+{# Красиво выводить#}
 
         {#                Изменить стили #}
         <div class="row">
@@ -19,11 +19,11 @@
             {#                        </div>#}
             <div class="desc1-right col-md-6 pl-lg-4" >
                 <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
-                    {{ customer.name }}
+                    {{ suppliers.name }}
                 </h3>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none">
-                        <span><b>Email: </b> {{ customer.email }}</span></li>
+                        <span><b>Email: </b> {{ suppliers.email }}</span></li>
                     <li style="list-style: none">
 
                         <span><b>Дата заказа: </b>
@@ -39,12 +39,25 @@
                     </li>
 
                     <div class="share-desc">
-                        <div class="clearfix"></div>
+                        <div class="clearfix">
+
+                        </div>
                     </div>
                 </ul>
             </div>
         </div>
+{#    Ввод данных #}
         <div class="row sub-para-w3layouts mt-5">
+            <form method="post" enctype="multipart/form-data" name="create">
+                {% csrf_token %}
+                Имя заказчика:{{ form.supplier_name }}<br>
+                Дата поставки:{{ form.date }}<br>
+                Код изделия:{{ form.code_goods }}<br>
+                Количество:{{ form.values }}<br>
+
+                <span>{{ error }}</span>
+                <button type="submit">Подтвердить</button>
+            </form>
             {#                        <h3 class="shop-sing editContent" style="outline: none; cursor: inherit;">#}
             {#                            О фильме {{ movie.title }}#}
             {#                        </h3>#}
@@ -67,4 +80,17 @@
         </div>
     </div>
     <!-- //contact -->
-{% endblock customer %}
+    <script>
+    //Скрытый <select> для редактирования календаря
+    let code_goods = document.getElementById("id_code_goods");
+    code_goods.selectedIndex = 0;
+    let id_values = document.getElementById("id_values");
+    id_values.value = "";
+    let suppliers_name = document.getElementById("id_supplier_name");
+        for(i=0; i<suppliers_name.options.length; i++){
+            if(suppliers_name.options[i].value == "{{ suppliers.id }}"){
+                suppliers_name.selectedIndex = i;
+            }
+        }
+</script>
+{% endblock suppliers %}

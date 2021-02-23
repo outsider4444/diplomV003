@@ -6,7 +6,7 @@ from requests import request
 
 from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm, CheckoutForm
 
-from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Customers, CheckoutGoods
+from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Suppliers, CheckoutGoods
 
 
 # Сотрудники
@@ -59,41 +59,42 @@ from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Customers, 
 #     form_class = WorkersForm
 
 
-class CustomersDate:
-    """Даты поставки поставщиков"""
-
-    def get_cusdate(self):
-        return Customers.objects.values("date").distinct()
-
-
-class CustomersView(ListView, CustomersDate):
+class SuppliersView(ListView):
     """Список заказчиков"""
-    model = Customers
-    queryset = Customers.objects.all()
-    template_name = "customers/customers_list.html"
+    model = Suppliers
+    queryset = Suppliers.objects.all()
+    template_name = "suppliers/suppliers_list.html"
     paginate_by = 1
 
 
-def CustomerDetailView(request, pk):
+def SuppliersDetailView(request, pk):
     """Полная информация о заказчиках"""
 
-    customer = Customers.objects.get(id=pk)
-    goods = CheckoutGoods.objects.filter(customer_name=pk)
-    return render(request, "customers/customers_detail.html", {"customer": customer, "goods": goods})
-
-
-def CheckoutNew(request):
-    """Создание новой поставки"""
+    suppliers = Suppliers.objects.get(id=pk)
+    goods = CheckoutGoods.objects.filter(supplier_name=pk)
     form = CheckoutForm()
     error = ""
     if request.method == "POST":
         form = CheckoutForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("customers_list")
         else:
             error = "Форма неверно заполнена"
-    return render(request, "customers/customers_form/customers_new.html", {"form": form, "error": error})
+    return render(request, "suppliers/suppliers_detail.html", {"suppliers": suppliers, "goods": goods,
+                                                               "form": form, "error": error})
+
+def CheckoutNew(request):
+    """Создание нового заказа"""
+    form = CheckoutForm()
+    error = ""
+    if request.method == "POST":
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("suppliers_list")
+        else:
+            error = "Форма неверно заполнена"
+    return render(request, "suppliers/suppliers_form/supplier_new.html", {"form": form, "error": error})
 
 # Изделия
 # class GoodsView(ListView):
@@ -118,7 +119,6 @@ def CheckoutNew(request):
 #         form.code_goods = goods.code
 #         if form.is_valid():
 #             form.save()
-#             return redirect("goods_list")
 #         else:
 #             error = "Форма неверно заполнена"
 #     return render(request, "goods/goods_detail.html", {"calendar": calendar, "goods": goods,

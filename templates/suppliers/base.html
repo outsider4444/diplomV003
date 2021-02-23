@@ -2,13 +2,13 @@
 <!-- banner -->
 {% block content %}
     {% if user.is_authenticated %}
-        <section class="ab-info-main py-md-5 py-4 editContent" style="padding-left: 1rem; padding-right: 1rem;">
+        <section class="ab-info-main py-md-5 py-4 editContent" style="padding-left: 3rem; padding-right: 3rem;">
             <div class="container-fluid py-md-3">
                 <div class="row">
-{#                    {% include 'include/sidebars/customers_sidebar.html' %}#}
-                    {% block customer %}
+{#                    {% include 'include/sidebars/suppliers_sidebar.html' %}#}
+                    {% block suppliers %}
 
-                    {% endblock customer %}
+                    {% endblock suppliers %}
                 </div>
             </div>
         </section>

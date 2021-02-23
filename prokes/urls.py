@@ -13,7 +13,7 @@ urlpatterns = [
     # Форма создания
     # path("goods_list/goods_create/", views.GoodsNew, name="goods_create"),
     # path("workers_list/workers_create/", views.WorkerNew, name="workers_create"),
-    path("customers_create/", views.CheckoutNew, name="customers_create"),
+    path("suppliers_create/", views.CheckoutNew, name="suppliers_create"),
 
 
     # Фильтры
@@ -25,12 +25,12 @@ urlpatterns = [
     # Подробности
     # path("goods_list/<int:pk>/", views.GoodsDetailView, name="goods_detail"),
     # path('workers_list/<int:slug>/', views.WorkerDetailView.as_view(), name="worker_detail"),
-    path('<int:pk>/', views.CustomerDetailView, name="customers_detail"),
+    path('<int:pk>/', views.SuppliersDetailView, name="suppliers_detail"),
 
     # Список
     # path("goods_list/", views.GoodsView.as_view(), name="goods_list"),
     # path("workers_list/", views.WorkerView.as_view(), name="workers_list"),
-    path("", views.CustomersView.as_view(), name="customers_list"),
+    path("", views.SuppliersView.as_view(), name="suppliers_list"),
 
     # Авторизация
     path("accounts/", include("allauth.urls")),
