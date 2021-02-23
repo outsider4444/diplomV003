@@ -1,28 +1,29 @@
-{% extends "workers/base.html" %}
+{% extends "customers/base.html" %}
 
 {#Надпись в Title#}
 {% block title %}
-    Создание/редактирование сотрудника
+    Создание/редактирование информации о поставках
 {% endblock title %}
 
 {#Надпись в шапке#}
 {% block header_title %}
-    Создание/редактирование сотрудника
+    Создание/редактирование информации о поставках
 {% endblock header_title %}
 
 {% block header_image %}
 <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block worker %}
+{% block customer %}
 
     <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
-        <h3>Введите информацию о сотруднике</h3>
-            {{ form }}
+        Имя поставщика:{{ form.customer_name }}<br>
+        Дата поставки:{{ form.date }}<br>
+        Код изделия:{{ form.code_goods }}<br>
+        Количество:{{ form.values }}<br>
 
       <span>{{ error }}</span>
         <button type="submit">Подтвердить</button>
         </form>
-
-{% endblock worker %}
+{% endblock customer %}

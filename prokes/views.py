@@ -4,59 +4,96 @@ from django.views.generic import ListView, DetailView, View, CreateView, UpdateV
 from django.shortcuts import render, redirect
 from requests import request
 
-from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm
+from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm, CheckoutForm
 
-from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers
+from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Customers, CheckoutGoods
 
 
 # Сотрудники
-
+#
 # Выводы для фильтров
+#
+# class WorkerCategory:
+#     """Должности сотрудников"""
+#
+#     def get_category(self):
+#         return Workers.objects.filter(fired=False).values("category").distinct()
+#
+#
+# class WorkerView(WorkerCategory, ListView):
+#     """Список сотрудников"""
+#     model = Workers
+#     queryset = Workers.objects.filter(fired=False)
+#     template_name = "workers/worker_list.html"
+#     paginate_by = 5
+#
+#
+# def WorkerNew(request):
+#     """Создание нового сотрудника"""
+#     form = WorkersForm()
+#     error = ""
+#     if request.method == "POST":
+#         form = WorkersForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("workers_list")
+#         else:
+#             error = "Форма неверно заполнена"
+#     return render(request, "workers/workers_form/worker_new.html", {"form": form, "error": error})
+#
+#
+# class WorkerDetailView(DetailView, WorkerCategory):
+#     """Полная информация о сотруднике"""
+#     model = Workers
+#     slug_field = "code"
+#     template_name = 'workers/worker_detail.html'
+#
+#
+# class WorkerUpdate(UpdateView):
+#     """Редактирование информации о сотруднике"""
+#
+#     model = Workers
+#     template_name = "workers/workers_form/worker_new.html"
+#     success_url = "/"
+#     slug_field = "code"
+#     form_class = WorkersForm
 
-class WorkerCategory:
-    """Должности сотрудников"""
 
-    def get_category(self):
-        return Workers.objects.filter(fired=False).values("category").distinct()
+class CustomersDate:
+    """Даты поставки поставщиков"""
 
-
-class WorkerView(WorkerCategory, ListView):
-    """Список сотрудников"""
-    model = Workers
-    queryset = Workers.objects.filter(fired=False)
-    template_name = "workers/worker_list.html"
-    paginate_by = 5
+    def get_cusdate(self):
+        return Customers.objects.values("date").distinct()
 
 
-def WorkerNew(request):
-    """Создание нового сотрудника"""
-    form = WorkersForm()
+class CustomersView(ListView, CustomersDate):
+    """Список заказчиков"""
+    model = Customers
+    queryset = Customers.objects.all()
+    template_name = "customers/customers_list.html"
+    paginate_by = 1
+
+
+def CustomerDetailView(request, pk):
+    """Полная информация о заказчиках"""
+
+    customer = Customers.objects.get(id=pk)
+    goods = CheckoutGoods.objects.filter(customer_name=pk)
+    return render(request, "customers/customers_detail.html", {"customer": customer, "goods": goods})
+
+
+def CheckoutNew(request):
+    """Создание новой поставки"""
+    form = CheckoutForm()
     error = ""
     if request.method == "POST":
-        form = WorkersForm(request.POST)
+        form = CheckoutForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("workers_list")
+            return redirect("customers_list")
         else:
             error = "Форма неверно заполнена"
-    return render(request, "workers/workers_form/worker_new.html", {"form": form, "error": error})
-
-
-class WorkerDetailView(DetailView, WorkerCategory):
-    """Полная информация о сотруднике"""
-    model = Workers
-    slug_field = "code"
-    template_name = 'workers/worker_detail.html'
-
-
-class WorkerUpdate(UpdateView):
-    """Редактирование информации о детали"""
-
-    model = Workers
-    template_name = "workers/workers_form/worker_new.html"
-    success_url = "/"
-    slug_field = "code"
-    form_class = WorkersForm
+    return render(request, "customers/customers_form/customers_new.html", {"form": form, "error": error})
 
 # Изделия
 # class GoodsView(ListView):

@@ -73,7 +73,6 @@ class GoodsCalendar(models.Model):
     month = models.DateField("Месяц", help_text="Вписывать только месяц и год, день оставлть '01' ")
     lith = models.IntegerField("Отлито шт.")
     remote = models.IntegerField("Брак шт.")
-    # добавить в процентах вычисляемое поле
     remote_percent = models.FloatField("Брак %")
     ###
     one_man_sr = models.CharField("Смена выработки на 1 человека в СРЕДНЕМ", max_length=150)
@@ -87,3 +86,28 @@ class GoodsCalendar(models.Model):
     class Meta:
         verbose_name = "Календарь изделий"
         verbose_name_plural = "Календарь изделий"
+
+
+# Заказчики
+class Customers(models.Model):
+    """Заказчики"""
+    name = models.CharField("Имя заказчика", max_length=120)
+    email = models.EmailField("Email", unique=True)
+    phone_number = models.CharField("Номер телефона", max_length=15)
+    representative = models.CharField("Представитель (ФИО)", max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Заказчик"
+        verbose_name_plural = 'Заказчики'
+
+
+class CheckoutGoods(models.Model):
+    """Поставщики и изделия"""
+    customer_name = models.ForeignKey(Customers, verbose_name="Имя заказчика", on_delete=models.CASCADE)
+    date = models.DateField("Дата заказа", default=default_datetime)
+    code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
+    values = models.IntegerField("Количество")
+

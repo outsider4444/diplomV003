@@ -1,7 +1,9 @@
 from django.contrib import admin
-from .models import Goods, GoodsDefaultForm, GoodsCalendar, Workers
+from .models import Goods, GoodsDefaultForm, GoodsCalendar, Workers, Customers, CheckoutGoods
 
 admin.site.register(Workers)
+admin.site.register(Customers)
+admin.site.register(CheckoutGoods)
 
 
 @admin.register(Goods)

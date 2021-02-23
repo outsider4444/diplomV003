@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import DateField
 
-from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers
+from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, CheckoutGoods, Goods
 
 
 # Изделия
@@ -36,6 +36,7 @@ class FormsGoodsForm(forms.ModelForm):
         fields = ("code_goods", "duplicate", "cleaning_period", "number_nest", "percent_mass")
 
 
+# Сотрудники
 class WorkersForm(forms.ModelForm):
     """Форма сотрудников"""
 
@@ -43,3 +44,13 @@ class WorkersForm(forms.ModelForm):
         model = Workers
         fields = ("code", "name", "email", "birthday", "category",
                   "salary", "standard_time", "lose_time", "cof_proisvod")
+
+
+# Заказчики
+
+class CheckoutForm(forms.ModelForm):
+    """Форма оформления заказа"""
+
+    class Meta:
+        model = CheckoutGoods
+        fields = ("customer_name", "date", "code_goods", "values")
