@@ -36,10 +36,15 @@
             </div>
         </div>
 {#        Календарь поставок#}
-    <h3>Даты поставок:</h3>
-        {% for goods in goods %}
-            <span><b>Дата заказа: </b>{{ goods.date }}, <b>Код изделия: </b>{{ goods.code_goods }}, <b>Количество: </b>{{ goods.values }}</span><br>
+    <h3>Даты заказов:</h3>
+        {% for good in date %}
+            <b>Дата заказа: </b>{{ good.date }}<br>
+            {% for goods in goods %}
+                <span> <b>Код изделия: </b>{{ goods.code_goods }}, <b>Количество: </b>{{ goods.values }}</span><br>
+            {% endfor %}
+            <br>
         {% endfor %}
+
 {#    Ввод данных #}
 
         <div class="row sub-para-w3layouts mt-5">

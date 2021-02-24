@@ -72,6 +72,8 @@ def SuppliersDetailView(request, pk):
 
     suppliers = Suppliers.objects.get(id=pk)
     goods = CheckoutGoods.objects.filter(supplier_name=pk)
+    date = CheckoutGoods.objects.order_by().values('date').distinct()
+
     form = CheckoutForm()
     error = ""
     if request.method == "POST":
@@ -81,7 +83,7 @@ def SuppliersDetailView(request, pk):
         else:
             error = "Форма неверно заполнена"
     return render(request, "suppliers/suppliers_detail.html", {"suppliers": suppliers, "goods": goods,
-                                                               "form": form, "error": error})
+                                                               "form": form, "error": error, "date": date})
 
 def CheckoutNew(request):
     """Создание нового заказа"""
