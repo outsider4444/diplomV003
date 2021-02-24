@@ -24,34 +24,30 @@
                 </h3>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none">
-                        <span><b>Email: </b> {{ suppliers.email }}</span></li>
+                        <span><b>Email: </b> {{ suppliers.email }}</span>
+                    </li>
                     <li style="list-style: none">
-
-                        <span><b>Дата заказа: </b>
-                            {% for goods in goods %}
-                                {{ goods.date }}</span>
-                            {% endfor %}
+                        <span><b>Номер телефона: </b> {{ suppliers.phone_number }}</span>
                     </li>
-
-                    <li style="list-style: none">{% for goods in goods %}<span><b>Код изделия: </b>
-                        {{ goods.code_goods }}, <span><b>Количество: </b>{{ goods.values }}</span><br>
-                    {% endfor %}
-                        </span>
+                    <li style="list-style: none">
+                        <span><b>Представитель: </b> {{ suppliers.representative }}</span>
                     </li>
-
-                    <div class="share-desc">
-                        <div class="clearfix">
-
-                        </div>
-                    </div>
                 </ul>
             </div>
         </div>
+{#        Календарь поставок#}
+    <h3>Даты поставок:</h3>
+        {% for goods in goods %}
+            <span><b>Дата заказа: </b>{{ goods.date }}, <b>Код изделия: </b>{{ goods.code_goods }}, <b>Количество: </b>{{ goods.values }}</span><br>
+        {% endfor %}
 {#    Ввод данных #}
+
         <div class="row sub-para-w3layouts mt-5">
+
             <form method="post" enctype="multipart/form-data" name="create">
+                <h3>Добавить дату поставки</h3><br>
                 {% csrf_token %}
-                Имя заказчика:{{ form.supplier_name }}<br>
+                <div hidden>Имя заказчика:{{ form.supplier_name }}<br></div>
                 Дата поставки:{{ form.date }}<br>
                 Код изделия:{{ form.code_goods }}<br>
                 Количество:{{ form.values }}<br>
@@ -59,39 +55,21 @@
                 <span>{{ error }}</span>
                 <button type="submit">Подтвердить</button>
             </form>
-            {#                        <h3 class="shop-sing editContent" style="outline: none; cursor: inherit;">#}
-            {#                            О фильме {{ movie.title }}#}
-            {#                        </h3>#}
-            <p>
-                <img src="bundles/images/about.jpg" class="img-fluid" alt="">
-                <img src="bundles/images/admin.jpg" class="img-fluid" alt="">
-                <img src="bundles/images/d1.jpg" class="img-fluid" alt="">
-            </p>
 
-        </div>
-        {#                    Полоска#}
-        {#                    <hr>#}
-        <div class="row">
-            <div class="single-form-left">
-                <!-- contact form grid -->
-{#                Изменить стили #}
-
-                <!--  //contact form grid ends here -->
-            </div>
         </div>
     </div>
     <!-- //contact -->
     <script>
-    //Скрытый <select> для редактирования календаря
-    let code_goods = document.getElementById("id_code_goods");
-    code_goods.selectedIndex = 0;
-    let id_values = document.getElementById("id_values");
-    id_values.value = "";
-    let suppliers_name = document.getElementById("id_supplier_name");
+        //Скрытый <select> для редактирования календаря
+        let code_goods = document.getElementById("id_code_goods");
+        code_goods.selectedIndex = 0;
+        let id_values = document.getElementById("id_values");
+        id_values.value = "";
+        let suppliers_name = document.getElementById("id_supplier_name");
         for(i=0; i<suppliers_name.options.length; i++){
             if(suppliers_name.options[i].value == "{{ suppliers.id }}"){
                 suppliers_name.selectedIndex = i;
             }
         }
-</script>
+    </script>
 {% endblock suppliers %}
