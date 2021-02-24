@@ -40,10 +40,13 @@
         {% for good in date %}
             <b>Дата заказа: </b>{{ good.date }}<br>
             {% for goods in goods %}
-                <span> <b>Код изделия: </b>{{ goods.code_goods }}, <b>Количество: </b>{{ goods.values }}</span><br>
+                    {% if good.date == goods.date %}
+                        <span> <b>Код изделия: </b>{{ goods.code_goods }}, <b>Количество: </b>{{ goods.values }}</span><br>
+                    {% endif %}
             {% endfor %}
             <br>
         {% endfor %}
+
 
 {#    Ввод данных #}
 
