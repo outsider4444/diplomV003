@@ -89,7 +89,7 @@ class GoodsCalendar(models.Model):
 
 
 # Заказчики
-class Suppliers(models.Model):
+class Customer(models.Model):
     """Заказчики"""
     name = models.CharField("Имя заказчика", max_length=120)
     email = models.EmailField("Email", unique=True)
@@ -105,9 +105,15 @@ class Suppliers(models.Model):
 
 
 class CheckoutGoods(models.Model):
-    """Поставщики и изделия"""
-    supplier_name = models.ForeignKey(Suppliers, verbose_name="Имя заказчика", on_delete=models.CASCADE)
+    """Заказчики и изделия"""
+    customer_name = models.ForeignKey(Customer, verbose_name="Имя заказчика", on_delete=models.CASCADE)
     date = models.DateField("Дата заказа", default=default_datetime)
-    code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
+    code_goods = models.ManyToManyField(Goods, verbose_name="Код изделия")
     values = models.IntegerField("Количество")
 
+    def __str__(self):
+        return self.customer_name
+
+    class Meta:
+        verbose_name = "Дата заказа"
+        verbose_name_plural = 'Даты заказов'

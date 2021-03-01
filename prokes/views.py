@@ -6,7 +6,7 @@ from requests import request
 
 from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm, CheckoutForm
 
-from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Suppliers, CheckoutGoods
+from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Customer, CheckoutGoods
 
 
 # Сотрудники
@@ -59,19 +59,19 @@ from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Suppliers, 
 #     form_class = WorkersForm
 
 # Заказчики
-class SuppliersView(ListView):
+class CustomerView(ListView):
     """Список заказчиков"""
-    model = Suppliers
-    queryset = Suppliers.objects.all()
-    template_name = "suppliers/suppliers_list.html"
+    model = Customer
+    queryset = Customer.objects.all()
+    template_name = "customer/customer_list.html"
     paginate_by = 1
 
 
-def SuppliersDetailView(request, pk):
+def CustomerDetailView(request, pk):
     """Полная информация о заказчиках"""
 
-    suppliers = Suppliers.objects.get(id=pk)
-    goods = CheckoutGoods.objects.filter(supplier_name=pk)
+    customer = Customer.objects.get(id=pk)
+    goods = CheckoutGoods.objects.filter(customer_name=pk)
     date = CheckoutGoods.objects.order_by().values('date').distinct()
 
     form = CheckoutForm()
@@ -82,7 +82,7 @@ def SuppliersDetailView(request, pk):
             form.save()
         else:
             error = "Форма неверно заполнена"
-    return render(request, "suppliers/suppliers_detail.html", {"suppliers": suppliers, "goods": goods,
+    return render(request, "customer/customer_detail.html", {"customer": customer, "goods": goods,
                                                                "form": form, "error": error, "date": date})
 
 def CheckoutNew(request):
@@ -93,10 +93,10 @@ def CheckoutNew(request):
         form = CheckoutForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("suppliers_list")
+            return redirect("customer_list")
         else:
             error = "Форма неверно заполнена"
-    return render(request, "suppliers/suppliers_form/supplier_new.html", {"form": form, "error": error})
+    return render(request, "customer/customer_form/customer_new.html", {"form": form, "error": error})
 
 # Изделия
 # class GoodsView(ListView):

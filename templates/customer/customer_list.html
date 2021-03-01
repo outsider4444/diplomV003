@@ -1,4 +1,4 @@
-{% extends 'suppliers/base.html' %}
+{% extends 'customer/base.html' %}
 
 {% block title %} Список заказчиков {% endblock title %}
 {% block header_title %} Список заказчиков {% endblock header_title %}
@@ -7,15 +7,15 @@
     <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block suppliers %}
+{% block customer %}
     <!-- product right -->
     <form>
-        <input type="button" onclick='location.href="{% url "suppliers_create" %}"' value="Добавить нового заказчика">
+        <input type="button" onclick='location.href="{% url "customer_create" %}"' value="Добавить нового заказчика">
     </form>
 
     <div class="left-ads-display col-lg-9">
         <div class="row">
-            {% for suppliers in suppliers_list %}
+            {% for customer in customer_list %}
                 <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="men-thumb-item">
@@ -23,13 +23,13 @@
                         </div>
                         <div class="item-info-product">
                             <h4 class="">
-                                <a href="{{ suppliers.id }}" class="editContent" >
-                                    {{ suppliers.name }}
+                                <a href="{{ customer.id }}" class="editContent" >
+                                    {{ customer.name }}
                                 </a>
                             </h4>
                             <div class="product_price">
                                 <div class="grid-price">
-                                    <a href="{{ suppliers.id }}"><span class="money editContent" >{{ suppliers.email }}</span></a>
+                                    <a href="{{ customer.id }}"><span class="money editContent" >{{ customer.email }}</span></a>
                                 </div>
                             </div>
                         </div>
@@ -42,4 +42,4 @@
         </div>
     </div>
     <!-- //contact -->
-{% endblock suppliers %}
+{% endblock customer %}

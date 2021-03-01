@@ -48,8 +48,8 @@ class WorkersForm(forms.ModelForm):
 
 # Заказчики
 class CheckoutForm(forms.ModelForm):
-    """Форма оформления заказа"""
+    """Форма добавления заказа"""
 
     class Meta:
         model = CheckoutGoods
-        fields = ("supplier_name", "date", "code_goods", "values")
+        fields = ("customer_name", "date", "code_goods", "values")

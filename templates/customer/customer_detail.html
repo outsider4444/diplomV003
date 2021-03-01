@@ -1,17 +1,17 @@
-{% extends 'suppliers/base.html' %}
-{% block title %} Заказщик:  {{ suppliers.name }} {% endblock title %}
-{% block header_title %} Заказщик: {{ suppliers.name }} {% endblock header_title %}
+{% extends 'customer/base.html' %}
+{% block title %} Заказщик:  {{ customer.name }} {% endblock title %}
+{% block header_title %} Заказщик: {{ customer.name }} {% endblock header_title %}
 
 {% block header_image %}
     <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block suppliers %}
+{% block customer %}
     <!-- product right -->
     <div class="left-ads-display col-lg-8">
 
 {#    Сделать "изменение #}
-<input type="button" onclick='location.href="{% url "suppliers_create" %}"' value="Изменить информацию о заказчике">
+<input type="button" onclick='location.href="{% url "customer_create" %}"' value="Изменить информацию о заказчике">
 {# Красиво выводить#}
 
         {#                Изменить стили #}
@@ -21,17 +21,17 @@
             {#                        </div>#}
             <div class="desc1-right col-md-6 pl-lg-4" >
                 <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
-                    {{ suppliers.name }}
+                    {{ customer.name }}
                 </h3>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none">
-                        <span><b>Email: </b> {{ suppliers.email }}</span>
+                        <span><b>Email: </b> {{ customer.email }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Номер телефона: </b> {{ suppliers.phone_number }}</span>
+                        <span><b>Номер телефона: </b> {{ customer.phone_number }}</span>
                     </li>
                     <li style="list-style: none">
-                        <span><b>Представитель: </b> {{ suppliers.representative }}</span>
+                        <span><b>Представитель: </b> {{ customer.representative }}</span>
                     </li>
                 </ul>
             </div>
@@ -55,8 +55,9 @@
             <form method="post" enctype="multipart/form-data" name="create">
                 <h3>Добавить дату заказа</h3><br>
                 {% csrf_token %}
-                <div hidden>Имя заказчика:{{ form.supplier_name }}<br></div>
+                <div hidden>Имя заказчика:{{ form.customer_name }}<br></div>
                 Дата поставки:{{ form.date }}<br>
+                Код изделия:{{ form.code_goods }}<br>
                 Код изделия:{{ form.code_goods }}<br>
                 Количество:{{ form.values }}<br>
 
@@ -73,11 +74,11 @@
         code_goods.selectedIndex = 0;
         let id_values = document.getElementById("id_values");
         id_values.value = "";
-        let suppliers_name = document.getElementById("id_supplier_name");
-        for(i=0; i<suppliers_name.options.length; i++){
-            if(suppliers_name.options[i].value == "{{ suppliers.id }}"){
-                suppliers_name.selectedIndex = i;
+        let customer_name = document.getElementById("id_customer_name");
+        for(i=0; i<customer_name.options.length; i++){
+            if(customer_name.options[i].value == "{{ customer.id }}"){
+                customer_name.selectedIndex = i;
             }
         }
     </script>
-{% endblock suppliers %}
+{% endblock customer %}
