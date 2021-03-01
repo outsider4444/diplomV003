@@ -58,7 +58,7 @@ from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Suppliers, 
 #     slug_field = "code"
 #     form_class = WorkersForm
 
-
+# Заказчики
 class SuppliersView(ListView):
     """Список заказчиков"""
     model = Suppliers

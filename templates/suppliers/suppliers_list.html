@@ -1,7 +1,7 @@
 {% extends 'suppliers/base.html' %}
 
-{% block title %} Список поставщиков {% endblock title %}
-{% block header_title %} Список поставщиков {% endblock header_title %}
+{% block title %} Список заказчиков {% endblock title %}
+{% block header_title %} Список заказчиков {% endblock header_title %}
 
 {% block header_image %}
     <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
@@ -9,6 +9,10 @@
 
 {% block suppliers %}
     <!-- product right -->
+    <form>
+        <input type="button" onclick='location.href="{% url "suppliers_create" %}"' value="Добавить нового заказчика">
+    </form>
+
     <div class="left-ads-display col-lg-9">
         <div class="row">
             {% for suppliers in suppliers_list %}

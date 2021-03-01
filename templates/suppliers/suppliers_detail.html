@@ -10,7 +10,8 @@
     <!-- product right -->
     <div class="left-ads-display col-lg-8">
 
-<input type="button" onclick='location.href="{% url "suppliers_create" %}"' value="Добавить информацию о заказах">
+{#    Сделать "изменение #}
+<input type="button" onclick='location.href="{% url "suppliers_create" %}"' value="Изменить информацию о заказчике">
 {# Красиво выводить#}
 
         {#                Изменить стили #}
@@ -52,7 +53,7 @@
         <div class="row sub-para-w3layouts mt-5">
 
             <form method="post" enctype="multipart/form-data" name="create">
-                <h3>Добавить дату поставки</h3><br>
+                <h3>Добавить дату заказа</h3><br>
                 {% csrf_token %}
                 <div hidden>Имя заказчика:{{ form.supplier_name }}<br></div>
                 Дата поставки:{{ form.date }}<br>
@@ -67,7 +68,7 @@
     </div>
     <!-- //contact -->
     <script>
-        //Скрытый <select> для редактирования календаря
+        //Скрытый <select> для редактирования заказчика
         let code_goods = document.getElementById("id_code_goods");
         code_goods.selectedIndex = 0;
         let id_values = document.getElementById("id_values");
