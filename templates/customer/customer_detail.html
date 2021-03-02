@@ -73,10 +73,6 @@
 
     <!-- //contact -->
     <script>
-        //Код изделия
-        let code_goods = document.getElementById("id_code_goods");
-        //Количество
-        let id_values = document.getElementById("id_values");
         let i=0;
         function add_goods_more(){
             let new_goods = document.getElementById("new_goods");
@@ -98,7 +94,6 @@
                 document.getElementById("id_values"+i).value = ""
             }
             new_goods.insertAdjacentHTML('beforeend', "<br><hr>");
-
             i++;
         }
 
