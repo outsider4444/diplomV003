@@ -70,22 +70,43 @@
             </form>
         </div>
     </div>
-
+    <textarea name="" id="textarea" cols="30" rows="10"></textarea>
     <!-- //contact -->
     <script>
         let i=0;
         function add_goods_more(){
+
             let new_goods = document.getElementById("new_goods");
             //Код изделия
             let code_goods = document.getElementById("id_code_goods").cloneNode(true);
             //Количество
             let id_values = document.getElementById("id_values").cloneNode(true);
+            // Список заказа
+            let textarea = document.getElementById("textarea");
+
+            if (i<=2){
+                {#console.log(document.getElementById("id_code_goods").options[document.getElementById("id_code_goods").selectedIndex].text);#}
+                {#console.log(document.getElementById("id_values").value);#}
+
+                textarea.value +="Код изделия: " + document.getElementById("id_code_goods").
+                    options[document.getElementById("id_code_goods").selectedIndex].text + "\r";
+                textarea.value +="Количество: " + document.getElementById("id_values").value + "\r";
+
+            }
+            else{
+                {#console.log(document.getElementById("id_code_goods"+(i-1)).options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text);#}
+                {#console.log(document.getElementById("id_values"+(i-1)).value);#}
+
+                textarea.value +="Код изделия: " + document.getElementById("id_code_goods"+(i-1)).
+                    options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text + "\r";;
+                textarea.value +="Количество:" + document.getElementById("id_values"+(i-1)).value + "\r";
+            }
 
             new_goods.insertAdjacentHTML('beforeend', "Код изделия:");
             new_goods.appendChild(code_goods);
             code_goods.id+=i;
             if(code_goods.id == "id_code_goods"+i){
-                document.getElementById("id_code_goods"+i).value = ""
+                document.getElementById("id_code_goods"+i).value = "";
             }
             new_goods.insertAdjacentHTML('beforeend', "<br>Количество:");
             new_goods.appendChild(id_values);
@@ -94,7 +115,8 @@
                 document.getElementById("id_values"+i).value = ""
             }
             new_goods.insertAdjacentHTML('beforeend', "<br><hr>");
-            i++;
+
+        i++;
         }
 
 
