@@ -52,4 +52,4 @@ class CheckoutForm(forms.ModelForm):
 
     class Meta:
         model = CheckoutGoods
-        fields = ("customer_name", "date", "code_goods", "values")
+        fields = ("customer_name", "date", "code_goods", "values", "order")
