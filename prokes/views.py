@@ -81,7 +81,7 @@ def CustomerDetailView(request, pk):
         if form.is_valid():
             form.save()
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, "customer/customer_detail.html", {"customer": customer, "goods": goods,
                                                                "form": form, "error": error, "date": date})
 

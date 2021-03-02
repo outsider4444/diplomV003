@@ -108,11 +108,11 @@ class CheckoutGoods(models.Model):
     """Заказчики и изделия"""
     customer_name = models.ForeignKey(Customer, verbose_name="Имя заказчика", on_delete=models.CASCADE)
     date = models.DateField("Дата заказа", default=default_datetime)
-    code_goods = models.ManyToManyField(Goods, verbose_name="Код изделия")
+    code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
     values = models.IntegerField("Количество")
 
     def __str__(self):
-        return self.customer_name
+        return str(self.date)
 
     class Meta:
         verbose_name = "Дата заказа"

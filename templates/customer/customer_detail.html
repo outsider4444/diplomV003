@@ -51,29 +51,60 @@
 {#    Ввод данных #}
 
         <div class="row sub-para-w3layouts mt-5">
-
-            <form method="post" enctype="multipart/form-data" name="create">
+            <form method="post" enctype="multipart/form-data" name="create" id="form_goods_create">
                 <h3>Добавить дату заказа</h3><br>
                 {% csrf_token %}
-                <div hidden>Имя заказчика:{{ form.customer_name }}<br></div>
-                Дата поставки:{{ form.date }}<br>
-                Код изделия:{{ form.code_goods }}<br>
-                Код изделия:{{ form.code_goods }}<br>
-                Количество:{{ form.values }}<br>
+                Имя заказчика:{{ form.customer_name }}<br>
+                Дата заказа:{{ form.date }}<br>
+                <div id="div_goods">
+                    Код изделия:{{ form.code_goods }}<br>
+                    Количество:{{ form.values }}<br><hr>
+                </div>
+                <div id="new_goods">
 
+                </div>
+
+                <input onclick="add_goods_more()" type="button" value="Создать еще изделие"><br>
+{#                <input type="submit" value="Подтвердить">#}
                 <span>{{ error }}</span>
-                <button type="submit">Подтвердить</button>
             </form>
-
         </div>
     </div>
+
     <!-- //contact -->
     <script>
-        //Скрытый <select> для редактирования заказчика
+        //Код изделия
         let code_goods = document.getElementById("id_code_goods");
-        code_goods.selectedIndex = 0;
+        //Количество
         let id_values = document.getElementById("id_values");
-        id_values.value = "";
+        let i=0;
+        function add_goods_more(){
+            let new_goods = document.getElementById("new_goods");
+            //Код изделия
+            let code_goods = document.getElementById("id_code_goods").cloneNode(true);
+            //Количество
+            let id_values = document.getElementById("id_values").cloneNode(true);
+
+            new_goods.appendChild("Код изделия:",code_goods);
+            code_goods.id+=i;
+            if(code_goods.id == "id_code_goods"+i){
+                document.getElementById("id_code_goods"+i).value = ""
+            }
+            new_goods.innerHTML+="<br>Количество:";
+            new_goods.appendChild(id_values, <br><hr>);
+            id_values.id += i;
+            if(id_values.id == "id_values"+i){
+                document.getElementById("id_values"+i).value = ""
+            }
+            new_goods.innerHTML+="";
+
+
+            i++;
+        }
+
+
+        //Скрытый <select> для редактирования заказчика
+        //Имя заказчика
         let customer_name = document.getElementById("id_customer_name");
         for(i=0; i<customer_name.options.length; i++){
             if(customer_name.options[i].value == "{{ customer.id }}"){
