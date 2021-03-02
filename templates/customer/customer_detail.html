@@ -85,19 +85,19 @@
             //Количество
             let id_values = document.getElementById("id_values").cloneNode(true);
 
-            new_goods.appendChild("Код изделия:",code_goods);
+            new_goods.insertAdjacentHTML('beforeend', "Код изделия:");
+            new_goods.appendChild(code_goods);
             code_goods.id+=i;
             if(code_goods.id == "id_code_goods"+i){
                 document.getElementById("id_code_goods"+i).value = ""
             }
-            new_goods.innerHTML+="<br>Количество:";
-            new_goods.appendChild(id_values, <br><hr>);
+            new_goods.insertAdjacentHTML('beforeend', "<br>Количество:");
+            new_goods.appendChild(id_values);
             id_values.id += i;
             if(id_values.id == "id_values"+i){
                 document.getElementById("id_values"+i).value = ""
             }
-            new_goods.innerHTML+="";
-
+            new_goods.insertAdjacentHTML('beforeend', "<br><hr>");
 
             i++;
         }
