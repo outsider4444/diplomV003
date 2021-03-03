@@ -72,7 +72,7 @@ def CustomerDetailView(request, pk):
 
     customer = Customer.objects.get(id=pk)
     goods = CheckoutGoods.objects.filter(customer_name=pk)
-    date = CheckoutGoods.objects.order_by().values('date').distinct()
+    date = CheckoutGoods.objects.order_by().values('date').order_by("date").distinct()
 
     form = CheckoutForm()
     error = ""

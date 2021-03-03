@@ -42,11 +42,10 @@
             <b>Дата заказа: </b>{{ goods_date.date }}<br>
                 {% for goods in goods %}
                     {% if goods.date == goods_date.date %}
-                        {{ goods.order }}
+                        <span id="goods_list">{{ goods.order|linebreaks }}</span>
                     {% endif %}
-                {% endfor %}
+                {% endfor %}<hr>
         {% endfor %}
-
 
 {#    Ввод данных #}
 
@@ -66,6 +65,7 @@
 
                 <input onclick="add_goods_more()" id="more_goods" disabled type="button" value="Создать еще изделие"><br>
                 <input type="submit" value="Подтвердить" onclick="add_good()">
+{#                <input type="button" onclick="add_good()" value="Проверить">#}
 
                 <span>{{ error }}</span>
                 {{ form.order }}
@@ -74,7 +74,8 @@
     </div>
     <!-- //contact -->
     <script>
-        let i=1;
+        let i=0;
+        let m=1;
         // Список заказа
         let textarea = document.getElementById("id_order");
         //Очистка блока
@@ -104,33 +105,28 @@
 
         //Добавление в блок
         function add_good() {
-
-            for (let m=0; m<i; m++){
-                if (i<=2){
-                //Если изделие не пустое
-                if (document.getElementById("id_code_goods").
-                    options[document.getElementById("id_code_goods").selectedIndex].text != ""
-                    && document.getElementById("id_values").value != ""){
-                    textarea.value +="Код изделия: " + document.getElementById("id_code_goods").
-                        options[document.getElementById("id_code_goods").selectedIndex].text + "\r";
-                    textarea.value +="Количество: " + document.getElementById("id_values").value + "\r";
-
+            for (m; m<i; m++){
+                if(m<=1){
+                    if (document.getElementById("id_code_goods").
+                            options[document.getElementById("id_code_goods").selectedIndex].text != ""
+                        && document.getElementById("id_values").value != "") {
+                        textarea.value +="Код изделия: " + document.getElementById("id_code_goods").
+                            options[document.getElementById("id_code_goods").selectedIndex].text + "\r";
+                        textarea.value +="Количество: " + document.getElementById("id_values").value + "\r";
+                        console.log(i + " " + m)
+                    }
+                }
+                else{
+                    if (document.getElementById("id_code_goods"+(m)).
+                            options[document.getElementById("id_code_goods"+(m)).selectedIndex].text != ""
+                        && document.getElementById("id_values"+(m)).value != ""){
+                        textarea.value +="Код изделия: " + document.getElementById("id_code_goods"+(m)).
+                            options[document.getElementById("id_code_goods"+(m)).selectedIndex].text + "\r";
+                        textarea.value +="Количество:" + document.getElementById("id_values"+(m)).value + "\r";
+                        console.log(i + " " + m)
+                    }
                 }
             }
-            else{
-                if (document.getElementById("id_code_goods"+(i-1)).
-                    options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text != ""
-                    && document.getElementById("id_values"+(i-1)).value != ""){
-                    textarea.value +="Код изделия: " + document.getElementById("id_code_goods"+(i-1)).
-                        options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text + "\r";
-                    textarea.value +="Количество:" + document.getElementById("id_values"+(i-1)).value + "\r";
-                    console.log(document.getElementById("id_code_goods"+(i-1)).id + i)
-
-
-                }
-            }
-            }
-
         }
 
         //Создание нового изделия
@@ -143,7 +139,6 @@
             let code_goods = document.getElementById("id_code_goods").cloneNode(true);
             //Количество
             let id_values = document.getElementById("id_values").cloneNode(true);
-
 
             //Создание нового блока
             new_goods.insertAdjacentHTML('beforeend', "Код изделия:");
@@ -160,7 +155,6 @@
             }
             new_goods.insertAdjacentHTML('beforeend', "<br><hr>");
             btn.disabled = true;
-
             i++;
         }
 
