@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from requests import request
@@ -80,6 +80,8 @@ def CustomerDetailView(request, pk):
         form = CheckoutForm(request.POST)
         if form.is_valid():
             form.save()
+            # перенаправление на ту же страницу
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
             error = form.errors
     return render(request, "customer/customer_detail.html", {"customer": customer, "goods": goods,

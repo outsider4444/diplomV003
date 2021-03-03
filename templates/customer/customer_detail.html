@@ -61,10 +61,12 @@
                 <div onchange="disable_button()" id="new_goods" >
 
                 </div>
-                {{ form.order }}
+
                 <input onclick="add_goods_more()" id="more_goods" disabled type="button" value="Создать еще изделие"><br>
                 <input type="submit" value="Подтвердить" onclick="add_good()">
+
                 <span>{{ error }}</span>
+                {{ form.order }}
             </form>
         </div>
     </div>
