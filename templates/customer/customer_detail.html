@@ -54,15 +54,15 @@
                 {% csrf_token %}
                 Имя заказчика:{{ form.customer_name }}<br>
                 Дата заказа:{{ form.date }}<br>
-                <div id="div_goods">
+                <div id="div_goods" onchange="disable_button()">
                     Код изделия:{{ form.code_goods }}<br>
                     Количество:{{ form.values }}<br><hr>
                 </div>
-                <div id="new_goods">
+                <div onchange="disable_button()" id="new_goods" >
 
                 </div>
                 {{ form.order }}
-                <input onclick="add_goods_more()" type="button" value="Создать еще изделие"><br>
+                <input onclick="add_goods_more()" id="more_goods" disabled type="button" value="Создать еще изделие"><br>
                 <input type="submit" value="Подтвердить" onclick="add_good()">
                 <span>{{ error }}</span>
             </form>
@@ -73,32 +73,70 @@
         let i=0;
         // Список заказа
         let textarea = document.getElementById("id_order");
+        //Очистка блока
         textarea.value = "";
-        function add_good() {
-            if (i<=2){
-                textarea.value +="Код изделия: " + document.getElementById("id_code_goods").
-                    options[document.getElementById("id_code_goods").selectedIndex].text + "<br>";
-                textarea.value +="Количество: " + document.getElementById("id_values").value + "<br>";
+        textarea.editable = false;
+        document.getElementById("id_code_goods").value = "";
+        document.getElementById("id_values").value = "";
 
+        //Разблокировка кнопок
+        function disable_button() {
+            let code_goods = document.getElementById("id_code_goods");
+            let id_values = document.getElementById("id_values");
+            let btn = document.getElementById("more_goods");
+            if (i<=2) {
+                if (code_goods.options[code_goods.selectedIndex].text != "" && id_values.value != "") {
+                    btn.disabled = false;
+                }
             }
             else{
-
-                textarea.value +="Код изделия: " + document.getElementById("id_code_goods"+(i-1)).
-                    options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text + "<br>";
-                textarea.value +="Количество:" + document.getElementById("id_values"+(i-1)).value + "<br>";
+                if (document.getElementById("id_code_goods"+(i-1)).
+                        options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text != "" &&
+                    document.getElementById("id_values"+(i-1)).value != "") {
+                    btn.disabled = false;
+                }
             }
         }
-        function add_goods_more(){
 
+        //Добавление в блок
+        function add_good() {
+            let code_goods = document.getElementById("id_code_goods");
+            let id_values = document.getElementById("id_values");
+
+            if (i<=2){
+                //Если изделие не пустое
+                if (code_goods.options[code_goods.selectedIndex].text != "" && id_values.value != ""){
+                    textarea.value +="Код изделия: " + document.getElementById("id_code_goods").
+                        options[document.getElementById("id_code_goods").selectedIndex].text + "<br>";
+                    textarea.value +="Количество: " + document.getElementById("id_values").value + "<br>";
+                }
+            }
+            else{
+                if (document.getElementById("id_code_goods"+(i-1)).
+                        options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text != "" &&
+                    document.getElementById("id_values"+(i-1)).value != ""){
+                    textarea.value +="Код изделия: " + document.getElementById("id_code_goods"+(i-1)).
+                        options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text + "<br>";
+                    textarea.value +="Количество:" + document.getElementById("id_values"+(i-1)).value + "<br>";
+                }
+            }
+        }
+
+        //Создание нового изделия
+        function add_goods_more(){
+            //Кнопка
+            let btn = document.getElementById("more_goods");
+            //Новый див в который добавляем
             let new_goods = document.getElementById("new_goods");
             //Код изделия
             let code_goods = document.getElementById("id_code_goods").cloneNode(true);
             //Количество
             let id_values = document.getElementById("id_values").cloneNode(true);
-            code_goods.editable = false;
 
+            //Проверка на i
             add_good(textarea)
 
+            //Создание нового блока
             new_goods.insertAdjacentHTML('beforeend', "Код изделия:");
             new_goods.appendChild(code_goods);
             code_goods.id+=i;
@@ -113,10 +151,9 @@
             }
             new_goods.insertAdjacentHTML('beforeend', "<br><hr>");
 
-
-        i++;
+            btn.disabled = true;
+            i++;
         }
-
 
         //Скрытый <select> для редактирования заказчика
         //Имя заказчика
