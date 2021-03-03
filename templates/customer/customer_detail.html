@@ -38,13 +38,15 @@
         </div>
 {#        Календарь поставок#}
     <h3>Даты заказов:</h3>
-        {% for good in date %}
-            <b>Дата заказа: </b>{{ good.date }}<br>
-
+        {% for goods_date in date %}
+            <b>Дата заказа: </b>{{ goods_date.date }}<br>
+                {% for goods in goods %}
+                    {% if goods.date == goods_date.date %}
+                        {{ goods.order }}
+                    {% endif %}
+                {% endfor %}
         {% endfor %}
-{% for good in goods %}
-    {{ good.order }}
-    {% endfor %}
+
 
 {#    Ввод данных #}
 
@@ -72,7 +74,7 @@
     </div>
     <!-- //contact -->
     <script>
-        let i=0;
+        let i=1;
         // Список заказа
         let textarea = document.getElementById("id_order");
         //Очистка блока
@@ -102,26 +104,33 @@
 
         //Добавление в блок
         function add_good() {
-            let code_goods = document.getElementById("id_code_goods");
-            let id_values = document.getElementById("id_values");
 
-            if (i<=2){
+            for (let m=0; m<i; m++){
+                if (i<=2){
                 //Если изделие не пустое
-                if (code_goods.options[code_goods.selectedIndex].text != "" && id_values.value != ""){
+                if (document.getElementById("id_code_goods").
+                    options[document.getElementById("id_code_goods").selectedIndex].text != ""
+                    && document.getElementById("id_values").value != ""){
                     textarea.value +="Код изделия: " + document.getElementById("id_code_goods").
-                        options[document.getElementById("id_code_goods").selectedIndex].text + "<br>";
-                    textarea.value +="Количество: " + document.getElementById("id_values").value + "<br>";
+                        options[document.getElementById("id_code_goods").selectedIndex].text + "\r";
+                    textarea.value +="Количество: " + document.getElementById("id_values").value + "\r";
+
                 }
             }
             else{
                 if (document.getElementById("id_code_goods"+(i-1)).
-                        options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text != "" &&
-                    document.getElementById("id_values"+(i-1)).value != ""){
+                    options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text != ""
+                    && document.getElementById("id_values"+(i-1)).value != ""){
                     textarea.value +="Код изделия: " + document.getElementById("id_code_goods"+(i-1)).
-                        options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text + "<br>";
-                    textarea.value +="Количество:" + document.getElementById("id_values"+(i-1)).value + "<br>";
+                        options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text + "\r";
+                    textarea.value +="Количество:" + document.getElementById("id_values"+(i-1)).value + "\r";
+                    console.log(document.getElementById("id_code_goods"+(i-1)).id + i)
+
+
                 }
             }
+            }
+
         }
 
         //Создание нового изделия
@@ -135,8 +144,6 @@
             //Количество
             let id_values = document.getElementById("id_values").cloneNode(true);
 
-            //Проверка на i
-            add_good(textarea)
 
             //Создание нового блока
             new_goods.insertAdjacentHTML('beforeend', "Код изделия:");
@@ -152,8 +159,8 @@
                 document.getElementById("id_values"+i).value = ""
             }
             new_goods.insertAdjacentHTML('beforeend', "<br><hr>");
-
             btn.disabled = true;
+
             i++;
         }
 
