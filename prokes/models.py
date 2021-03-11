@@ -109,7 +109,7 @@ class CheckoutGoods(models.Model):
     customer_name = models.ForeignKey(Customer, verbose_name="Имя заказчика", on_delete=models.CASCADE)
     date = models.DateField("Дата заказа", default=default_datetime)
     code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
-    order = models.TextField("Заказ")
+    # order = models.TextField("Заказ")
     values = models.IntegerField("Количество")
 
     def __str__(self):

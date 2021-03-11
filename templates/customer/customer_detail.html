@@ -11,7 +11,7 @@
     <div class="left-ads-display col-lg-8">
 
 {#    Сделать "изменение #}
-<input type="button" onclick='location.href="{% url "customer_create" %}"' value="Изменить информацию о заказчике">
+{#<input type="button" onclick='location.href="{% url "customer_create" %}"' value="Изменить информацию о заказчике">#}
 {# Красиво выводить#}
 
         {#                Изменить стили #}
@@ -42,7 +42,8 @@
             <b>Дата заказа: </b>{{ goods_date.date }}<br>
                 {% for goods in goods %}
                     {% if goods.date == goods_date.date %}
-                        <span id="goods_list">{{ goods.order|linebreaks }}</span>
+                        <b>Код изделия:</b> {{ goods.code_goods }}<br>
+                        Количество: {{ goods.values }}<br>
                     {% endif %}
                 {% endfor %}<hr>
         {% endfor %}
@@ -50,121 +51,32 @@
 {#    Ввод данных #}
 
         <div class="row sub-para-w3layouts mt-5">
+
             <form method="post" enctype="multipart/form-data" name="create" id="form_goods_create">
-                <h3>Добавить дату заказа</h3><br>
+            <h3>Добавить дату заказа</h3><br>
                 {% csrf_token %}
-                Имя заказчика:{{ form.customer_name }}<br>
-                Дата заказа:{{ form.date }}<br>
-                <div id="div_goods" onchange="disable_button()">
-                    Код изделия:{{ form.code_goods }}<br>
-                    Количество:{{ form.values }}<br><hr>
-                </div>
-                <div onchange="disable_button()" id="new_goods" >
-
-                </div>
-
-                <input onclick="add_goods_more()" id="more_goods" disabled type="button" value="Создать еще изделие"><br>
-                <input type="submit" value="Подтвердить" onclick="add_good()">
+            {{ formset.management_form }}
+                {% for form in formset %}
+                    {{ form }}<hr>
+                {% endfor %}
+{#                Имя заказчика:{{ form.customer_name }}<br>#}
+{#                Дата заказа:{{ form.date }}<br>#}
+{#                <div id="div_goods" onchange="disable_button()">#}
+{#                    Код изделия:{{ form.code_goods }}<br>#}
+{#                    Количество:{{ form.values }}<br><hr>#}
+{#                </div>#}
+{#                <div onchange="disable_button()" id="new_goods" >#}
+{##}
+{#                </div>#}
+{##}
+{#                <input onclick="add_goods_more()" id="more_goods" disabled type="button" value="Создать еще изделие"><br>#}
+                <input type="submit" value="Подтвердить">
 {#                <input type="button" onclick="add_good()" value="Проверить">#}
-
-                <span>{{ error }}</span>
-                {{ form.order }}
+{##}
+{#                <span>{{ error }}</span>#}
+{#                {{ form.order }}#}
             </form>
         </div>
     </div>
     <!-- //contact -->
-    <script>
-        let i=0;
-        let m=1;
-        // Список заказа
-        let textarea = document.getElementById("id_order");
-        //Очистка блока
-        textarea.value = "";
-        textarea.editable = false;
-        document.getElementById("id_code_goods").value = "";
-        document.getElementById("id_values").value = "";
-
-        //Разблокировка кнопок
-        function disable_button() {
-            let code_goods = document.getElementById("id_code_goods");
-            let id_values = document.getElementById("id_values");
-            let btn = document.getElementById("more_goods");
-            if (i<=2) {
-                if (code_goods.options[code_goods.selectedIndex].text != "" && id_values.value != "") {
-                    btn.disabled = false;
-                }
-            }
-            else{
-                if (document.getElementById("id_code_goods"+(i-1)).
-                        options[document.getElementById("id_code_goods"+(i-1)).selectedIndex].text != "" &&
-                    document.getElementById("id_values"+(i-1)).value != "") {
-                    btn.disabled = false;
-                }
-            }
-        }
-
-        //Добавление в блок
-        function add_good() {
-            for (m; m<i; m++){
-                if(m<=1){
-                    if (document.getElementById("id_code_goods").
-                            options[document.getElementById("id_code_goods").selectedIndex].text != ""
-                        && document.getElementById("id_values").value != "") {
-                        textarea.value +="Код изделия: " + document.getElementById("id_code_goods").
-                            options[document.getElementById("id_code_goods").selectedIndex].text + "\r";
-                        textarea.value +="Количество: " + document.getElementById("id_values").value + "\r";
-                        console.log(i + " " + m)
-                    }
-                }
-                else{
-                    if (document.getElementById("id_code_goods"+(m)).
-                            options[document.getElementById("id_code_goods"+(m)).selectedIndex].text != ""
-                        && document.getElementById("id_values"+(m)).value != ""){
-                        textarea.value +="Код изделия: " + document.getElementById("id_code_goods"+(m)).
-                            options[document.getElementById("id_code_goods"+(m)).selectedIndex].text + "\r";
-                        textarea.value +="Количество:" + document.getElementById("id_values"+(m)).value + "\r";
-                        console.log(i + " " + m)
-                    }
-                }
-            }
-        }
-
-        //Создание нового изделия
-        function add_goods_more(){
-            //Кнопка
-            let btn = document.getElementById("more_goods");
-            //Новый див в который добавляем
-            let new_goods = document.getElementById("new_goods");
-            //Код изделия
-            let code_goods = document.getElementById("id_code_goods").cloneNode(true);
-            //Количество
-            let id_values = document.getElementById("id_values").cloneNode(true);
-
-            //Создание нового блока
-            new_goods.insertAdjacentHTML('beforeend', "Код изделия:");
-            new_goods.appendChild(code_goods);
-            code_goods.id+=i;
-            if(code_goods.id == "id_code_goods"+i){
-                document.getElementById("id_code_goods"+i).value = "";
-            }
-            new_goods.insertAdjacentHTML('beforeend', "<br>Количество:");
-            new_goods.appendChild(id_values);
-            id_values.id += i;
-            if(id_values.id == "id_values"+i){
-                document.getElementById("id_values"+i).value = ""
-            }
-            new_goods.insertAdjacentHTML('beforeend', "<br><hr>");
-            btn.disabled = true;
-            i++;
-        }
-
-        //Скрытый <select> для редактирования заказчика
-        //Имя заказчика
-        let customer_name = document.getElementById("id_customer_name");
-        for(i=0; i<customer_name.options.length; i++){
-            if(customer_name.options[i].value == "{{ customer.id }}"){
-                customer_name.selectedIndex = i;
-            }
-        }
-    </script>
 {% endblock customer %}

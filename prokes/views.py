@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
+from django.forms import inlineformset_factory
 from requests import request
 
 from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm, CheckoutForm
@@ -69,36 +70,24 @@ class CustomerView(ListView):
 
 def CustomerDetailView(request, pk):
     """Полная информация о заказчиках"""
-
+    OrderFormSet = inlineformset_factory(Customer, CheckoutGoods, fields=("code_goods", "values"), extra=10)
     customer = Customer.objects.get(id=pk)
     goods = CheckoutGoods.objects.filter(customer_name=pk)
+    formset = OrderFormSet(queryset=CheckoutGoods.objects.none(), instance=customer)
     date = CheckoutGoods.objects.order_by().values('date').order_by("date").distinct()
-
-    form = CheckoutForm()
     error = ""
     if request.method == "POST":
-        form = CheckoutForm(request.POST)
-        if form.is_valid():
-            form.save()
+        formset = OrderFormSet(request.POST, instance=customer)
+        if formset.is_valid():
+
+            formset.save()
             # перенаправление на ту же страницу
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
-            error = form.errors
-    return render(request, "customer/customer_detail.html", {"customer": customer, "goods": goods,
-                                                               "form": form, "error": error, "date": date})
+            error = formset.errors
+    context = {"customer": customer, "formset": formset, "error":error, "date":date, "goods":goods}
+    return render(request, "customer/customer_detail.html", context)
 
-def CheckoutNew(request):
-    """Создание нового заказа"""
-    form = CheckoutForm()
-    error = ""
-    if request.method == "POST":
-        form = CheckoutForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("customer_list")
-        else:
-            error = "Форма неверно заполнена"
-    return render(request, "customer/customer_form/customer_new.html", {"form": form, "error": error})
 
 # Изделия
 # class GoodsView(ListView):

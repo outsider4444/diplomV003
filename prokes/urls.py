@@ -13,7 +13,7 @@ urlpatterns = [
     # Форма создания
     # path("goods_list/goods_create/", views.GoodsNew, name="goods_create"),
     # path("workers_list/workers_create/", views.WorkerNew, name="workers_create"),
-    path("customer_create/", views.CheckoutNew, name="customer_create"),
+    # path("customer_create/", views.CustomerCreateView, name="customer_create"),
 
 
     # Фильтры
