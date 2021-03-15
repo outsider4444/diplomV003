@@ -70,7 +70,7 @@ class GoodsDefaultForm(models.Model):
     percent_mass = models.IntegerField("Процент массы")
 
     def __str__(self):
-        return str(self.code_goods)
+        return str(self.goods_code)
 
     class Meta:
         verbose_name = "Форма изделия"
