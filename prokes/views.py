@@ -7,7 +7,7 @@ from requests import request
 
 from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm, CheckoutForm
 
-from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, Customer, CheckoutGoods
+from .models import *
 
 
 # Сотрудники

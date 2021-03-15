@@ -16,9 +16,7 @@
 
         {#                Изменить стили #}
         <div class="row">
-            {#                        <div class="desc1-left col-md-6">#}
-            {#                            <img src="{{ movie.poster.url }}" class="img-fluid" alt="">#}
-            {#                        </div>#}
+
             <div class="desc1-right col-md-6 pl-lg-4" >
                 <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
                     {{ customer.name }}
@@ -42,16 +40,14 @@
             <b>Дата заказа: </b>{{ goods_date.date }}<br>
                 {% for goods in goods %}
                     {% if goods.date == goods_date.date %}
-                        <b>Код изделия:</b> {{ goods.code_goods }}<br>
+                        <b>Код изделия:</b> {{ goods.goods_code }}<br>
                         Количество: {{ goods.values }}<br>
                     {% endif %}
                 {% endfor %}<hr>
         {% endfor %}
 
 {#    Ввод данных #}
-
         <div class="row sub-para-w3layouts mt-5">
-
             <form method="post" enctype="multipart/form-data" name="create" id="form_goods_create">
             <h3>Добавить дату заказа</h3><br>
                 {% csrf_token %}
@@ -59,24 +55,10 @@
                 {% for form in formset %}
                     {{ form }}<hr>
                 {% endfor %}
-{#                Имя заказчика:{{ form.customer_name }}<br>#}
-{#                Дата заказа:{{ form.date }}<br>#}
-{#                <div id="div_goods" onchange="disable_button()">#}
-{#                    Код изделия:{{ form.code_goods }}<br>#}
-{#                    Количество:{{ form.values }}<br><hr>#}
-{#                </div>#}
-{#                <div onchange="disable_button()" id="new_goods" >#}
-{##}
-{#                </div>#}
-{##}
-{#                <input onclick="add_goods_more()" id="more_goods" disabled type="button" value="Создать еще изделие"><br>#}
                 <input type="submit" value="Подтвердить">
-{#                <input type="button" onclick="add_good()" value="Проверить">#}
-{##}
-{#                <span>{{ error }}</span>#}
-{#                {{ form.order }}#}
             </form>
         </div>
+
     </div>
     <!-- //contact -->
 {% endblock customer %}

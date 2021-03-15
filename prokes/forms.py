@@ -11,8 +11,7 @@ class GoodsForm(forms.ModelForm):
 
     class Meta:
         model = Goods
-        fields = ("code", "image", "weight_clean", "weight_clean", "norma_with_carpet",
-                  "consumption_smesi", "one_person_norma", "defect_limit")
+        fields = ("code", "image", "weight_clean", "weight_clean",)
 
 
 class CalendarForm(forms.ModelForm):
@@ -20,7 +19,7 @@ class CalendarForm(forms.ModelForm):
 
     class Meta:
         model = GoodsCalendar
-        fields = ("code_goods", "month", "lith", "remote", "remote_percent",
+        fields = ("goods_code", "month", "lith", "remote", "remote_percent",
                   "one_man_sr", "one_man_max", "two_man_sr", "two_man_max")
         widgets = {
             "month": forms.SelectDateWidget,
@@ -33,7 +32,7 @@ class FormsGoodsForm(forms.ModelForm):
 
     class Meta:
         model = GoodsDefaultForm
-        fields = ("code_goods", "duplicate", "cleaning_period", "number_nest", "percent_mass")
+        fields = ("goods_code", "duplicate", "cleaning_period", "number_nest", "percent_mass")
 
 
 # Сотрудники
@@ -42,8 +41,7 @@ class WorkersForm(forms.ModelForm):
 
     class Meta:
         model = Workers
-        fields = ("code", "name", "email", "birthday", "category",
-                  "salary", "standard_time", "lose_time", "cof_proisvod")
+        fields = ("code", "name", "email", "birthday", "category","salary")
 
 
 # Заказчики
