@@ -1,47 +1,46 @@
-{% extends 'customer/base.html' %}
+{% extends 'goods/base.html' %}
 
-{% block title %} Список заказчиков {% endblock title %}
-{% block header_title %} Список заказчиков {% endblock header_title %}
+{% block title %} Список изделий {% endblock title %}
+{% block header_title %} Список изделий {% endblock header_title %}
 
 {% block header_image %}
     <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block customer %}
-    <!-- product right -->
-    <form>
-        <input type="button" onclick='location.href="{% url "customer_create" %}"' value="Добавить нового заказчика">
-    </form>
+{% block goods %}
 
+    <!-- product right -->
     <div class="left-ads-display col-lg-9">
+    <input type="button" onclick='location.href="{% url "goods_create" %}"' value="Создать новое изделие">
         <div class="row">
-            {% for customer in customer_list %}
+            {% for goods in goods_list %}
                 <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="men-thumb-item">
-                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                            {% if goods.image %}
+                                <img src="{{ goods.image.url }}" class="img-fluid" alt="" >
+                            {% endif %}
                         </div>
                         <div class="item-info-product">
                             <h4 class="">
-                                <a href="{{ customer.id }}" class="editContent" >
-                                    {{ customer.name }}
+                                <a href="{{ goods.id }}" class="editContent" >
+                                    {{ goods.code }}
                                 </a>
                             </h4>
                             <div class="product_price">
                                 <div class="grid-price">
-                                    <a href="{{ customer.id }}">
-                                        <span class="money editContent" >{{ customer.email }}</span>
-                                    </a>
+                                    <a href="{{ goods.id }}"><span class="money editContent" >{{ goods.code }}</span></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
+
         </div>
         <div class="grid-img-right mt-4 text-right bg bg1" >
-{#            {% include 'include/pagination/supplier_pagination.html' %}#}
+            {% include 'include/pagination/goods_pagination.html' %}
         </div>
     </div>
     <!-- //contact -->
-{% endblock customer %}
+{% endblock goods %}

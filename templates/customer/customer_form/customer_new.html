@@ -18,10 +18,10 @@
 {# Изменить поставщика#}
     <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
-        Имя поставщика:{{ form.customer_name }}<br>
-        Дата поставки:{{ form.date }}<br>
-        Код изделия:{{ form.code_goods }}<br>
-        Количество:{{ form.values }}<br>
+        Имя поставщика:{{ form.name }}<br>
+        Почта:{{ form.email }}<br>
+        Номер телефона:{{ form.phone_number }}<br>
+        Представитель:{{ form.representative }}<br>
 
       <span>{{ error }}</span>
         <button type="submit">Подтвердить</button>

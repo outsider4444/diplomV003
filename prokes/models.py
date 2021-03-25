@@ -12,7 +12,7 @@ class Workers(models.Model):
     """Сотрудники"""
     code = models.IntegerField('Код сотрудника', unique=True)
     name = models.CharField('ФИО', max_length=100)
-    email = models.EmailField('Email')
+    email = models.EmailField('Email', blank=True)
     phone_number = models.CharField('Номер телефона', max_length=11, default='+7')
     birthday = models.DateField('Дата рождения')
     category = models.CharField('Категория', max_length=50)
@@ -21,7 +21,7 @@ class Workers(models.Model):
     fired = models.BooleanField("Уволен", default=False)
 
     def __str__(self):
-        return self.code
+        return str(self.code)
 
     class Meta:
         verbose_name = 'Сотрудник'
@@ -63,7 +63,8 @@ class Goods(models.Model):
 
 class GoodsDefaultForm(models.Model):
     """Формы изделий"""
-    goods_code = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
+    goods_code = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE,
+                                   related_name='goods_forms')
     duplicate = models.CharField("Дубликат", max_length=150)
     cleaning_period = models.FloatField("Период чистки")
     number_nest = models.FloatField("Номер гнезда формы")

@@ -1,0 +1,164 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Главная {% endblock title %}
+{% block header_title %} Главная {% endblock header_title %}
+
+{% block header_image %}
+    <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block main %}
+    <!-- product right -->
+    <div class="left-ads-display col-lg-12">
+        <div class="row">
+
+            <div class="col-md-4 product-men">
+                <div class="product-shoe-info editContent text-center mt-lg-4" >
+                    <div class="men-thumb-item">
+{#                        <a href="{% url "worker_list" %}" class="editContent" >#}
+                            <img src="../../media/main/workers_2.jpg" class="img-fluid" alt="" >
+                        </a>
+                    </div>
+                    <div class="item-info-product">
+                        <h4 class="">
+                            <a href="{% url "workers_list" %}" class="editContent" >
+                                Сотрудники
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 product-men">
+                <div class="product-shoe-info editContent text-center mt-lg-4" >
+                    <div class="men-thumb-item">
+                        <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                    </div>
+                    <div class="item-info-product">
+                        <h4 class="">
+{#                            <a href="{% url "smesi_list" %}" class="editContent" >#}
+                                Смеси
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 product-men">
+                <div class="product-shoe-info editContent text-center mt-lg-4" >
+{#                    <a href="{% url "goods_list" %}" class="editContent" >#}
+                        <img src="../../media/main/goods.jpg" class="img-fluid" alt="" height="1200px">
+                    </a>
+                    <div class="item-info-product">
+                        <h4 class="">
+                            <a href="{% url "goods_list" %}" class="editContent" >
+                                Изделия
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 product-men">
+                <div class="product-shoe-info editContent text-center mt-lg-4" >
+                    <div class="men-thumb-item">
+{#                        <a href="{% url "suppliers_list" %}" class="editContent" >#}
+                            <img src="../../media/main/suppliers.jpg" class="img-fluid" alt="" >
+                        </a>
+
+                    </div>
+                    <div class="item-info-product">
+                        <h4 class="">
+{#                            <a href="{% url "suppliers_list" %}" class="editContent" >#}
+                                Поставщики
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+{#                            <a href="{% url "customers_list" %}" class="editContent" >#}
+                                <img src="../../media/main/customers.jpg" class="img-fluid" alt="" >
+                            </a>
+
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{% url "customer_list" %}" class="editContent" >
+                                    Заказчики
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+{#                                <a href="{% url "remote_list" %}" class="editContent" >#}
+                                    Склад изделий
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
+             <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+{#                                <a href="{% url "remote_list" %}" class="editContent" >#}
+                                    Склад материалов
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
+             <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+{#                                <a href="{% url "remote_list" %}" class="editContent" >#}
+                                    Наряды
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
+             <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+{#                                <a href="{% url "remote_list" %}" class="editContent" >#}
+                                    ОТК
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <!--<div class="grid-img-right mt-4 text-right bg bg1" >
+            <span class="money editContent" >Flat 50% Off</span>
+            <a href="moviesingle.html" class="btn" >Now</a>
+        </div>-->
+    </div>
+    <!-- //contact -->
+{% endblock main %}

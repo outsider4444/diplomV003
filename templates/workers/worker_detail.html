@@ -1,0 +1,71 @@
+{% extends 'workers/base.html' %}
+{% block title %} {{ workers.name }} {% endblock title %}
+{% block header_title %} {{ workers.name }} {% endblock header_title %}
+
+{% block header_image %}
+    <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block worker %}
+    <!-- product right -->
+    <div class="left-ads-display col-lg-8">
+        {#                Изменить стили #}
+    <input type="button" onclick='location.href="update"' value="Редактировать сотрудника">
+        <div class="row">
+            <div class="desc1-right col-md-6 pl-lg-4" >
+                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">{{ workers.name }}
+                </h3>
+                <span>{{ workers.category }}</span>
+                {#                            <h5 class="editContent"></h5>#}
+                <ul style="margin-top: 15px">
+                    <li style="list-style: none">
+                        <span><b>Код сотрудника: </b>{{ workers.code }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>ФИО сотрудника:</b> {{ workers.name }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Должность сотрудника: </b>{{ workers.category }}<br></span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Дата рождения: </b> {{ workers.birthday }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Номер телефона сотрудника:</b> {{ workers.phone_number }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Email: </b>{{ workers.email }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Оклад:</b> {{ workers.salary }}</span>
+                    </li>
+        <br>
+                    <div class="share-desc">
+                        <div class="clearfix"></div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="row sub-para-w3layouts mt-5">
+            
+            <p>
+                <img src="bundles/images/about.jpg" class="img-fluid" alt="">
+                <img src="bundles/images/admin.jpg" class="img-fluid" alt="">
+                <img src="bundles/images/d1.jpg" class="img-fluid" alt="">
+            </p>
+
+        </div>
+        {#                    Полоска#}
+        {#                    <hr>#}
+        <div class="row">
+            <div class="single-form-left">
+                <!-- contact form grid -->
+                {#                Изменить стили #}
+
+                <!--  //contact form grid ends here -->
+            </div>
+
+        </div>
+    </div>
+    <!-- //contact -->
+{% endblock worker %}
