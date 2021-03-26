@@ -43,15 +43,20 @@
             <!-- Форма детали -->
             <h3>Форма детали</h3>
             {% if goods_form %}
-            {% for format in goods_form %}
-                Название дубликата: {{ format.duplicate }}<br>
-                Период чистки: {{ format.cleaning_period }}<br>
-                Номер гнезда: {{ format.number_nest }}<br>
-                Процент массы: {{ format.percent_mass }}
-            {% endfor %}
-                {% else %}
+                {% for format in goods_form %}
+                    Код изделия: {{ format.goods_code }}
+                    Название дубликата: {{ format.duplicate }}<br>
+                    Период чистки: {{ format.cleaning_period }}<br>
+                    Номер гнезда: {{ format.number_nest }}<br>
+                    Процент массы: {{ format.percent_mass }}
+                    <a href="{% url 'update_goods_form' pk=format.id %}"> <input type="button" value="Редактировать форму">
+                    </a>
+                {% endfor %}
+
+
+            {% else %}
                 <input type="button" onclick='location.href="create_goods_form"' value="Добавить форму">
-        {% endif %}
+            {% endif %}
             <!-- //Форма детали -->
 
         <!-- Таблица -->

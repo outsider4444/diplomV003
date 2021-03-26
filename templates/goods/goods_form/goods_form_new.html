@@ -2,12 +2,12 @@
 
 {#Надпись в Title#}
 {% block title %}
-    Создание/редактирование изделия
+    Создание/редактирование формы изделия
 {% endblock title %}
 
 {#Надпись в шапке#}
 {% block header_title %}
-    Создание/редактирование изделия
+    Создание/редактирование формы изделия
 {% endblock header_title %}
 
 {% block header_image %}
@@ -15,8 +15,10 @@
 {% endblock header_image %}
 
 {% block goods %}
+
     <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
+
             <h3>Форма детали</h3>
             Код изделия:{{ form.goods_code }}<br>
             Название дубликата: {{ form.duplicate }}<br>
@@ -28,12 +30,17 @@
         <button type="submit">Подтвердить</button>
     </form>
     <script>
-    let goods_code = document.getElementById("id_goods_code");
-    for(i=0; i<goods_code.options.length; i++){
-        if(goods_code.options[i].value == "{{ goods.id }}"){
-            goods_code.selectedIndex = i;
+        let goods_code = document.getElementById("id_goods_code");
+        let duplicate = document.getElementById('id_duplicate');
+        let number_nest = document.getElementById('id_number_nest');
+        if (duplicate.value === '' ) {
+            for(i=0; i<goods_code.options.length; i++){
+                if(goods_code.options[i].value == "{{ goods.id }}"){
+                    goods_code.selectedIndex = i;
+                }
+            }
         }
-    }
+
     </script>
 
 {% endblock goods %}

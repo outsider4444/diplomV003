@@ -16,16 +16,14 @@ def main(request):
     return render(request, "main/main.html")
 
 
-# Сотрудники
-
 # Выводы для фильтров
-
 class WorkerCategory:
     """Должности сотрудников"""
-
     def get_category(self):
         return Workers.objects.filter(fired=False).values("category").distinct()
 
+
+# Сотрудники
 
 class WorkerView(WorkerCategory, ListView):
     """Список сотрудников"""
@@ -58,7 +56,6 @@ class WorkerDetailView(DetailView, WorkerCategory):
 
 class WorkerUpdate(UpdateView):
     """Редактирование информации о сотруднике"""
-
     model = Workers
     template_name = "workers/workers_form/worker_new.html"
     success_url = "/"
@@ -112,7 +109,6 @@ def CustomerDetailView(request, pk):
 
 class CustomerUpdate(UpdateView):
     """Редактирование информации о сотруднике"""
-
     model = Customer
     template_name = "customer/customer_form/customer_new.html"
     success_url = "/"
@@ -122,7 +118,6 @@ class CustomerUpdate(UpdateView):
 # Изделия
 class GoodsView(ListView):
     """Список изделий"""
-
     model = Goods
     queryset = Goods.objects.all()
     template_name = "goods/goods_list.html"
@@ -131,7 +126,6 @@ class GoodsView(ListView):
 
 def GoodsDetailView(request, pk):
     """Полная информация об изделии"""
-
     error = ""
     goods = Goods.objects.get(id=pk)
     calendar = GoodsCalendar.objects.filter(goods_code=pk)
@@ -151,7 +145,6 @@ def GoodsDetailView(request, pk):
 
 class GoodsUpdateView(UpdateView):
     """Редактирование информации о детали"""
-
     model = Goods
     template_name = "goods/goods_form/goods_new.html"
     success_url = "/"
@@ -169,8 +162,7 @@ def GoodsNew(request):
             return redirect("goods_list")
         else:
             error = "Форма неверно заполнена"
-    return render(request, "goods/goods_form/goods_new.html", {"form": form,
-                                                               "error": error})
+    return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error})
 
 
 class GoodsDeleteView(DeleteView):
@@ -179,6 +171,14 @@ class GoodsDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/"
     template_name = "goods/goods_form/goods_delete.html"
+
+
+class GoodsFormUpdateView(UpdateView):
+    """Обновление информации о форме изделия"""
+    model = GoodsDefaultForm
+    template_name = 'goods/goods_form/goods_form_new.html'
+    form_class = FormsGoodsForm
+    slug_field = 'pk'
 
 
 def GoodsFormNew(request, pk):
@@ -195,6 +195,7 @@ def GoodsFormNew(request, pk):
             error = "Форма неверно заполнена"
     return render(request, "goods/goods_form/goods_form_new.html", {"form": form,
                                                                     "error": error, "goods": goods})
+
 
 # Фильтры
 # class FilterGoodsView(ListView):

@@ -11,7 +11,7 @@ class GoodsForm(forms.ModelForm):
 
     class Meta:
         model = Goods
-        fields = ("code", "image", "weight_clean", "weight_clean",)
+        fields = '__all__'
 
 
 class CalendarForm(forms.ModelForm):
@@ -19,8 +19,7 @@ class CalendarForm(forms.ModelForm):
 
     class Meta:
         model = GoodsCalendar
-        fields = ("goods_code", "month", "lith", "remote", "remote_percent",
-                  "one_man_sr", "one_man_max", "two_man_sr", "two_man_max")
+        fields = '__all__'
         widgets = {
             "month": forms.SelectDateWidget,
         }
