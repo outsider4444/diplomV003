@@ -52,8 +52,6 @@
                     <a href="{% url 'update_goods_form' pk=format.id %}"> <input type="button" value="Редактировать форму">
                     </a>
                 {% endfor %}
-
-
             {% else %}
                 <input type="button" onclick='location.href="create_goods_form"' value="Добавить форму">
             {% endif %}

@@ -1,29 +1,29 @@
-{% extends 'workers/base.html' %}
+{% extends 'materials/base.html' %}
 
-{% block title %} Список сотрудников {% endblock title %}
-{% block header_title %} Список сотрудников {% endblock header_title %}
+{% block title %} Список материалов {% endblock title %}
+{% block header_title %} Список материалов {% endblock header_title %}
 
 {% block header_image %}
     <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block worker %}
+{% block material %}
     <!-- product right -->
     <div class="left-ads-display col-lg-9">
-            <input type="button" onclick='location.href="{% url "workers_create" %}"' value="Создать нового сотрудника">
+{#            <input type="button" onclick='location.href="{% url "workers_create" %}"' value="Создать нового сотрудника">#}
         <div class="row">
-            {% for worker in workers_list %}
+            {% for material in materials_list %}
                 <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <h4 class="">
-                                <a href="{{ worker.code }}" class="editContent" >
-                                    {{ worker.name }}
+                                <a href="{{ material.code }}" class="editContent" >
+                                    {{ material.code }}
                                 </a>
                             </h4>
                             <div class="product_price">
                                 <div class="grid-price">
-                                    <a href="{{ worker.code }}"><span class="money editContent" >{{ worker.category }}</span></a>
+                                    <a href="{{ material.code }}"><span class="money editContent" >{{ material.code }}</span></a>
                                 </div>
                             </div>
                         </div>
@@ -31,9 +31,9 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="grid-img-right mt-4 text-right bg bg1" >
-            {% include 'include/pagination/worker_pagination.html' %}
-        </div>
+{#        <div class="grid-img-right mt-4 text-right bg bg1" >#}
+{#            {% include 'include/pagination/material_pagination.html' %}#}
+{#        </div>#}
     </div>
     <!-- //contact -->
-{% endblock worker %}
+{% endblock material %}

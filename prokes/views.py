@@ -25,7 +25,7 @@ class WorkerCategory:
 
 # Сотрудники
 
-class WorkerView(WorkerCategory, ListView):
+class WorkerListView(WorkerCategory, ListView):
     """Список сотрудников"""
     model = Workers
     queryset = Workers.objects.filter(fired=False)
@@ -64,7 +64,7 @@ class WorkerUpdate(UpdateView):
 
 
 # Заказчики
-class CustomerView(ListView):
+class CustomerListView(ListView):
     """Список заказчиков"""
     model = Customer
     queryset = Customer.objects.all()
@@ -116,7 +116,7 @@ class CustomerUpdate(UpdateView):
 
 
 # Изделия
-class GoodsView(ListView):
+class GoodsListView(ListView):
     """Список изделий"""
     model = Goods
     queryset = Goods.objects.all()
@@ -197,7 +197,7 @@ def GoodsFormNew(request, pk):
                                                                     "error": error, "goods": goods})
 
 
-# Фильтры
+# Фильтры для изделий
 # class FilterGoodsView(ListView):
 #     """Фильтр изделий"""
 #     template_name = "goods/goods_list.html"
@@ -280,3 +280,11 @@ def GoodsFormNew(request, pk):
 #         context = super().get_context_data(*args, **kwargs)
 #         context["q"] = f'q={self.request.GET.get("q")}&'
 #         return context
+
+# Материалы
+class MaterialListView(ListView):
+    """Список материалов"""
+    model = Materials
+    queryset = Materials.objects.all()
+    template_name = "materials/material_list.html"
+    # paginate_by = 5
