@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
 from requests import request
 
-from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm, CheckoutForm, CustomerForm
+from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm, CheckoutForm, CustomerForm, MaterialNewForm
 
 from .models import *
 
@@ -290,11 +290,26 @@ class MaterialListView(ListView):
     # paginate_by = 5
 
 
+def MaterialNew(request):
+    """Создание нового материала"""
+    form = MaterialNewForm()
+    error = ""
+    if request.method == "POST":
+        form = MaterialNewForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("material_list")
+        else:
+            error = "Форма неверно заполнена"
+    return render(request, "materials/materials_form/materials_new.html", {"form": form, "error": error})
+
+
 def MaterialDetailView(request, pk):
     """Просмотр подробности об материале"""
     material = Materials.objects.get(id=pk)
     context = {"material": material}
     return render(request, "materials/material_detail.html", context)
+
 
 
 class MaterialDeleteView(DeleteView):

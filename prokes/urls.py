@@ -16,6 +16,8 @@ urlpatterns = [
     path("goods_list/goods_create/", views.GoodsNew, name="goods_create"),
     path("workers_list/workers_create/", views.WorkerNew, name="workers_create"),
     path("customer_list/customer_create/", views.CustomerNew, name="customer_create"),
+    path("material_list/material_create/", views.MaterialNew, name="material_create"),
+
 
     # Обновить форму изделия
     path("goods_list/<int:pk>/update_goods_form/", views.GoodsFormUpdateView.as_view(), name="update_goods_form"),
