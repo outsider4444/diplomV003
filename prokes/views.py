@@ -311,10 +311,18 @@ def MaterialDetailView(request, pk):
     return render(request, "materials/material_detail.html", context)
 
 
+class MaterialUpdateView(UpdateView):
+    """Обновление информации о материале"""
+    model = Materials
+    template_name = 'materials/materials_form/materials_new.html'
+    form_class = MaterialNewForm
+    slug_field = 'pk'
+    success_url = '/'
+
 
 class MaterialDeleteView(DeleteView):
     """Удаление материала"""
     model = Materials
     # Изменить на список смесей
-    success_url = "/"
+    success_url = '/'
     template_name = "materials/materials_form/materials_delete.html"
