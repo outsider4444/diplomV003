@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     # Форма удаления
     path("goods_list/<int:pk>/delete/", views.GoodsDeleteView.as_view(), name="goods_delete"),
+    path("material_list/<int:pk>/delete/", views.MaterialDeleteView.as_view(), name="material_delete"),
 
     # Форма обновления
     path("goods_list/<int:pk>/update/", views.GoodsUpdateView.as_view(), name="goods_update"),
@@ -31,6 +32,7 @@ urlpatterns = [
     path("goods_list/<int:pk>/", views.GoodsDetailView, name="goods_detail"),
     path('workers_list/<int:slug>/', views.WorkerDetailView.as_view(), name="worker_detail"),
     path('customer_list/<int:pk>/', views.CustomerDetailView, name="customer_detail"),
+    path('material_list/<int:pk>/', views.MaterialDetailView, name="material_detail"),
 
     # Список
     path("goods_list/", views.GoodsListView.as_view(), name="goods_list"),

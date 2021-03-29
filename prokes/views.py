@@ -288,3 +288,18 @@ class MaterialListView(ListView):
     queryset = Materials.objects.all()
     template_name = "materials/material_list.html"
     # paginate_by = 5
+
+
+def MaterialDetailView(request, pk):
+    """Просмотр подробности об материале"""
+    material = Materials.objects.get(id=pk)
+    context = {"material": material}
+    return render(request, "materials/material_detail.html", context)
+
+
+class MaterialDeleteView(DeleteView):
+    """Удаление материала"""
+    model = Materials
+    # Изменить на список смесей
+    success_url = "/"
+    template_name = "materials/materials_form/materials_delete.html"

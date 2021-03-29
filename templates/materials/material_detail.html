@@ -1,4 +1,4 @@
-{% extends 'workers/base.html' %}
+{% extends 'materials/base.html' %}
 {% block title %} Материал: {{ material.code }} {% endblock title %}
 {% block header_title %} Материал: {{ material.code }} {% endblock header_title %}
 
@@ -11,18 +11,26 @@
     <div class="left-ads-display col-lg-8">
         {#                Изменить стили #}
 {#    <input type="button" onclick='location.href="update"' value="Редактировать сотрудника">#}
+            <input type="button" onclick='location.href="delete"' value="Удалить материал">
         <div class="row">
             <div class="desc1-right col-md-6 pl-lg-4" >
 
-                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">{{ material.code }}
-                </h3>
-                <span>{{ workers.category }}</span>
+                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">{{ material.code }}</h3>
                 {#                            <h5 class="editContent"></h5>#}
 
 
                 <ul style="margin-top: 15px">
                     <li style="list-style: none">
                         <span><b>Код смеси: </b>{{ material.code }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Вес смеси: </b>{{ material.weight }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Номер партии: </b>{{ material.batch_number }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Номер поддона: </b>{{ material.pallet_number }}</span>
                     </li>
 
 
