@@ -37,12 +37,15 @@ urlpatterns = [
     path('worker_list/<int:slug>/', views.WorkerDetailView.as_view(), name="worker_detail"),
     path('customer_list/<int:pk>/', views.CustomerDetailView, name="customer_detail"),
     path('material_list/<int:pk>/', views.MaterialDetailView, name="material_detail"),
+    path('supplier_list/<int:pk>/', views.SuppliersDetailView, name="supplier_detail"),
+
 
     # Список
     path("goods_list/", views.GoodsListView.as_view(), name="goods_list"),
     path("worker_list/", views.WorkerListView.as_view(), name="workers_list"),
     path("customer_list/", views.CustomerListView.as_view(), name="customer_list"),
     path("material_list/", views.MaterialListView.as_view(), name="material_list"),
+    path("supplier_list/", views.SuppliersListView.as_view(), name="supplier_list"),
 
     # Авторизация
     path("accounts/", include("allauth.urls")),

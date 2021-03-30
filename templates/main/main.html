@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 
 {% block title %} Главная {% endblock title %}
-{% block header_title %} Главная {% endblock header_title %}
+{% block header_title %} Главная <br>!!!Вернуть пагинацию{% endblock header_title %}
 
 {% block header_image %}
     <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
@@ -11,81 +11,56 @@
     <!-- product right -->
     <div class="left-ads-display col-lg-12">
         <div class="row">
-
             <div class="col-md-4 product-men">
-                <div class="product-shoe-info editContent text-center mt-lg-4" >
-                    <div class="men-thumb-item">
-{#                        <a href="{% url "worker_list" %}" class="editContent" >#}
-                        </a>
-                    </div>
-                    <div class="item-info-product">
-                        <h4 class="">
-                            <a href="{% url "workers_list" %}" class="editContent" style="color: lime">
-                                Сотрудники
-                            </a>
-                        </h4>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 product-men">
-                <div class="product-shoe-info editContent text-center mt-lg-4" >
-
-                    <div class="item-info-product">
-                        <h4 class="">
-                            <a href="{% url "material_list" %}" class="editContent" style="color: lime">
-                                Материалы
-                            </a>
-                        </h4>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 product-men">
-                <div class="product-shoe-info editContent text-center mt-lg-4" >
-{#                    <a href="{% url "goods_list" %}" class="editContent" >#}
-                    </a>
-                    <div class="item-info-product">
-                        <h4 class="">
-                            <a href="{% url "goods_list" %}" class="editContent" style="color: lime">
-                                Изделия
-                            </a>
-                        </h4>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 product-men">
-                <div class="product-shoe-info editContent text-center mt-lg-4" >
-                    <div class="men-thumb-item">
-{#                        <a href="{% url "suppliers_list" %}" class="editContent" >#}
-                            <img src="../../media/main/suppliers.jpg" class="img-fluid" alt="" >
-                        </a>
-
-                    </div>
-                    <div class="item-info-product">
-                        <h4 class="">
-{#                            <a href="{% url "suppliers_list" %}" class="editContent" >#}
-                                Поставщики
-
-                            </a>
-                        </h4>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 product-men">
+                <a href="{% url "workers_list" %}" class="editContent" style="color: lime">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
-
                         <div class="item-info-product">
-                            <h4 class="">
-                                <a href="{% url "customer_list" %}" class="editContent" style="color: lime">
-                                    Заказчики
-                                </a>
-                            </h4>
+                            <h4 class="">Сотрудники</h4>
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 product-men">
+                <a href="{% url "material_list" %}" class="editContent" style="color: lime">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="item-info-product">
+                            <h4 class="">Материалы</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 product-men">
+                <a href="{% url "goods_list" %}" class="editContent" style="color: lime">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="item-info-product">
+                            <h4 class="">Изделия</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 product-men">
+                <a href="{% url "supplier_list" %}" class="editContent" style="color: yellow">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="item-info-product">
+                            <h4 class="">Поставщики <br>
+                                (Сделать формы удаления, добавления, обновления, просмотра подробностей)</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4 product-men">
+                <a href="{% url "customer_list" %}" class="editContent" style="color: lime">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="item-info-product">
+                            <h4 class="">Заказчики</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
             <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >

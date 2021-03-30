@@ -1,0 +1,55 @@
+{% extends 'suppliers/base.html' %}
+{% block title %}Поставщик: {{ supplier.name }} {% endblock title %}
+{% block header_title %}Поставщик: {{ supplier.name }} {% endblock header_title %}
+
+{% block header_image %}
+    <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block suppliers %}
+    <!-- product right -->
+    <div class="left-ads-display col-lg-8">
+        {#                Изменить стили #}
+        <div class="row">
+            {#                        <div class="desc1-left col-md-6">#}
+            {#                            <img src="{{ movie.poster.url }}" class="img-fluid" alt="">#}
+            {#                        </div>#}
+            <div class="desc1-right col-md-6 pl-lg-4" >
+                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
+                    {{ supplier.name }}
+                </h3>
+                <ul style="margin-top: 15px">
+                    <li style="list-style: none">
+                        <span><b>Email: </b> {{ supplier.email }}</span></li>
+                    <li style="list-style: none">
+                        Добавить коды смесей как поставщикам
+                    </li>
+                    <li style="list-style: none"><span><b>Количество: </b>
+                                    {{ suppliers.value }}
+                                    </span>
+                    </li>
+                    <li style="list-style: none"><span><b>Дата поставки: </b>
+                                    {{ supplier.date }}
+                                    </span>
+                    </li>
+                    <div class="share-desc">
+                        <div class="clearfix"></div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        !!! Сделать форму детального просмотра
+        <div class="row sub-para-w3layouts mt-5">
+        </div>
+        {#                    Полоска#}
+        {#                    <hr>#}
+        <div class="row">
+            <div class="single-form-left">
+                <!-- contact form grid -->
+{#                Изменить стили #}
+                <!--  //contact form grid ends here -->
+            </div>
+        </div>
+    </div>
+    <!-- //contact -->
+{% endblock suppliers %}

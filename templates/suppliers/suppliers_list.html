@@ -1,0 +1,47 @@
+{% extends 'suppliers/base.html' %}
+
+{% block title %} Список поставщиков {% endblock title %}
+{% block header_title %} Список поставщиков {% endblock header_title %}
+
+{% block header_image %}
+    <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block suppliers %}
+    <!-- product right -->
+    <form>
+{#        <input type="button" onclick='location.href="{% url "customer_create" %}"' value="Добавить нового заказчика">#}
+    </form>
+
+    <div class="left-ads-display col-lg-9">
+        <div class="row">
+            {% for supplier in suppliers_list %}
+                <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{{ supplier.id }}" class="editContent" >
+                                    {{ supplier.name }}
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{{ supplier.id }}">
+                                        <span class="money editContent" >{{ supplier.email }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="grid-img-right mt-4 text-right bg bg1" >
+{#            {% include 'include/pagination/supplier_pagination.html' %}#}
+        </div>
+    </div>
+    <!-- //contact -->
+{% endblock suppliers %}

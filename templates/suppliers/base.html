@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+<!-- banner -->
+{% block content %}
+    {% if user.is_authenticated %}
+        <section class="ab-info-main py-md-5 py-4 editContent" style="padding-left: 3rem; padding-right: 3rem;">
+            <div class="container-fluid py-md-3">
+                <div class="row">
+{#                    {% include 'include/sidebars/suppliers_sidebar.html' %}#}
+                    {% block suppliers %}
+
+                    {% endblock suppliers %}
+                </div>
+            </div>
+        </section>
+    {% else %}
+        <h3 align="center">Для просмотра информации пожалуйста <a href="{% url 'account_login' %}" style=" font-weight: 700; text-transform: uppercase;">
+            авторизируйтесь</a></h3>
+    {% endif %}
+
+{% endblock content %}

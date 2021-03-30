@@ -1,11 +1,11 @@
 from django.db.models import Q
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
 from requests import request
 
-from .forms import GoodsForm, CalendarForm, FormsGoodsForm, WorkersForm, CheckoutForm, CustomerForm, MaterialNewForm
+from .forms import *
 
 from .models import *
 
@@ -321,7 +321,7 @@ def MaterialNew(request):
 
 
 def MaterialDetailView(request, pk):
-    """Просмотр подробности об материале"""
+    """Просмотр подробности о материале"""
     material = Materials.objects.get(id=pk)
     context = {"material": material}
     return render(request, "materials/material_detail.html", context)
@@ -342,3 +342,33 @@ class MaterialDeleteView(DeleteView):
     # Изменить на список смесей
     success_url = '/'
     template_name = "materials/materials_form/materials_delete.html"
+
+
+# Поставщики
+class SuppliersListView(ListView):
+    """Список поставщиков"""
+    model = Suppliers
+    queryset = Suppliers.objects.all()
+    template_name = "suppliers/suppliers_list.html"
+    # paginate_by = 5
+
+
+def SuppliersDetailView(request, pk):
+    """Просмотр подробности о поставщике"""
+    OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("code_material", "values"), extra=10)
+    supplier = Suppliers.objects.get(id=pk)
+    material = DeliveriesMaterials.objects.filter(supplier_name=pk)
+    formset = OrderFormSet(queryset=DeliveriesMaterials.objects.none(), instance=supplier)
+    date = DeliveriesMaterials.objects.order_by().values('date').order_by("date").distinct()
+    error = ""
+    if request.method == "POST":
+        formset = OrderFormSet(request.POST, instance=supplier)
+        if formset.is_valid():
+            formset.save()
+            # перенаправление на ту же страницу
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            error = formset.errors
+    context = {"supplier": supplier, "formset": formset,
+               "error": error, "date": date, "material": material}
+    return render(request, "suppliers/suppliers_detail.html", context)
