@@ -24,7 +24,6 @@ class WorkerCategory:
 
 
 # Сотрудники
-
 class WorkerListView(WorkerCategory, ListView):
     """Список сотрудников"""
     model = Workers
@@ -61,6 +60,15 @@ class WorkerUpdate(UpdateView):
     success_url = "/"
     slug_field = "code"
     form_class = WorkersForm
+
+
+class WorkerDeleteView(DeleteView):
+    """Удаление сотрудника"""
+    model = Workers
+    # Изменить на список изделий
+    slug_field = 'code'
+    success_url = "/"
+    template_name = "workers/workers_form/worker_delete.html"
 
 
 # Заказчики
@@ -113,6 +121,14 @@ class CustomerUpdate(UpdateView):
     template_name = "customer/customer_form/customer_new.html"
     success_url = "/"
     form_class = CustomerForm
+
+
+class CustomerDeleteView(DeleteView):
+    """Удаление сотрудника"""
+    model = Customer
+    # Изменить на список изделий
+    success_url = "/"
+    template_name = "customer/customer_form/customer_delete.html"
 
 
 # Изделия

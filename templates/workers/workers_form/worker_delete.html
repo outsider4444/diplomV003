@@ -1,13 +1,13 @@
-{% extends "materials/base.html" %}
+{% extends "workers/base.html" %}
 
 {#Надпись в Title#}
 {% block title %}
-    Удаление материала
+    Удаление сотрудника
 {% endblock title %}
 
 {#Надпись в шапке#}
 {% block header_title %}
-    Удаление материала
+    Удаление сотрудника
 {% endblock header_title %}
 
 {#Надпись в шапке#}
@@ -15,11 +15,11 @@
     <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block material %}
-<h3>Вы действительно хотите удалить материал?</h3>
+{% block worker %}
+<h3>Вы действительно хотите удалить сотрудника?</h3>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <button type="submit">Удалить материал</button>
+        <button type="submit">Удалить сотрудника</button>
         </form>
-{% endblock material %}
+{% endblock worker %}
