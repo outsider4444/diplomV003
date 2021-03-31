@@ -53,7 +53,7 @@ class WorkerDetailView(DetailView, WorkerCategory):
     template_name = 'workers/worker_detail.html'
 
 
-class WorkerUpdate(UpdateView):
+class WorkerUpdateView(UpdateView):
     """Редактирование информации о сотруднике"""
     model = Workers
     template_name = "workers/workers_form/worker_new.html"
@@ -81,7 +81,7 @@ class CustomerListView(ListView):
 
 
 def CustomerNew(request):
-    """Создание нового сотрудника"""
+    """Создание нового заказчика"""
     form = CustomerForm()
     error = ""
     if request.method == "POST":
@@ -115,8 +115,8 @@ def CustomerDetailView(request, pk):
     return render(request, "customer/customer_detail.html", context)
 
 
-class CustomerUpdate(UpdateView):
-    """Редактирование информации о сотруднике"""
+class CustomerUpdateView(UpdateView):
+    """Редактирование информации о заказчике"""
     model = Customer
     template_name = "customer/customer_form/customer_new.html"
     success_url = "/"
@@ -124,12 +124,11 @@ class CustomerUpdate(UpdateView):
 
 
 class CustomerDeleteView(DeleteView):
-    """Удаление сотрудника"""
+    """Удаление заказчика"""
     model = Customer
     # Изменить на список изделий
     success_url = "/"
     template_name = "customer/customer_form/customer_delete.html"
-
 
 # Изделия
 class GoodsListView(ListView):
@@ -211,7 +210,6 @@ def GoodsFormNew(request, pk):
             error = "Форма неверно заполнена"
     return render(request, "goods/goods_form/goods_form_new.html", {"form": form,
                                                                     "error": error, "goods": goods})
-
 
 # Фильтры для изделий
 # class FilterGoodsView(ListView):
@@ -343,7 +341,6 @@ class MaterialDeleteView(DeleteView):
     success_url = '/'
     template_name = "materials/materials_form/materials_delete.html"
 
-
 # Поставщики
 class SuppliersListView(ListView):
     """Список поставщиков"""
@@ -353,11 +350,25 @@ class SuppliersListView(ListView):
     # paginate_by = 5
 
 
+def SupplierNew(request):
+    """Создание нового заказчика"""
+    form = SupplierNewForm()
+    error = ""
+    if request.method == "POST":
+        form = SupplierNewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("supplier_list")
+        else:
+            error = "Форма неверно заполнена"
+    return render(request, "suppliers/supplier_form/supplier_new.html", {"form": form, "error": error})
+
+
 def SuppliersDetailView(request, pk):
     """Просмотр подробности о поставщике"""
     OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("code_material", "values"), extra=10)
     supplier = Suppliers.objects.get(id=pk)
-    material = DeliveriesMaterials.objects.filter(supplier_name=pk)
+    materials = DeliveriesMaterials.objects.filter(supplier_name=pk)
     formset = OrderFormSet(queryset=DeliveriesMaterials.objects.none(), instance=supplier)
     date = DeliveriesMaterials.objects.order_by().values('date').order_by("date").distinct()
     error = ""
@@ -370,5 +381,21 @@ def SuppliersDetailView(request, pk):
         else:
             error = formset.errors
     context = {"supplier": supplier, "formset": formset,
-               "error": error, "date": date, "material": material}
+               "error": error, "date": date, "materials": materials}
     return render(request, "suppliers/suppliers_detail.html", context)
+
+
+class SupplierUpdateView(UpdateView):
+    """Редактирование информации о поставщике"""
+    model = Suppliers
+    template_name = "suppliers/supplier_form/supplier_new.html"
+    success_url = "/"
+    form_class = SupplierNewForm
+
+
+class SupplierDeleteView(DeleteView):
+    """Удаление поставщика"""
+    model = Suppliers
+    # Изменить на список изделий
+    success_url = "/"
+    template_name = "suppliers/supplier_form/supplier_delete.html"

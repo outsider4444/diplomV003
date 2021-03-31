@@ -7,49 +7,59 @@
 {% endblock header_image %}
 
 {% block suppliers %}
-    <!-- product right -->
+<!-- product right -->
     <div class="left-ads-display col-lg-8">
+
+{#    Сделать "изменение #}
+<input type="button" onclick='location.href="update"' value="Изменить информацию о заказчике">
+<input type="button" onclick='location.href="delete"' value="Удалить поставщика">
+{# Красиво выводить#}
+
         {#                Изменить стили #}
         <div class="row">
-            {#                        <div class="desc1-left col-md-6">#}
-            {#                            <img src="{{ movie.poster.url }}" class="img-fluid" alt="">#}
-            {#                        </div>#}
+
             <div class="desc1-right col-md-6 pl-lg-4" >
                 <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
                     {{ supplier.name }}
                 </h3>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none">
-                        <span><b>Email: </b> {{ supplier.email }}</span></li>
+                        <span><b>Email: </b> {{ supplier.email }}</span>
+                    </li>
                     <li style="list-style: none">
-                        Добавить коды смесей как поставщикам
+                        <span><b>Номер телефона: </b> {{ supplier.phone_number }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Количество: </b>
-                                    {{ suppliers.value }}
-                                    </span>
+                    <li style="list-style: none">
+                        <span><b>Представитель: </b> {{ supplier.representative }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Дата поставки: </b>
-                                    {{ supplier.date }}
-                                    </span>
-                    </li>
-                    <div class="share-desc">
-                        <div class="clearfix"></div>
-                    </div>
                 </ul>
             </div>
         </div>
-        !!! Сделать форму детального просмотра
+{#        Календарь поставок#}
+    <h3>Даты поставок:</h3>
+        {% for material_date in date %}
+            <b>Дата поставки: </b>{{ material_date.date }}<br>
+                {% for material in materials %}
+                    {% if material.date == material_date.date %}
+                        <b>Код материала:</b> {{ material.code_material }}<br>
+                        Количество: {{ material.values }}<br>
+                    {% endif %}
+                {% endfor %}<hr>
+        {% endfor %}
+
+{#    Ввод данных #}
         <div class="row sub-para-w3layouts mt-5">
+            <form method="post" enctype="multipart/form-data" name="create" id="form_goods_create">
+            <h3>Добавить дату поставки</h3><br>
+                {% csrf_token %}
+            {{ formset.management_form }}
+                {% for form in formset %}
+                    {{ form }}<hr>
+                {% endfor %}
+                <input type="submit" value="Подтвердить">
+            </form>
         </div>
-        {#                    Полоска#}
-        {#                    <hr>#}
-        <div class="row">
-            <div class="single-form-left">
-                <!-- contact form grid -->
-{#                Изменить стили #}
-                <!--  //contact form grid ends here -->
-            </div>
-        </div>
+
     </div>
     <!-- //contact -->
 {% endblock suppliers %}

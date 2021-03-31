@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "customer/base.html" %}
 
-</body>
-</html>
+{#Надпись в Title#}
+{% block title %}
+    Создание/редактирование информации о поставщике
+{% endblock title %}
+
+{#Надпись в шапке#}
+{% block header_title %}
+    Создание/редактирование информации о поставщике
+{% endblock header_title %}
+
+{% block header_image %}
+<div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block customer %}
+{# Изменить поставщика#}
+    <form method="post" enctype="multipart/form-data" name="create">
+        {% csrf_token %}
+        Имя поставщика:{{ form.name }}<br>
+        Почта:{{ form.email }}<br>
+        Номер телефона:{{ form.phone_number }}<br>
+        Представитель:{{ form.representative }}<br>
+
+      <span>{{ error }}</span>
+        <button type="submit">Подтвердить</button>
+        </form>
+{% endblock customer %}

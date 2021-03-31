@@ -2,12 +2,12 @@
 
 {#Надпись в Title#}
 {% block title %}
-    Создание/редактирование информации о поставках
+    Создание/редактирование информации о заказчике
 {% endblock title %}
 
 {#Надпись в шапке#}
 {% block header_title %}
-    Создание/редактирование информации о поставках
+    Создание/редактирование информации о заказчике
 {% endblock header_title %}
 
 {% block header_image %}
@@ -18,7 +18,7 @@
 {# Изменить поставщика#}
     <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
-        Имя поставщика:{{ form.name }}<br>
+        Имя заказчика:{{ form.name }}<br>
         Почта:{{ form.email }}<br>
         Номер телефона:{{ form.phone_number }}<br>
         Представитель:{{ form.representative }}<br>

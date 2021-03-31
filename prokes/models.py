@@ -48,7 +48,6 @@ class Goods(models.Model):
     code = models.CharField('Код изделия', max_length=120)
     name = models.CharField('Название изделия', max_length=30)
     image = models.ImageField("Фотография изделия", upload_to="goods/", blank=True)
-    # изменить позже
     weight_clean = models.FloatField('Вес чистой детали', default=0)
     norma_na_vigruzku = models.FloatField('Норма на выгрузку', default=0)
     rashod_smesi = models.FloatField('Расход смеси', default=0)
