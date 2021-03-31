@@ -399,3 +399,20 @@ class SupplierDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/"
     template_name = "suppliers/supplier_form/supplier_delete.html"
+
+
+# Склад изделия
+class StorageGoodsListView(ListView):
+    """Список поставщиков"""
+    model = GoodsStorage
+    queryset = GoodsStorage.objects.all()
+    template_name = "storage_goods/storage_goods_list.html"
+    # paginate_by = 5
+
+
+def StorageGoodsDetailView(request, pk):
+    """Просмотр подробности о изделии на складе"""
+    goods = GoodsStorage.objects.get(id=pk)
+    error = ""
+    context = {"goods": goods}
+    return render(request, "storage_goods/storage_goods_detail.html", context)

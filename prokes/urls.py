@@ -52,6 +52,10 @@ urlpatterns = [
     path("customer_list/", views.CustomerListView.as_view(), name="customer_list"),
     path("material_list/", views.MaterialListView.as_view(), name="material_list"),
     path("supplier_list/", views.SuppliersListView.as_view(), name="supplier_list"),
+    # Склады
+    path("storage_goods/", views.StorageGoodsListView.as_view(), name="storage_goods_list"),
+    # path("supplier_list/", views.SuppliersListView.as_view(), name="supplier_list"),
+
 
     # Авторизация
     path("accounts/", include("allauth.urls")),

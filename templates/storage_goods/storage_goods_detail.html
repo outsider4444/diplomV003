@@ -1,0 +1,166 @@
+{% extends 'storage_goods/base.html' %}
+{% block header_image %}
+    {% if goods.image %}
+        <div class="main-banner bg bg1" id="home" style="background: url('{{ goods.image.url }}')">
+    {% else %}
+        <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
+
+    {% endif %}
+{% endblock header_image %}
+
+{% load static %}
+{% block title %}Изделие: {{ goods.code }} {% endblock title %}
+{% block header_title %}Изделие: {{ goods.code }} {% endblock header_title %}
+
+{% block goods %}
+    <!-- product right -->
+    <div class="left-ads-display col-lg-8">
+        {#                Изменить стили #}
+        <div class="container">
+
+            <div class="desc1-right col-md-6 pl-lg-4" >
+
+                <form>
+                    <input type="button" onclick='location.href="update"' value="Редактировать изделие">
+                    <input type="button" onclick='location.href="delete"' value="Удалить изделие">
+                </form>
+                <ul style="margin-top: 15px">
+                    <li style="list-style: none"><span><b>Вес чистой детали: </b>{{ goods.weight_clean }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Норма с ковром: </b>{{ goods.norma_with_carpet }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Расход смеси: </b>{{ goods.consumption_smesi }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Норма: </b>{{ goods.one_person_norma }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="container">
+
+            <!-- Форма детали -->
+            <h3>Форма детали</h3>
+            {% if goods_form %}
+                {% for format in goods_form %}
+                    Код изделия: {{ format.goods_code }}
+                    Название дубликата: {{ format.duplicate }}<br>
+                    Период чистки: {{ format.cleaning_period }}<br>
+                    Номер гнезда: {{ format.number_nest }}<br>
+                    Процент массы: {{ format.percent_mass }}
+                    <a href="{% url 'update_goods_form' pk=format.id %}"> <input type="button" value="Редактировать форму">
+                    </a>
+                {% endfor %}
+            {% else %}
+                <input type="button" onclick='location.href="create_goods_form"' value="Добавить форму">
+            {% endif %}
+            <!-- //Форма детали -->
+
+        <!-- Таблица -->
+        <h3>Календарь</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-responsive">
+                    <tr>
+                        <td>Дата</td>
+                        <td>Всего</td>
+                        {% for date in calendar %}
+                            <td>
+                                {{ date.month.month }} - {{ date.month.year }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Отлито шт.</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.lith }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Брак шт.</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.remote }}%</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Брак %</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.remote_percent }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Смена выработки на 1 человека в СРЕДНЕМ</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.one_man_sr }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Смена выработки на 1 человека МАКСИМАЛЬНО</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.one_man_max }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Смена выработки на 2 человек в СРЕДНЕМ</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.two_man_sr }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>Смена выработки на 2 человека МАКСИМАЛЬНО</td>
+                        <td>  </td>
+                        {% for info in calendar %}
+                            <td>{{ info.two_man_max }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            <!--// Таблица -->
+
+            <!--Добавить информацию в календарь -->
+            <h3>Добавить месяц в календарь</h3>
+                <form method="post" enctype="multipart/form-data" name="calendar" onchange="remote_calculate()">
+                    {% csrf_token %}
+                    {{ form.goods_code }}
+
+                    Введите дату: {{ form.month }}<br>
+                    Отлито шт. :{{ form.lith }}<br>
+                    Брак шт. :{{ form.remote }}<br>
+                    Брак % :{{ form.remote_percent }}<br>
+                    Смена выработки на 1 человека в СРЕДНЕМ:{{ form.one_man_sr }}<br>
+                    Смена выработки на 1 человека МАКСИМАЛЬНО:{{ form.one_man_max }}<br>
+                    Смена выработки на 2 человек в СРЕДНЕМ:{{ form.two_man_sr }}<br>
+                    Смена выработки на 2 человека МАКСИМАЛЬНО:{{ form.two_man_max }}<br>
+
+                    <span>{{ error }}</span>
+
+                    <button type="submit">Подтвердить</button>
+                </form>
+                <!--//Добавить информацию в календарь -->
+
+
+            </div>
+        </div>
+    </div>
+    <!-- //contact -->
+<script>
+    //Скрытый <select> для редактирования календаря
+    let code_goods = document.getElementById("id_goods_code");
+    document.getElementById('id_remote_percent').readOnly = true;
+    for(i=0; i<code_goods.options.length; i++){
+        if(code_goods.options[i].value == "{{ goods.id }}"){
+            code_goods.selectedIndex = i;
+        }
+    }
+    // Расчет процента от брака
+    function remote_calculate() {
+        calendar.remote_percent.value = (100/calendar.lith.value) * calendar.remote.value
+    }
+</script>
+
+{% endblock goods %}

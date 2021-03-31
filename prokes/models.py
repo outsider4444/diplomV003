@@ -168,7 +168,7 @@ class Nariad(models.Model):
     consumption = models.IntegerField('Расход смеси')
 
     def __str__(self):
-        return self.code
+        return str(self.code)
 
     class Meta:
         verbose_name = "Наряд"
@@ -177,13 +177,13 @@ class Nariad(models.Model):
 
 class OTK(models.Model):
     """ОТК"""
-    nariad_code = models.ForeignKey(Nariad, verbose_name='Код изделия', on_delete=models.PROTECT)
+    nariad_code = models.ForeignKey(Nariad, verbose_name='Код наряда', on_delete=models.PROTECT)
     goods_value = models.IntegerField('Количество хороших изделий')
     remote_value = models.IntegerField('Количество бракованных изделий')
     date = models.DateField('Дата проверки')
 
     def __str__(self):
-        return str(self.date)
+        return str(self.nariad_code)
 
     class Meta:
         verbose_name = "ОТК"
@@ -197,7 +197,7 @@ class MaterialStorage(models.Model):
     date = models.DateField('Дата проверки')
 
     def __str__(self):
-        return self.material_code
+        return str(self.material_code)
 
     class Meta:
         verbose_name = "Склад материалов"
@@ -212,7 +212,7 @@ class GoodsStorage(models.Model):
     customer_code = models.ForeignKey(Customer, verbose_name='Код заказчика', on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.goods_code
+        return str(self.goods_code)
 
     class Meta:
         verbose_name = "Склад изделий"
