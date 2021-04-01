@@ -496,3 +496,12 @@ class NariadDeleteView(DeleteView):
     success_url = "/"
     slug_field = 'code'
     template_name = "nariad/nariad_form/nariad_delete.html"
+
+
+# ОТК
+class OTKListView(ListView):
+    """Список ОТК"""
+    model = OTK
+    queryset = OTK.objects.all()
+    template_name = "otk/otk_list.html"
+    # paginate_by = 5

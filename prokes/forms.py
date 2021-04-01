@@ -2,7 +2,7 @@ from django import forms
 from django.forms import DateField
 
 from .models import GoodsCalendar, GoodsDefaultForm, Workers, CheckoutGoods, Goods, Customer, Materials, \
-    Suppliers, GoodsStorage, Nariad
+    Suppliers, GoodsStorage, Nariad, OTK
 
 
 # Изделия
@@ -93,4 +93,12 @@ class NariadNewForm(forms.ModelForm):
 
     class Meta:
         model = Nariad
+        fields = '__all__'
+
+
+class OTKNewForm(forms.ModelForm):
+    """Форма добавления нового ОТК"""
+
+    class Meta:
+        model = OTK
         fields = '__all__'

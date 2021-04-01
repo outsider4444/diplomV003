@@ -1,0 +1,25 @@
+{% extends "suppliers/base.html" %}
+
+{#Надпись в Title#}
+{% block title %}
+    Удаление поставщика
+{% endblock title %}
+
+{#Надпись в шапке#}
+{% block header_title %}
+    Удаление поставщика
+{% endblock header_title %}
+
+{#Надпись в шапке#}
+{% block header_image %}
+    <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block suppliers %}
+<h3>Вы действительно хотите удалить поставщика?</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <button type="submit">Удалить поставщика</button>
+        </form>
+{% endblock suppliers %}

@@ -69,7 +69,7 @@ urlpatterns = [
     path("material_list/", views.MaterialListView.as_view(), name="material_list"),
     path("supplier_list/", views.SuppliersListView.as_view(), name="supplier_list"),
     path("nariad_list/", views.NariadListView.as_view(), name="nariad_list"),
-
+    path("otk_list/", views.OTKListView.as_view(), name="otk_list"),
     # Склады
     path("storage_goods/", views.StorageGoodsListView.as_view(), name="storage_goods_list"),
     # path("storage_material/", views.StorageMaterialListView.as_view(), name="storage_materials_list"),
