@@ -191,7 +191,7 @@ class GoodsDeleteView(DeleteView):
 class GoodsFormUpdateView(UpdateView):
     """Обновление информации о форме изделия"""
     model = GoodsDefaultForm
-    template_name = 'goods/goods_form/goods_form_new.html'
+    template_name = 'goods/goods_form/goods_new.html'
     form_class = FormsGoodsForm
     slug_field = 'pk'
 
@@ -208,7 +208,7 @@ def GoodsFormNew(request, pk):
             return redirect("goods_list")
         else:
             error = "Форма неверно заполнена"
-    return render(request, "goods/goods_form/goods_form_new.html", {"form": form,
+    return render(request, "goods/goods_form/goods_new.html", {"form": form,
                                                                     "error": error, "goods": goods})
 
 # Фильтры для изделий
@@ -341,6 +341,7 @@ class MaterialDeleteView(DeleteView):
     success_url = '/'
     template_name = "materials/materials_form/materials_delete.html"
 
+
 # Поставщики
 class SuppliersListView(ListView):
     """Список поставщиков"""
@@ -403,16 +404,48 @@ class SupplierDeleteView(DeleteView):
 
 # Склад изделия
 class StorageGoodsListView(ListView):
-    """Список поставщиков"""
+    """Список изделий на складе"""
     model = GoodsStorage
     queryset = GoodsStorage.objects.all()
     template_name = "storage_goods/storage_goods_list.html"
     # paginate_by = 5
 
 
+def StorageGoodsNew(request):
+    """Создание нового изделия на склад"""
+    form = GoodsStorageNewForm()
+    error = ""
+    if request.method == "POST":
+        form = GoodsStorageNewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("storage_goods_list")
+        else:
+            error = "Форма неверно заполнена"
+    return render(request, "storage_goods/goods_form/goods_new.html", {"form": form, "error": error})
+
+
+class StorageGoodsUpdateView(UpdateView):
+    """Редактирование информации о изделии на складе"""
+    model = GoodsStorage
+    template_name = "storage_goods/goods_form/goods_new.html"
+    success_url = "/"
+    form_class = GoodsStorageNewForm
+
+
+class StorageGoodsDeleteView(DeleteView):
+    """Удаление изделия со склада"""
+    model = GoodsStorage
+    # Изменить на список изделий
+    success_url = "/"
+    template_name = "storage_goods/goods_form/goods_delete.html"
+
+
 def StorageGoodsDetailView(request, pk):
     """Просмотр подробности о изделии на складе"""
     goods = GoodsStorage.objects.get(id=pk)
     error = ""
-    context = {"goods": goods}
+    context = {"goods": goods, "error": error}
     return render(request, "storage_goods/storage_goods_detail.html", context)
+
+

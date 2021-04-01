@@ -10,7 +10,7 @@
 {% block storage_goods %}
 <!-- product right -->
     <div class="left-ads-display col-lg-9">
-{#    <input type="button" onclick='location.href="{% url "goods_create" %}"' value="Создать новое изделие">#}
+    <input type="button" onclick='location.href="{% url "goods_storage_create" %}"' value="Создать новое изделие">
         <div class="row">
             {% for goods in goodsstorage_list %}
                 <div class="col-md-4 product-men">
@@ -30,6 +30,8 @@
                                 <div class="grid-price">
                                     <a href="{{ goods.id }}"><span class="money editContent" >Последнее редактирование: {{ goods.OTK_code.date }}</span></a>
                                 </div>
+                                <input type="button" onclick='location.href="{{ goods.id }}/update"' value="Редактировать изделие">
+                                <input type="button" onclick='location.href="{{ goods.id }}/delete"' value="Удалить изделие">
                             </div>
                         </div>
                     </div>

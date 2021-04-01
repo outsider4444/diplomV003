@@ -9,6 +9,8 @@ urlpatterns = [
     path("worker_list/<int:slug>/delete/", views.WorkerDeleteView.as_view(), name="worker_delete"),
     path("customer_list/<int:pk>/delete/", views.CustomerDeleteView.as_view(), name="customer_delete"),
     path("supplier_list/<int:pk>/delete/", views.SupplierDeleteView.as_view(), name="supplier_delete"),
+    path("storage_goods/<int:pk>/delete/", views.StorageGoodsDeleteView.as_view(), name="storage_goods_delete"),
+
 
     # Форма обновления
     path("goods_list/<int:pk>/update/", views.GoodsUpdateView.as_view(), name="goods_update"),
@@ -16,6 +18,7 @@ urlpatterns = [
     path("customer_list/<int:pk>/update/", views.CustomerUpdateView.as_view(), name="customer_update"),
     path("material_list/<int:pk>/update/", views.MaterialUpdateView.as_view(), name="material_update"),
     path("supplier_list/<int:pk>/update/", views.SupplierUpdateView.as_view(), name="supplier_update"),
+    path("storage_goods/<int:pk>/update/", views.StorageGoodsUpdateView.as_view(), name="storage_goods_update"),
 
 
     # Форма создания
@@ -24,7 +27,7 @@ urlpatterns = [
     path("customer_list/customer_create/", views.CustomerNew, name="customer_create"),
     path("material_list/material_create/", views.MaterialNew, name="material_create"),
     path("supplier_list/supplier_create/", views.SupplierNew, name="supplier_create"),
-
+    path("storage_goods/storage_goods_create/", views.StorageGoodsNew, name="goods_storage_create"),
 
 
     # Обновить форму изделия
@@ -44,6 +47,7 @@ urlpatterns = [
     path('customer_list/<int:pk>/', views.CustomerDetailView, name="customer_detail"),
     path('material_list/<int:pk>/', views.MaterialDetailView, name="material_detail"),
     path('supplier_list/<int:pk>/', views.SuppliersDetailView, name="supplier_detail"),
+    path('storage_goods/<int:pk>/', views.StorageGoodsDetailView, name="storage_goods_detail"),
 
 
     # Список
