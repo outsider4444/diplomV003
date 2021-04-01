@@ -154,7 +154,7 @@ def GoodsDetailView(request, pk):
         else:
             error = "Форма неверно заполнена"
     context = {"calendar": calendar, "goods": goods, "form": form, "error": error,
-               "goods_form": goods_form, "goods_form_create": goods_form_create}
+               "nariad_form": goods_form, "goods_form_create": goods_form_create}
     return render(request, "goods/goods_detail.html", context)
 
 
@@ -162,7 +162,7 @@ class GoodsUpdateView(UpdateView):
     """Редактирование информации о детали"""
     model = Goods
     template_name = "goods/goods_form/goods_new.html"
-    success_url = "/"
+    success_url = "goods_list"
     form_class = GoodsForm
 
 
@@ -458,9 +458,41 @@ class NariadListView(ListView):
     # paginate_by = 5
 
 
+def NariadNew(request):
+    """Создание нового изделия на склад"""
+    form = NariadNewForm()
+    error = ""
+    if request.method == "POST":
+        form = NariadNewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("nariad_list")
+        else:
+            error = "Форма неверно заполнена"
+    return render(request, "nariad/nariad_form/nariad_new.html", {"form": form, "error": error})
+
+
 def NariadDetailView(request, slug):
     """Просмотр подробности о наряде"""
     nariad = Nariad.objects.get(code=slug)
     error = ""
     context = {"nariad": nariad, "error": error}
     return render(request, "nariad/nariad_detail.html", context)
+
+
+class NariadUpdateView(UpdateView):
+    """Редактирование информации о наряде"""
+    model = Nariad
+    template_name = "nariad/nariad_form/nariad_new.html"
+    success_url = "/"
+    slug_field = 'code'
+    form_class = NariadNewForm
+
+
+class NariadDeleteView(DeleteView):
+    """Удаление наряда"""
+    model = Nariad
+    # Изменить на список изделий
+    success_url = "/"
+    slug_field = 'code'
+    template_name = "nariad/nariad_form/nariad_delete.html"

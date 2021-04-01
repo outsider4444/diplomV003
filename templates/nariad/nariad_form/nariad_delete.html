@@ -15,11 +15,11 @@
     <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block goods %}
+{% block nariad %}
 <h3>Вы действительно хотите удалить изделие?</h3>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <button type="submit">Удалить изделие</button>
         </form>
-{% endblock goods %}
+{% endblock nariad %}

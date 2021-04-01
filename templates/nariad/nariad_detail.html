@@ -9,8 +9,8 @@
 {% endblock header_image %}
 
 {% load static %}
-{% block title %}Наряд: {{ goods.code }} {% endblock title %}
-{% block header_title %}Наряд: {{ goods.code }} {% endblock header_title %}
+{% block title %}Наряд: {{ nariad.code }} {% endblock title %}
+{% block header_title %}Наряд: {{ nariad.code }} {% endblock header_title %}
 
 {% block nariad %}
     <!-- product right -->
@@ -21,12 +21,26 @@
             <div class="desc1-right col-md-6 pl-lg-4" >
 
                 <form>
-{#                    <input type="button" onclick='location.href="update"' value="Редактировать изделие">#}
-{#                    <input type="button" onclick='location.href="delete"' value="Удалить изделие">#}
+                    <input type="button" onclick='location.href="update"' value="Редактировать изделие">
+                    <input type="button" onclick='location.href="delete"' value="Удалить изделие">
                 </form>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none"><span><b>Код наряда: </b>{{ nariad.code }}</span>
                     </li>
+                    <li style="list-style: none"><span><b>Код сотрудника: </b>{{ nariad.worker_code }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Код изделия: </b>{{ nariad.goods_code }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Код смеси: </b>{{ nariad.material_code }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Количество: </b>{{ nariad.value }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Дата: </b>{{ nariad.date }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Расход смеси: </b>{{ nariad.consumption }}</span>
+                    </li>
+
+
                 </ul>
             </div>
         </div>

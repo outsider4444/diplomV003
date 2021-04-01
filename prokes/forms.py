@@ -1,8 +1,8 @@
 from django import forms
 from django.forms import DateField
 
-from .models import Goods, GoodsCalendar, GoodsDefaultForm, Workers, CheckoutGoods, Goods, Customer, Materials, \
-    Suppliers, GoodsStorage
+from .models import GoodsCalendar, GoodsDefaultForm, Workers, CheckoutGoods, Goods, Customer, Materials, \
+    Suppliers, GoodsStorage, Nariad
 
 
 # Изделия
@@ -84,4 +84,13 @@ class GoodsStorageNewForm(forms.ModelForm):
 
     class Meta:
         model = GoodsStorage
+        fields = '__all__'
+
+
+# Наряды
+class NariadNewForm(forms.ModelForm):
+    """Форма добавления нового наряда"""
+
+    class Meta:
+        model = Nariad
         fields = '__all__'

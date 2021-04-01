@@ -9,6 +9,7 @@ urlpatterns = [
     path("worker_list/<int:slug>/delete/", views.WorkerDeleteView.as_view(), name="worker_delete"),
     path("customer_list/<int:pk>/delete/", views.CustomerDeleteView.as_view(), name="customer_delete"),
     path("supplier_list/<int:pk>/delete/", views.SupplierDeleteView.as_view(), name="supplier_delete"),
+    path("nariad_list/<int:slug>/delete/", views.NariadDeleteView.as_view(), name="nariad_delete"),
     # Склады
     path("storage_goods/<int:pk>/delete/", views.StorageGoodsDeleteView.as_view(), name="storage_goods_delete"),
 
@@ -19,6 +20,9 @@ urlpatterns = [
     path("customer_list/<int:pk>/update/", views.CustomerUpdateView.as_view(), name="customer_update"),
     path("material_list/<int:pk>/update/", views.MaterialUpdateView.as_view(), name="material_update"),
     path("supplier_list/<int:pk>/update/", views.SupplierUpdateView.as_view(), name="supplier_update"),
+    path("nariad_list/<int:slug>/update/", views.NariadUpdateView.as_view(), name="nariad_update"),
+
+
     # Склады
     path("storage_goods/<int:pk>/update/", views.StorageGoodsUpdateView.as_view(), name="storage_goods_update"),
 
@@ -29,6 +33,7 @@ urlpatterns = [
     path("customer_list/customer_create/", views.CustomerNew, name="customer_create"),
     path("material_list/material_create/", views.MaterialNew, name="material_create"),
     path("supplier_list/supplier_create/", views.SupplierNew, name="supplier_create"),
+    path("nariad_list/nariad_create/", views.NariadNew, name="nariad_create"),
     # Склады
     path("storage_goods/storage_goods_create/", views.StorageGoodsNew, name="goods_storage_create"),
 

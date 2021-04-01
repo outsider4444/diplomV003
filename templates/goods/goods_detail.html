@@ -25,18 +25,17 @@
                     <input type="button" onclick='location.href="delete"' value="Удалить изделие">
                 </form>
                 <ul style="margin-top: 15px">
+                    <li style="list-style: none"><span><b>Название изделия: </b>{{ goods.name }}</span>
+                    </li>
                     <li style="list-style: none"><span><b>Вес чистой детали: </b>{{ goods.weight_clean }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Норма с ковром: </b>{{ goods.norma_with_carpet }}</span>
+                    <li style="list-style: none"><span><b>Норма на выгрузку: </b>{{ goods.norma_na_vigruzku }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Расход смеси: </b>{{ goods.consumption_smesi }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Норма: </b>{{ goods.one_person_norma }}</span>
+                    <li style="list-style: none"><span><b>Расход смеси: </b>{{ goods.rashod_smesi }}</span>
                     </li>
                 </ul>
             </div>
         </div>
-
 
         <div class="container">
 
