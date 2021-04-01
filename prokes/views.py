@@ -214,7 +214,7 @@ def GoodsFormNew(request, pk):
 # Фильтры для изделий
 # class FilterGoodsView(ListView):
 #     """Фильтр изделий"""
-#     template_name = "goods/goods_list.html"
+#     template_name = "goods/nariad_list.html"
 #
 #     def get_queryset(self):
 #         queryset = ""
@@ -285,7 +285,7 @@ def GoodsFormNew(request, pk):
 # # Отдел поиска
 # class SearchGoods(ListView):
 #     """Поиск изделий"""
-#     template_name = "goods/goods_list.html"
+#     template_name = "goods/nariad_list.html"
 #
 #     def get_queryset(self):
 #         return Goods.objects.filter(code__icontains=self.request.GET.get("q"))
@@ -426,7 +426,7 @@ def StorageGoodsNew(request):
 
 
 class StorageGoodsUpdateView(UpdateView):
-    """Редактирование информации о изделии на складе"""
+    """Редактирование информации об изделии на складе"""
     model = GoodsStorage
     template_name = "storage_goods/goods_form/goods_new.html"
     success_url = "/"
@@ -442,10 +442,25 @@ class StorageGoodsDeleteView(DeleteView):
 
 
 def StorageGoodsDetailView(request, pk):
-    """Просмотр подробности о изделии на складе"""
+    """Просмотр подробности об изделии на складе"""
     goods = GoodsStorage.objects.get(id=pk)
     error = ""
     context = {"goods": goods, "error": error}
     return render(request, "storage_goods/storage_goods_detail.html", context)
 
 
+# Наряды
+class NariadListView(ListView):
+    """Список изделий на складе"""
+    model = Nariad
+    queryset = Nariad.objects.all()
+    template_name = "nariad/nariad_list.html"
+    # paginate_by = 5
+
+
+def NariadDetailView(request, slug):
+    """Просмотр подробности о наряде"""
+    nariad = Nariad.objects.get(code=slug)
+    error = ""
+    context = {"nariad": nariad, "error": error}
+    return render(request, "nariad/nariad_detail.html", context)

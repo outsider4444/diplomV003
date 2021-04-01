@@ -1,0 +1,34 @@
+{% extends "nariad/base.html" %}
+
+{#Надпись в Title#}
+{% block title %}
+    Создание/редактирование изделия
+{% endblock title %}
+
+{#Надпись в шапке#}
+{% block header_title %}
+    Создание/редактирование изделия
+{% endblock header_title %}
+
+{% block header_image %}
+<div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block goods %}
+
+    <form method="post" enctype="multipart/form-data" name="create">
+        {% csrf_token %}
+        <h3>Введите информацию о детали</h3>
+        Код изделия: {{ form.code }}<br>
+        Фотография изделия:{{ form.image }}<br>
+        Веси чистой детали: {{ form.weight_clean }}<br>
+        Норма с ковром: {{ form.norma_with_carpet }}<br>
+        Расход смеси: {{ form.consumption_smesi }}<br>
+        Норма: {{ form.one_person_norma }}<br>
+        Лимит брака: {{ form.defect_limit }}<br>
+
+      <span>{{ error }}</span>
+        <button type="submit">Подтвердить</button>
+        </form>
+
+{% endblock goods %}

@@ -9,6 +9,7 @@ urlpatterns = [
     path("worker_list/<int:slug>/delete/", views.WorkerDeleteView.as_view(), name="worker_delete"),
     path("customer_list/<int:pk>/delete/", views.CustomerDeleteView.as_view(), name="customer_delete"),
     path("supplier_list/<int:pk>/delete/", views.SupplierDeleteView.as_view(), name="supplier_delete"),
+    # Склады
     path("storage_goods/<int:pk>/delete/", views.StorageGoodsDeleteView.as_view(), name="storage_goods_delete"),
 
 
@@ -18,6 +19,7 @@ urlpatterns = [
     path("customer_list/<int:pk>/update/", views.CustomerUpdateView.as_view(), name="customer_update"),
     path("material_list/<int:pk>/update/", views.MaterialUpdateView.as_view(), name="material_update"),
     path("supplier_list/<int:pk>/update/", views.SupplierUpdateView.as_view(), name="supplier_update"),
+    # Склады
     path("storage_goods/<int:pk>/update/", views.StorageGoodsUpdateView.as_view(), name="storage_goods_update"),
 
 
@@ -27,6 +29,7 @@ urlpatterns = [
     path("customer_list/customer_create/", views.CustomerNew, name="customer_create"),
     path("material_list/material_create/", views.MaterialNew, name="material_create"),
     path("supplier_list/supplier_create/", views.SupplierNew, name="supplier_create"),
+    # Склады
     path("storage_goods/storage_goods_create/", views.StorageGoodsNew, name="goods_storage_create"),
 
 
@@ -47,6 +50,10 @@ urlpatterns = [
     path('customer_list/<int:pk>/', views.CustomerDetailView, name="customer_detail"),
     path('material_list/<int:pk>/', views.MaterialDetailView, name="material_detail"),
     path('supplier_list/<int:pk>/', views.SuppliersDetailView, name="supplier_detail"),
+    path('nariad_list/<int:slug>/', views.NariadDetailView, name="nariad_detail"),
+
+
+    # Склады
     path('storage_goods/<int:pk>/', views.StorageGoodsDetailView, name="storage_goods_detail"),
 
 
@@ -56,9 +63,11 @@ urlpatterns = [
     path("customer_list/", views.CustomerListView.as_view(), name="customer_list"),
     path("material_list/", views.MaterialListView.as_view(), name="material_list"),
     path("supplier_list/", views.SuppliersListView.as_view(), name="supplier_list"),
+    path("nariad_list/", views.NariadListView.as_view(), name="nariad_list"),
+
     # Склады
     path("storage_goods/", views.StorageGoodsListView.as_view(), name="storage_goods_list"),
-    # path("supplier_list/", views.SuppliersListView.as_view(), name="supplier_list"),
+    # path("storage_material/", views.StorageMaterialListView.as_view(), name="storage_materials_list"),
 
 
     # Авторизация
