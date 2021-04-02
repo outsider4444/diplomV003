@@ -47,9 +47,10 @@
                     Название дубликата: {{ format.duplicate }}<br>
                     Период чистки: {{ format.cleaning_period }}<br>
                     Номер гнезда: {{ format.number_nest }}<br>
-                    Процент массы: {{ format.percent_mass }}
-                    <a href="{% url 'update_goods_form' pk=format.id %}"> <input type="button" value="Редактировать форму">
-                    </a>
+                    Процент массы: {{ format.percent_mass }}<br>
+                    <a href="{% url 'update_goods_form' pk=format.id %}"> <input type="button" value="Редактировать форму"></a>
+                    <a href="{% url 'goods_form_delete' pk=format.id %}"> <input type="button" value="Удалить форму"></a>
+
                 {% endfor %}
             {% else %}
                 <input type="button" onclick='location.href="create_goods_form"' value="Добавить форму">

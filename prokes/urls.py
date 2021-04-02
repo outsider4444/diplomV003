@@ -13,6 +13,9 @@ urlpatterns = [
     path("otk_list/<int:pk>/delete/", views.OTKDeleteView.as_view(), name="otk_delete"),
     # Склады
     path("storage_goods/<int:pk>/delete/", views.StorageGoodsDeleteView.as_view(), name="storage_goods_delete"),
+    # Форма изделия
+    path("goods_list/<int:pk>/goods_form_delete/", views.GoodsFormDeleteView.as_view(), name="goods_form_delete"),
+
 
 
     # Форма обновления

@@ -1,0 +1,33 @@
+{% extends "goods/base.html" %}
+
+{#Надпись в Title#}
+{% block title %}
+    Создание/редактирование формы изделия
+{% endblock title %}
+
+{#Надпись в шапке#}
+{% block header_title %}
+    Создание/редактирование формы изделия
+{% endblock header_title %}
+
+{% block header_image %}
+<div class="main-banner bg bg1" id="home" style="background: url('../../../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block goods %}
+
+    <form method="post" enctype="multipart/form-data" name="create">
+        {% csrf_token %}
+        <h3>Введите информацию о детали</h3>
+        Код изделия: {{ form.goods_code }}<br>
+        Название дубликата: {{ form.duplicate }}<br>
+        Период чистки: {{ form.cleaning_period }}<br>
+        Номер гнезда формы: {{ form.number_nest }}<br>
+        Процент массы: {{ form.percent_mass }}<br>
+
+
+        <span>{{ error }}</span>
+        <button type="submit">Подтвердить</button>
+    </form>
+
+{% endblock goods %}

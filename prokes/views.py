@@ -148,7 +148,6 @@ def GoodsDetailView(request, pk):
     calendar = GoodsCalendar.objects.filter(goods_code=pk)
     form = CalendarForm()
     goods_form = GoodsDefaultForm.objects.filter(goods_code=pk)
-    goods_form_create = FormsGoodsForm(instance=goods)
     if request.method == "POST":
         form = CalendarForm(request.POST)
         if form.is_valid():
@@ -156,7 +155,7 @@ def GoodsDetailView(request, pk):
         else:
             error = "Форма неверно заполнена"
     context = {"calendar": calendar, "goods": goods, "form": form, "error": error,
-               "nariad_form": goods_form, "goods_form_create": goods_form_create}
+               "goods_form": goods_form, }
     return render(request, "goods/goods_detail.html", context)
 
 
@@ -166,6 +165,7 @@ class GoodsUpdateView(UpdateView):
     template_name = "goods/goods_form/goods_new.html"
     success_url = "goods_list"
     form_class = GoodsForm
+
 
 
 def GoodsNew(request):
@@ -193,8 +193,17 @@ class GoodsDeleteView(DeleteView):
 class GoodsFormUpdateView(UpdateView):
     """Обновление информации о форме изделия"""
     model = GoodsDefaultForm
-    template_name = 'goods/goods_form/goods_new.html'
+    template_name = 'goods/goods_form/def_form/goods_def_form_update.html'
     form_class = FormsGoodsForm
+    slug_field = 'pk'
+
+
+class GoodsFormDeleteView(DeleteView):
+    """Удаление изделия"""
+    model = GoodsDefaultForm
+    # Изменить на список изделий
+    success_url = "/"
+    template_name = "goods/goods_form/goods_delete.html"
     slug_field = 'pk'
 
 
@@ -210,8 +219,8 @@ def GoodsFormNew(request, pk):
             return redirect("goods_list")
         else:
             error = "Форма неверно заполнена"
-    return render(request, "goods/goods_form/goods_new.html", {"form": form,
-                                                               "error": error, "goods": goods})
+    return render(request, 'goods/goods_form/def_form/goods_def_form_new.html', {"form": form,
+                                                                        "error": error, "goods": goods})
 
 
 # Фильтры для изделий
