@@ -1,0 +1,47 @@
+{% extends 'otk/base.html' %}
+{% block title %}ОТК: {{ otk.nariad_code }} {% endblock title %}
+{% block header_title %}ОТК: {{ otk.nariad_code }} {% endblock header_title %}
+
+{% block header_image %}
+    <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block otk %}
+<!-- product right -->
+    <div class="left-ads-display col-lg-8">
+
+{#    Сделать "изменение #}
+    <input type="button" onclick='location.href="update"' value="Изменить информацию об ОТК">
+    {#<input type="button" onclick='location.href="delete"' value="Удалить поставщика">#}
+{# Красиво выводить#}
+
+        {#                Изменить стили #}
+        <div class="row">
+
+            <div class="desc1-right col-md-6 pl-lg-4" >
+                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
+                    {{ otk.nariad_code }}
+                </h3>
+                <ul style="margin-top: 15px">
+                    <li style="list-style: none">
+                        <span><b>Код изделия: </b> {{ otk.nariad_code.goods_code }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Количество изделий всего: </b> {{ otk.nariad_code.value }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Количество хороших изделий: </b> {{ otk.goods_value }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Количество бракованных изделий: </b> {{ otk.remote_value }}</span>
+                    </li>
+                    <li style="list-style: none">
+                        <span><b>Дата проверки: </b> {{ otk.date }}</span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- //contact -->
+{% endblock otk %}

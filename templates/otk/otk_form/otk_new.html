@@ -1,0 +1,59 @@
+{% extends "otk/base.html" %}
+
+{#Надпись в Title#}
+{% block title %}
+    Создание/редактирование информации о поставщике
+{% endblock title %}
+
+{#Надпись в шапке#}
+{% block header_title %}
+    Создание/редактирование информации о поставщике
+{% endblock header_title %}
+
+{% block header_image %}
+<div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
+{% endblock header_image %}
+
+{% block otk %}
+{# Изменить поставщика#}
+    <form method="post" enctype="multipart/form-data" name="create">
+        {% csrf_token %}
+        Код наряда: {{ form.nariad_code }}<br>
+        Общее количество изделий: {{ form_nariad.value }}<br>
+        Количество хороших изделий: {{ form.goods_value }}<br>
+        Количество бракованных изделий: {{ form.remote_value }}<br>
+        Дата проверки: {{ form.date }}<br>
+
+        <span>{{ error }}</span>
+        <button type="submit">Подтвердить</button>
+    </form>
+
+    <script>
+    let value_goods = document.getElementById("id_value");
+    value_goods.readOnly = true;
+
+    let good_value = document.getElementById("id_goods_value");
+    let remote_value = document.getElementById("id_remote_value");
+    let nariad_code = document.getElementById("id_nariad_code");
+
+    nariad_code.onchange = function(){
+        {% for nariad in nariad_list %}
+            if (nariad_code.options[nariad_code.selectedIndex].text == {{ nariad.code }}){
+                value_goods.value = {{ nariad.value }}
+                console.log({{ nariad.code }})
+            }
+        {% endfor %}
+    }
+
+    // Изменение бракованных изделий
+    remote_value.onchange = function () {
+        good_value.value = value_goods.value - remote_value.value;
+    }
+    // Изменение хороших изделий
+    good_value.onchange = function () {
+        remote_value.value = value_goods.value - good_value.value;
+    }
+
+
+    </script>
+{% endblock otk %}

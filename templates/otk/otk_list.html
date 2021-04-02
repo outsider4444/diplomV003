@@ -1,7 +1,7 @@
 {% extends 'otk/base.html' %}
 
-{% block title %} Список поставщиков {% endblock title %}
-{% block header_title %} Список поставщиков {% endblock header_title %}
+{% block title %} Список ОТК {% endblock title %}
+{% block header_title %} Список ОТК {% endblock header_title %}
 
 {% block header_image %}
     <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
@@ -10,7 +10,7 @@
 {% block otk %}
     <!-- product right -->
     <form>
-{#        <input type="button" onclick='location.href="{% url "supplier_create" %}"' value="Добавить нового поставщика">#}
+        <input type="button" onclick='location.href="{% url "otk_create" %}"' value="Добавить новое ОТК">
     </form>
 
     <div class="left-ads-display col-lg-9">
@@ -40,7 +40,7 @@
             {% endfor %}
         </div>
         <div class="grid-img-right mt-4 text-right bg bg1" >
-{#            {% include 'include/pagination/supplier_pagination.html' %}#}
+            {#            {% include 'include/pagination/supplier_pagination.html' %}#}
         </div>
     </div>
     <!-- //contact -->

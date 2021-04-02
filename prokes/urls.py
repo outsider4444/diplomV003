@@ -21,8 +21,7 @@ urlpatterns = [
     path("material_list/<int:pk>/update/", views.MaterialUpdateView.as_view(), name="material_update"),
     path("supplier_list/<int:pk>/update/", views.SupplierUpdateView.as_view(), name="supplier_update"),
     path("nariad_list/<int:slug>/update/", views.NariadUpdateView.as_view(), name="nariad_update"),
-
-
+    path("otk_list/<int:pk>/update/", views.OTKUpdateView, name="otk_update"),
     # Склады
     path("storage_goods/<int:pk>/update/", views.StorageGoodsUpdateView.as_view(), name="storage_goods_update"),
 
@@ -34,6 +33,8 @@ urlpatterns = [
     path("material_list/material_create/", views.MaterialNew, name="material_create"),
     path("supplier_list/supplier_create/", views.SupplierNew, name="supplier_create"),
     path("nariad_list/nariad_create/", views.NariadNew, name="nariad_create"),
+    path("otk_list/otk_create/", views.OTKNew, name="otk_create"),
+
     # Склады
     path("storage_goods/storage_goods_create/", views.StorageGoodsNew, name="goods_storage_create"),
 
@@ -56,8 +57,7 @@ urlpatterns = [
     path('material_list/<int:pk>/', views.MaterialDetailView, name="material_detail"),
     path('supplier_list/<int:pk>/', views.SuppliersDetailView, name="supplier_detail"),
     path('nariad_list/<int:slug>/', views.NariadDetailView, name="nariad_detail"),
-
-
+    path('otk_list/<int:pk>/', views.OTKDetailView, name="otk_detail"),
     # Склады
     path('storage_goods/<int:pk>/', views.StorageGoodsDetailView, name="storage_goods_detail"),
 

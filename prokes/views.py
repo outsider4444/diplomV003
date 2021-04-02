@@ -19,6 +19,7 @@ def main(request):
 # Выводы для фильтров
 class WorkerCategory:
     """Должности сотрудников"""
+
     def get_category(self):
         return Workers.objects.filter(fired=False).values("category").distinct()
 
@@ -130,6 +131,7 @@ class CustomerDeleteView(DeleteView):
     success_url = "/"
     template_name = "customer/customer_form/customer_delete.html"
 
+
 # Изделия
 class GoodsListView(ListView):
     """Список изделий"""
@@ -209,7 +211,8 @@ def GoodsFormNew(request, pk):
         else:
             error = "Форма неверно заполнена"
     return render(request, "goods/goods_form/goods_new.html", {"form": form,
-                                                                    "error": error, "goods": goods})
+                                                               "error": error, "goods": goods})
+
 
 # Фильтры для изделий
 # class FilterGoodsView(ListView):
@@ -505,3 +508,47 @@ class OTKListView(ListView):
     queryset = OTK.objects.all()
     template_name = "otk/otk_list.html"
     # paginate_by = 5
+
+
+def OTKDetailView(request, pk):
+    """Просмотр подробности об ОТК"""
+    otk = OTK.objects.get(id=pk)
+    error = ""
+    context = {"otk": otk, "error": error}
+    return render(request, "otk/otk_detail.html", context)
+
+
+def OTKNew(request):
+    """Создание нового ОТК"""
+    form = OTKNewForm()
+    form_nariad = NariadNewForm()
+    nariad_list = Nariad.objects.all()
+    error = ""
+    if request.method == "POST":
+        form = OTKNewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("otk_list")
+        else:
+            error = "Форма неверно заполнена"
+    return render(request, "otk/otk_form/otk_new.html", {"form": form, "error": error, "form_nariad": form_nariad,
+                                                         "nariad_list": nariad_list})
+
+
+def OTKUpdateView(request, pk):
+    """Редактирование информации о наряде"""
+    otk = OTK.objects.get(id=pk)
+    nariad = Nariad.objects.get(code=otk.nariad_code.code)
+    form = OTKNewForm(instance=otk)
+    form_nariad = NariadNewForm(instance=nariad)
+    nariad_list = Nariad.objects.all()
+    error = ""
+    if request.method == "POST":
+        form = OTKNewForm(request.POST, instance=otk)
+        if form.is_valid():
+            form.save()
+            return redirect("otk_list")
+        else:
+            error = "Форма неверно заполнена"
+    return render(request, "otk/otk_form/otk_update.html", {"form": form, "error": error, "form_nariad": form_nariad,
+                                                            "nariad_list": nariad_list})
