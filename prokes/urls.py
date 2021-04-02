@@ -10,6 +10,7 @@ urlpatterns = [
     path("customer_list/<int:pk>/delete/", views.CustomerDeleteView.as_view(), name="customer_delete"),
     path("supplier_list/<int:pk>/delete/", views.SupplierDeleteView.as_view(), name="supplier_delete"),
     path("nariad_list/<int:slug>/delete/", views.NariadDeleteView.as_view(), name="nariad_delete"),
+    path("otk_list/<int:pk>/delete/", views.OTKDeleteView.as_view(), name="otk_delete"),
     # Склады
     path("storage_goods/<int:pk>/delete/", views.StorageGoodsDeleteView.as_view(), name="storage_goods_delete"),
 

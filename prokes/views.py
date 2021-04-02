@@ -552,3 +552,11 @@ def OTKUpdateView(request, pk):
             error = "Форма неверно заполнена"
     return render(request, "otk/otk_form/otk_update.html", {"form": form, "error": error, "form_nariad": form_nariad,
                                                             "nariad_list": nariad_list})
+
+
+class OTKDeleteView(DeleteView):
+    """Удаление ОТК"""
+    model = OTK
+    # Изменить на список изделий
+    success_url = "/"
+    template_name = "otk/otk_form/otk_delete.html"
