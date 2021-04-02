@@ -1,0 +1,39 @@
+{% extends 'storage_goods/base.html' %}
+{% block header_image %}
+    {% if goods.image %}
+        <div class="main-banner bg bg1" id="home" style="background: url('{{ goods.image.url }}')">
+    {% else %}
+        <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
+
+    {% endif %}
+{% endblock header_image %}
+
+{% load static %}
+{% block title %}Изделие: {{ goods.goods_code }} {% endblock title %}
+{% block header_title %}Изделие: {{ goods.goods_code }} {% endblock header_title %}
+
+{% block storage_goods %}
+    <!-- product right -->
+    <div class="left-ads-display col-lg-8">
+        {#                Изменить стили #}
+        <div class="container">
+
+            <div class="desc1-right col-md-6 pl-lg-4" >
+
+                <form>
+                    <input type="button" onclick='location.href="update"' value="Редактировать изделие">
+                    <input type="button" onclick='location.href="delete"' value="Удалить изделие">
+                </form>
+                <ul style="margin-top: 15px">
+                    <li style="list-style: none"><span><b>Код изделия: </b>{{ goods.goods_code }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Количество на складе: </b>{{ goods.value }}</span>
+                    </li>
+                    <li style="list-style: none"><span><b>Имя заказчика: </b>{{ goods.customer_code }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock storage_goods %}

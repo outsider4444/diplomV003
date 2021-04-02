@@ -167,7 +167,6 @@ class GoodsUpdateView(UpdateView):
     form_class = GoodsForm
 
 
-
 def GoodsNew(request):
     """Создание нового изделия"""
     form = GoodsForm()
