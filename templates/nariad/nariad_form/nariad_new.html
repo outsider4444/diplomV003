@@ -18,7 +18,7 @@
 
     <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
-        <h3>Введите информацию о детали</h3>
+        <h3>Введите информацию о наряде</h3>
         Код изделия: {{ form.code }}<br>
         Код сотрудника: {{ form.worker_code }}<br>
         Код изделия: {{ form.goods_code }}<br>

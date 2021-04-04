@@ -13,9 +13,10 @@ urlpatterns = [
     path("otk_list/<int:pk>/delete/", views.OTKDeleteView.as_view(), name="otk_delete"),
     # Склады
     path("storage_goods/<int:pk>/delete/", views.StorageGoodsDeleteView.as_view(), name="storage_goods_delete"),
+    path("storage_material/<int:pk>/delete/", views.StorageMaterialsDeleteView.as_view(),
+         name="storage_material_delete"),
     # Форма изделия
     path("goods_list/<int:pk>/goods_form_delete/", views.GoodsFormDeleteView.as_view(), name="goods_form_delete"),
-
 
 
     # Форма обновления
@@ -28,6 +29,7 @@ urlpatterns = [
     path("otk_list/<int:pk>/update/", views.OTKUpdateView, name="otk_update"),
     # Склады
     path("storage_goods/<int:pk>/update/", views.StorageGoodsUpdateView.as_view(), name="storage_goods_update"),
+    path("storage_material/<int:pk>/update/", views.StorageMaterialsUpdateView.as_view(), name="storage_material_update"),
 
 
     # Форма создания
@@ -65,7 +67,7 @@ urlpatterns = [
     path('otk_list/<int:pk>/', views.OTKDetailView, name="otk_detail"),
     # Склады
     path('storage_goods/<int:pk>/', views.StorageGoodsDetailView, name="storage_goods_detail"),
-
+    path('storage_material/<int:pk>/', views.StorageMaterialsDetailView, name="storage_material_detail"),
 
     # Список
     path("goods_list/", views.GoodsListView.as_view(), name="goods_list"),

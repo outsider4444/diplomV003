@@ -436,6 +436,14 @@ def StorageGoodsNew(request):
     return render(request, "storage_goods/goods_form/goods_new.html", {"form": form, "error": error})
 
 
+def StorageGoodsDetailView(request, pk):
+    """Просмотр подробности об изделии на складе"""
+    goods = GoodsStorage.objects.get(id=pk)
+    error = ""
+    context = {"goods": goods, "error": error}
+    return render(request, "storage_goods/storage_goods_detail.html", context)
+
+
 class StorageGoodsUpdateView(UpdateView):
     """Редактирование информации об изделии на складе"""
     model = GoodsStorage
@@ -452,17 +460,9 @@ class StorageGoodsDeleteView(DeleteView):
     template_name = "storage_goods/goods_form/goods_delete.html"
 
 
-def StorageGoodsDetailView(request, pk):
-    """Просмотр подробности об изделии на складе"""
-    goods = GoodsStorage.objects.get(id=pk)
-    error = ""
-    context = {"goods": goods, "error": error}
-    return render(request, "storage_goods/storage_goods_detail.html", context)
-
-
 # Склад материалов
 class StorageMaterialsListView(ListView):
-    """Список изделий на складе"""
+    """Список материалов на складе"""
     model = MaterialStorage
     queryset = MaterialStorage.objects.all()
     template_name = "storage_materials/storage_materials_list.html"
@@ -470,7 +470,7 @@ class StorageMaterialsListView(ListView):
 
 
 def StorageMaterialsNew(request):
-    """Создание нового изделия на склад"""
+    """Создание нового материала на склад"""
     form = MaterialsStorageNewForm()
     error = ""
     if request.method == "POST":
@@ -481,6 +481,30 @@ def StorageMaterialsNew(request):
         else:
             error = "Форма неверно заполнена"
     return render(request, "storage_materials/materials_form/material_new.html", {"form": form, "error": error})
+
+
+def StorageMaterialsDetailView(request, pk):
+    """Просмотр подробности о материале на складе"""
+    material = MaterialStorage.objects.get(id=pk)
+    error = ""
+    context = {"material": material, "error": error}
+    return render(request, "storage_materials/storage_materials_detail.html", context)
+
+
+class StorageMaterialsUpdateView(UpdateView):
+    """Редактирование информации о материале на складе"""
+    model = MaterialStorage
+    template_name = "storage_materials/materials_form/material_new.html"
+    success_url = "/"
+    form_class = MaterialsStorageNewForm
+
+
+class StorageMaterialsDeleteView(DeleteView):
+    """Удаление материала со склада"""
+    model = GoodsStorage
+    # Изменить на список изделий
+    success_url = "/"
+    template_name = "storage_materials/materials_form/material_delete.html"
 
 
 # Наряды

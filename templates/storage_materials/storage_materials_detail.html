@@ -1,18 +1,17 @@
-{% extends 'storage_goods/base.html' %}
+{% extends 'storage_materials/base.html' %}
 {% block header_image %}
     {% if goods.image %}
         <div class="main-banner bg bg1" id="home" style="background: url('{{ goods.image.url }}')">
     {% else %}
         <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
-
     {% endif %}
 {% endblock header_image %}
 
 {% load static %}
-{% block title %}Изделие: {{ goods.goods_code }} {% endblock title %}
-{% block header_title %}Изделие: {{ goods.goods_code }} {% endblock header_title %}
+{% block title %}Изделие: {{ material.material_code }} {% endblock title %}
+{% block header_title %}Изделие: {{ material.material_code }} {% endblock header_title %}
 
-{% block storage_goods %}
+{% block storage_materials %}
     <!-- product right -->
     <div class="left-ads-display col-lg-8">
         {#                Изменить стили #}
@@ -20,20 +19,20 @@
 
             <div class="desc1-right col-md-6 pl-lg-4" >
 
-                <form>
-                    <input type="button" onclick='location.href="update"' value="Редактировать изделие">
-                    <input type="button" onclick='location.href="delete"' value="Удалить изделие">
-                </form>
+{#                <form>#}
+                    <input type="button" onclick='location.href="update"' value="Редактировать материал">
+                    <input type="button" onclick='location.href="delete"' value="Удалить материал">
+{#                </form>#}
                 <ul style="margin-top: 15px">
-                    <li style="list-style: none"><span><b>Код изделия: </b>{{ goods.goods_code }}</span>
+                    <li style="list-style: none"><span><b>Код материала: </b>{{ material.material_code }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Количество на складе: </b>{{ goods.value }}</span>
+                    <li style="list-style: none"><span><b>Количество на складе: </b>{{ material.value }}</span>
                     </li>
-                    <li style="list-style: none"><span><b>Имя заказчика: </b>{{ goods.customer_code }}</span>
+                    <li style="list-style: none"><span><b>Дата проверки: </b>{{ material.date }}</span>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 
-{% endblock storage_goods %}
+{% endblock storage_materials %}
