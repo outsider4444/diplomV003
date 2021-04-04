@@ -38,9 +38,10 @@ urlpatterns = [
     path("supplier_list/supplier_create/", views.SupplierNew, name="supplier_create"),
     path("nariad_list/nariad_create/", views.NariadNew, name="nariad_create"),
     path("otk_list/otk_create/", views.OTKNew, name="otk_create"),
-
     # Склады
     path("storage_goods/storage_goods_create/", views.StorageGoodsNew, name="goods_storage_create"),
+    path("storage_material/storage_material_create/", views.StorageMaterialsNew, name="storage_material_create"),
+
 
 
     # Обновить форму изделия
@@ -76,8 +77,7 @@ urlpatterns = [
     path("otk_list/", views.OTKListView.as_view(), name="otk_list"),
     # Склады
     path("storage_goods/", views.StorageGoodsListView.as_view(), name="storage_goods_list"),
-    # path("storage_material/", views.StorageMaterialListView.as_view(), name="storage_materials_list"),
-
+    path("storage_material/", views.StorageMaterialsListView.as_view(), name="storage_material_list"),
 
     # Авторизация
     path("accounts/", include("allauth.urls")),

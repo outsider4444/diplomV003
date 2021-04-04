@@ -1,4 +1,4 @@
-{% extends 'storage_goods/base.html' %}
+{% extends 'storage_materials/base.html' %}
 
 {% block title %} Склад изделий {% endblock title %}
 {% block header_title %} Склад изделий {% endblock header_title %}
@@ -7,31 +7,31 @@
     <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block storage_goods %}
+{% block storage_materials %}
 <!-- product right -->
     <div class="left-ads-display col-lg-9">
-    <input type="button" onclick='location.href="{% url "goods_storage_create" %}"' value="Создать новое изделие">
+    <input type="button" onclick='location.href="{% url "storage_material_create" %}"' value="Создать новый материал">
         <div class="row">
-            {% for goods in goodsstorage_list %}
+            {% for material in materialstorage_list %}
                 <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
-                        <div class="men-thumb-item">
-                            {% if goods.OTK_code.nariad_code.goods_code.image %}
-                                <img src="{{ goods.OTK_code.nariad_code.goods_code.image }}" class="img-fluid" alt="" >
-                            {% endif %}
-                        </div>
+{#                        <div class="men-thumb-item">#}
+{#                            {% if goods.OTK_code.nariad_code.goods_code.image %}#}
+{#                                <img src="{{ goods.OTK_code.nariad_code.goods_code.image }}" class="img-fluid" alt="" >#}
+{#                            {% endif %}#}
+{#                        </div>#}
                         <div class="item-info-product">
                             <h4 class="">
-                                <a href="{{ goods.id }}" class="editContent" >
-                                    {{ goods.goods_code }}
+                                <a href="{{ material.id }}" class="editContent" >
+                                    {{ material.material_code}}
                                 </a>
                             </h4>
                             <div class="product_price">
                                 <div class="grid-price">
-                                    <a href="{{ goods.id }}"><span class="money editContent" >Последнее редактирование: {{ goods.OTK_code.date }}</span></a>
+                                    <a href="{{ material.id }}"><span class="money editContent" >Код материала: {{ material.material_code }}</span></a>
                                 </div>
-                                <input type="button" onclick='location.href="{{ goods.id }}/update"' value="Редактировать изделие">
-                                <input type="button" onclick='location.href="{{ goods.id }}/delete"' value="Удалить изделие">
+{#                                <input type="button" onclick='location.href="{{ goods.id }}/update"' value="Редактировать изделие">#}
+{#                                <input type="button" onclick='location.href="{{ goods.id }}/delete"' value="Удалить изделие">#}
                             </div>
                         </div>
                     </div>
@@ -43,4 +43,4 @@
         </div>
     </div>
     <!-- //contact -->
-{% endblock storage_goods %}
+{% endblock storage_materials %}

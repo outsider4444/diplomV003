@@ -1,31 +1,30 @@
-{% extends "goods/base.html" %}
+{% extends "storage_materials/base.html" %}
 
 {#Надпись в Title#}
 {% block title %}
-    Создание/редактирование изделия
+    Создание/редактирование материала
 {% endblock title %}
 
 {#Надпись в шапке#}
 {% block header_title %}
-    Создание/редактирование изделия
+    Создание/редактирование материала
 {% endblock header_title %}
 
 {% block header_image %}
 <div class="main-banner bg bg1" id="home" style="background: url('../../../media/header_image.jpg')">
 {% endblock header_image %}
 
-{% block goods %}
+{% block storage_materials %}
 
     <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
-        <h3>Введите информацию о детали</h3>
-        Код изделия: {{ form.goods_code }}<br>
-        Количество:{{ form.value }}<br>
-        Заказчик: {{ form.customer_code }} <br>
-        Код ОТК: {{ form.OTK_code }}<br>
+        <h3>Введите информацию о материале</h3>
+        Код изделия: {{ form.material_code }}<br>
+        Количество: {{ form.value }}<br>
+        Дата: {{ form.date }}<br>
 
       <span>{{ error }}</span>
         <button type="submit">Подтвердить</button>
         </form>
 
-{% endblock goods %}
+{% endblock storage_materials %}

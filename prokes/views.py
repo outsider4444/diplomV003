@@ -413,7 +413,7 @@ class SupplierDeleteView(DeleteView):
     template_name = "suppliers/supplier_form/supplier_delete.html"
 
 
-# Склад изделия
+# Склад изделий
 class StorageGoodsListView(ListView):
     """Список изделий на складе"""
     model = GoodsStorage
@@ -458,6 +458,29 @@ def StorageGoodsDetailView(request, pk):
     error = ""
     context = {"goods": goods, "error": error}
     return render(request, "storage_goods/storage_goods_detail.html", context)
+
+
+# Склад материалов
+class StorageMaterialsListView(ListView):
+    """Список изделий на складе"""
+    model = MaterialStorage
+    queryset = MaterialStorage.objects.all()
+    template_name = "storage_materials/storage_materials_list.html"
+    # paginate_by = 5
+
+
+def StorageMaterialsNew(request):
+    """Создание нового изделия на склад"""
+    form = MaterialsStorageNewForm()
+    error = ""
+    if request.method == "POST":
+        form = MaterialsStorageNewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("storage_material_list")
+        else:
+            error = "Форма неверно заполнена"
+    return render(request, "storage_materials/materials_form/material_new.html", {"form": form, "error": error})
 
 
 # Наряды
@@ -568,3 +591,7 @@ class OTKDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/"
     template_name = "otk/otk_form/otk_delete.html"
+
+
+
+
