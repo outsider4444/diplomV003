@@ -52,10 +52,10 @@ urlpatterns = [
     path("goods_list/<int:pk>/create_goods_form/", views.GoodsFormNew, name="create_goods_form"),
 
     # Фильтры
-    # path("goods_list/goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
+    path("goods_list/goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
 
     # Поиск
-    # path('goods_list/goods_search/', views.SearchGoods.as_view(), name='goods_search'),
+    path('goods_list/goods_search/', views.SearchGoods.as_view(), name='goods_search'),
 
     # Подробности
     path("goods_list/<int:pk>/", views.GoodsDetailView, name="goods_detail"),

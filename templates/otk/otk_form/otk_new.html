@@ -40,7 +40,7 @@
         {% for nariad in nariad_list %}
             if (nariad_code.options[nariad_code.selectedIndex].text == {{ nariad.code }}){
                 value_goods.value = {{ nariad.value }}
-                console.log({{ nariad.code }})
+                {#console.log({{ nariad.code }})#}
             }
         {% endfor %}
     }

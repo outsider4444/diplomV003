@@ -20,13 +20,14 @@
         {% csrf_token %}
         <h3>Введите информацию о детали</h3>
         Код изделия: {{ form.code }}<br>
+        Название изделия: {{ form.name }}<br>
         Фотография изделия:{{ form.image }}<br>
         Вес чистой детали: {{ form.weight_clean }}<br>
         Норма на выгрузку: {{ form.norma_na_vigruzku }}<br>
         Расход смеси: {{ form.rashod_smesi }}<br>
 
-      <span>{{ error }}</span>
-        <button type="submit">Подтвердить</button>
+      <span id="error">{{ error }}</span>
+        <button type="submit" id="submit" class="btn-success">Подтвердить</button>
         </form>
 
 {% endblock goods %}
