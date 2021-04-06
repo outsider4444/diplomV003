@@ -55,10 +55,10 @@
                             {% if user.is_authenticated %}
                                 <ul>
                                     <li><a href="{% url "workers_list" %}">Сотрудники</a></li>
-                                    <li><a href="{% url "smesi_list" %}">Материалы</a></li>
+                                    <li><a href="{% url "material_list" %}">Материалы</a></li>
                                     <li><a href="{% url "goods_list" %}">Изделия</a></li>
-                                    <li><a href="{% url "suppliers_list" %}">Поставщики</a></li>
-                                    <li><a href="{% url "customers_list" %}">Заказчики</a></li>
+                                    <li><a href="{% url "supplier_list" %}">Поставщики</a></li>
+                                    <li><a href="{% url "customer_list" %}">Заказчики</a></li>
                                     <li><a href="{% url "storage_goods_list" %}">Изделия на складе</a></li>
                                     <li><a href="{% url "storage_material_list" %}">Материалы на складе</a></li>
                                 </ul>

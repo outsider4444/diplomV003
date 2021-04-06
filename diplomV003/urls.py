@@ -19,12 +19,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("", include("prokes.urls")),
+                  path('admin/', admin.site.urls),
+                  path("", include("prokes.urls")),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

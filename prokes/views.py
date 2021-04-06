@@ -163,7 +163,7 @@ class GoodsUpdateView(UpdateView):
     """Редактирование информации о детали"""
     model = Goods
     template_name = "goods/goods_form/goods_new.html"
-    success_url = "goods_list"
+    success_url = "/goods_list"
     form_class = GoodsForm
 
 

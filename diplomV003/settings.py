@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'z%)+cmom7g-gn-3liuw4f64!&*8i)7&5@y-hs&fwzzkx$+wd3*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["test-prokes-site.herokuapp.com", '127.0.0.1']
 
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -133,24 +132,10 @@ LOGIN_REDIRECT_URL = "/"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SITE_ID = 1
-
-AWS_ACCESS_KEY_ID = 'AKIASIC5C46O7FYQNHEU'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'djnago-diplom-prokes-test-bucket'
-
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storage.backends.s3boto3.S3Boto3Storage'
