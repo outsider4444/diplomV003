@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'prokes',
     'allauth',
     'allauth.account',
+
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +146,11 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SITE_ID = 1
+
+AWS_ACCESS_KEY_ID = 'AKIASIC5C46O7FYQNHEU'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'djnago-diplom-prokes-test-bucket'
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storage.backends.s3boto3.S3Boto3Storage'
