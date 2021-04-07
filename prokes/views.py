@@ -35,16 +35,25 @@ class WorkerListView(WorkerCategory, ListView):
 
 def WorkerNew(request):
     """Создание нового сотрудника"""
+    worker_list = Workers.objects.all()
     form = WorkersForm()
     error = ""
     if request.method == "POST":
         form = WorkersForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("workers_list")
+            redirect('workers_list')
         else:
-            error = "Форма неверно заполнена"
+            print(form['code'].value())
+            for worker in worker_list:
+                if int(form['code'].value()) == worker.code:
+                    error = "Сотрудник с таким кодом уже существует"
+                    break
+                else:
+                    error = "Форма неверно заполнена"
     return render(request, "workers/workers_form/worker_new.html", {"form": form, "error": error})
+
+
 
 
 class WorkerDetailView(DetailView, WorkerCategory):
@@ -313,6 +322,7 @@ class SearchGoods(ListView):
         context["q"] = f'q={self.request.GET.get("q")}&'
         return context
 
+
 # Материалы
 class MaterialListView(ListView):
     """Список материалов"""
@@ -325,14 +335,21 @@ class MaterialListView(ListView):
 def MaterialNew(request):
     """Создание нового материала"""
     form = MaterialNewForm()
+    materials_list = Materials.objects.all()
     error = ""
     if request.method == "POST":
         form = MaterialNewForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect("material_list")
-        else:
-            error = "Форма неверно заполнена"
+        # проверка на присутсвие материала в бд
+        for material in materials_list:
+            if form['code'].value() == material.code:
+                error = "Такой материал уже существует!"
+                break
+            else:
+                if form.is_valid():
+                    form.save()
+                    return redirect("material_list")
+                else:
+                    error = "Форма неверно заполнена"
     return render(request, "materials/materials_form/materials_new.html", {"form": form, "error": error})
 
 
@@ -525,6 +542,7 @@ class NariadListView(ListView):
 
 def NariadNew(request):
     """Создание нового изделия на склад"""
+    nariad_list = Nariad.objects.all()
     form = NariadNewForm()
     error = ""
     if request.method == "POST":
@@ -533,7 +551,12 @@ def NariadNew(request):
             form.save()
             return redirect("nariad_list")
         else:
-            error = "Форма неверно заполнена"
+            for nariad in nariad_list:
+                if int(form['code'].value()) == nariad.code:
+                    error = "Наряд с таким кодом уже существует"
+                    break
+                else:
+                    error = "Форма неверно заполнена"
     return render(request, "nariad/nariad_form/nariad_new.html", {"form": form, "error": error})
 
 

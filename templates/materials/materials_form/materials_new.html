@@ -19,7 +19,7 @@
     <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
         <h3>Введите информацию о материале</h3>
-        Код изделия:{{ form.code }} <br>
+        Код материала:{{ form.code }} <br>
         Вес смеси:{{ form.weight }} <br>
         Номер партии:{{ form.batch_number }} <br>
         Номер поддона:{{ form.pallet_number }} <br>

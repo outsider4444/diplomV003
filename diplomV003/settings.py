@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'z%)+cmom7g-gn-3liuw4f64!&*8i)7&5@y-hs&fwzzkx$+wd3*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["test-prokes-site.herokuapp.com", '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

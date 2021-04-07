@@ -191,7 +191,7 @@ class OTK(models.Model):
 
 
 class MaterialStorage(models.Model):
-    """Склад смесей"""
+    """Склад материалов"""
     material_code = models.ForeignKey(Materials, verbose_name='Код смеси', on_delete=models.PROTECT)
     value = models.IntegerField('Количество')
     date = models.DateField('Дата проверки')
