@@ -21,7 +21,7 @@ urlpatterns = [
 
     # Форма обновления
     path("goods_list/<int:pk>/update/", views.GoodsUpdateView.as_view(), name="goods_update"),
-    path("workers_list/<int:slug>/update/", views.WorkerUpdateView.as_view(), name="workers_update"),
+    path("worker_list/<int:slug>/update/", views.WorkerUpdateView.as_view(), name="workers_update"),
     path("customer_list/<int:pk>/update/", views.CustomerUpdateView.as_view(), name="customer_update"),
     path("material_list/<int:pk>/update/", views.MaterialUpdateView.as_view(), name="material_update"),
     path("supplier_list/<int:pk>/update/", views.SupplierUpdateView.as_view(), name="supplier_update"),

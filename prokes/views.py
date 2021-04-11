@@ -67,7 +67,7 @@ class WorkerUpdateView(UpdateView):
     """Редактирование информации о сотруднике"""
     model = Workers
     template_name = "workers/workers_form/worker_new.html"
-    success_url = "/"
+    success_url = "worker_list"
     slug_field = "code"
     form_class = WorkersForm
 
@@ -77,7 +77,7 @@ class WorkerDeleteView(DeleteView):
     model = Workers
     # Изменить на список изделий
     slug_field = 'code'
-    success_url = "/"
+    success_url = "worker_list"
     template_name = "workers/workers_form/worker_delete.html"
 
 
@@ -606,16 +606,22 @@ def OTKDetailView(request, pk):
 def OTKNew(request):
     """Создание нового ОТК"""
     form = OTKNewForm()
+    otk_list = OTK.objects.all()
     form_nariad = NariadNewForm()
     nariad_list = Nariad.objects.all()
     error = ""
     if request.method == "POST":
-        form = OTKNewForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("otk_list")
-        else:
-            error = "Форма неверно заполнена"
+        for otk in otk_list:
+            if form['nariad_code'] == otk.nariad_code:
+                error = "ОТК с данным кодом уже существует!"
+                break
+            else:
+                form = OTKNewForm(request.POST)
+                if form.is_valid():
+                        form.save()
+                        return redirect("otk_list")
+                else:
+                    error = "Форма неверно заполнена"
     return render(request, "otk/otk_form/otk_new.html", {"form": form, "error": error, "form_nariad": form_nariad,
                                                          "nariad_list": nariad_list})
 
