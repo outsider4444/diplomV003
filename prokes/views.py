@@ -5,16 +5,19 @@ from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
 from requests import request
 from datetime import date, timedelta, datetime
+import locale
 
 from .forms import *
 
 from .models import *
 
+
 # Текущий месяц и его даты
 def days_cur_month():
+    locale.setlocale(locale.LC_ALL, "")
     m = datetime.now().month
     y = datetime.now().year
-    ndays = (date(y, m+1, 1) - date(y, m, 1)).days
+    ndays = (date(y, m + 1, 1) - date(y, m, 1)).days
     d1 = date(y, m, 1)
     d2 = date(y, m, ndays)
     delta = d2 - d1
@@ -64,8 +67,6 @@ def WorkerNew(request):
                 else:
                     error = "Форма неверно заполнена"
     return render(request, "workers/workers_form/worker_new.html", {"form": form, "error": error})
-
-
 
 
 class WorkerDetailView(DetailView, WorkerCategory):
@@ -247,7 +248,7 @@ def GoodsFormNew(request, pk):
         else:
             error = "Форма неверно заполнена"
     return render(request, 'goods/goods_form/def_form/goods_def_form_new.html', {"form": form,
-                                                                        "error": error, "goods": goods})
+                                                                                 "error": error, "goods": goods})
 
 
 # Фильтры для изделий
@@ -630,8 +631,8 @@ def OTKNew(request):
             else:
                 form = OTKNewForm(request.POST)
                 if form.is_valid():
-                        form.save()
-                        return redirect("otk_list")
+                    form.save()
+                    return redirect("otk_list")
                 else:
                     error = "Форма неверно заполнена"
     return render(request, "otk/otk_form/otk_new.html", {"form": form, "error": error, "form_nariad": form_nariad,
@@ -677,6 +678,9 @@ def ReportRemoteGoodsList(request):
     # получение всех дат текущего месяца
     date = days_cur_month()
 
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+              'Декабрь']
+
     # месяц
     date_month = datetime.today().month
     # год
@@ -688,13 +692,13 @@ def ReportRemoteGoodsList(request):
     while date_days.__len__() != days_cur_month().__len__():
         del date_days[-1]
 
-    goods = Goods.objects.all()
     otk = OTK.objects.filter(
-                Q(date__month=date_month) &
-                Q(date__year=date_year)
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
     )
     for otks in otk:
         summa_remote_goods += otks.remote_value
 
-    context = {"date": date, "date_days": date_days, "goods": goods, "otk": otk, "summa_remote_goods":summa_remote_goods}
+    context = {"date": date, "date_days": date_days, "months":months, "otk": otk,
+               "summa_remote_goods": summa_remote_goods}
     return render(request, 'reports/goods_reports/remote_goods_report.html', context)
