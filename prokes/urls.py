@@ -68,6 +68,9 @@ urlpatterns = [
     # Склады
     path('storage_goods/<int:pk>/', views.StorageGoodsDetailView, name="storage_goods_detail"),
     path('storage_material/<int:pk>/', views.StorageMaterialsDetailView, name="storage_material_detail"),
+    # Список удаленных изделий
+    path("report_list/remove_goods_report", views.ReportRemoteGoodsList, name="remove_goods_report"),
+
 
     # Список
     path("goods_list/", views.GoodsListView.as_view(), name="goods_list"),
@@ -80,6 +83,9 @@ urlpatterns = [
     # Склады
     path("storage_goods/", views.StorageGoodsListView.as_view(), name="storage_goods_list"),
     path("storage_material/", views.StorageMaterialsListView.as_view(), name="storage_material_list"),
+    # Отчеты
+    path("report_list/", views.ReportList, name="report_list"),
+
 
     # Авторизация
     path("accounts/", include("allauth.urls")),

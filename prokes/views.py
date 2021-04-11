@@ -4,10 +4,22 @@ from django.views.generic import ListView, DetailView, View, CreateView, UpdateV
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
 from requests import request
+from datetime import date, timedelta, datetime
 
 from .forms import *
 
 from .models import *
+
+# Текущий месяц и его даты
+def days_cur_month():
+    m = datetime.now().month
+    y = datetime.now().year
+    ndays = (date(y, m+1, 1) - date(y, m, 1)).days
+    d1 = date(y, m, 1)
+    d2 = date(y, m, ndays)
+    delta = d2 - d1
+
+    return [(d1 + timedelta(days=i)).strftime('%d %B %Yг.') for i in range(delta.days + 1)]
 
 
 # Главная страница
@@ -653,5 +665,36 @@ class OTKDeleteView(DeleteView):
     template_name = "otk/otk_form/otk_delete.html"
 
 
+# Отчет
+def ReportList(request):
+    """Список отчетов"""
+    return render(request, "reports/reports_list.html")
 
 
+def ReportRemoteGoodsList(request):
+    """Отчет о списанных изделиях"""
+    summa_remote_goods = 0
+    # получение всех дат текущего месяца
+    date = days_cur_month()
+
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+    # дни
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+
+    while date_days.__len__() != days_cur_month().__len__():
+        del date_days[-1]
+
+    goods = Goods.objects.all()
+    otk = OTK.objects.filter(
+                Q(date__month=date_month) &
+                Q(date__year=date_year)
+    )
+    for otks in otk:
+        summa_remote_goods += otks.remote_value
+
+    context = {"date": date, "date_days": date_days, "goods": goods, "otk": otk, "summa_remote_goods":summa_remote_goods}
+    return render(request, 'reports/goods_reports/remote_goods_report.html', context)

@@ -1,12 +1,4 @@
 {% extends 'storage_goods/base.html' %}
-{% block header_image %}
-    {% if goods.image %}
-        <div class="main-banner bg bg1" id="home" style="background: url('{{ goods.image.url }}')">
-    {% else %}
-        <div class="main-banner bg bg1" id="home" style="background: url('../../media/header_image.jpg')">
-
-    {% endif %}
-{% endblock header_image %}
 
 {% load static %}
 {% block title %}Изделие: {{ goods.goods_code }} {% endblock title %}

@@ -1,0 +1,28 @@
+{% extends 'reports/base.html' %}
+
+{% block title %} Отчет о бракованных изделиях за месяц {% endblock title %}
+{% block header_title %} Отчет о бракованных изделиях за месяц {% endblock header_title %}
+
+{% block report %}
+    <table border="1px">
+    <tr><td>Дата</td>
+        {% for date in date %}
+            <td>{{ date }}</td>
+        {% endfor %}
+        <td>Всего</td>
+    </tr>
+
+        {% for otks in otk %}
+            <tr><td>{{ otks.nariad_code.goods_code }}</td>
+            {% for day in date_days %}
+                {% if otks.date.day == day %}
+                    <td>{{ otks.remote_value }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <td>{{ summa_remote_goods }}</td>
+    </table>
+
+{% endblock report %}

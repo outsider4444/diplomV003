@@ -1,0 +1,42 @@
+{% extends 'reports/base.html' %}
+
+{% block title %} Список отчетов {% endblock title %}
+{% block header_title %} Список отчетов {% endblock header_title %}
+
+{% block report %}
+    <div class="left-ads-display col-lg-12">
+        <div class="row">
+            <div class="col-md-4 product-men">
+                <a href="#" class="editContent">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="item-info-product">
+                            <h4 class="">Отчет об израсходованных материалах </h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    <div class="col-md-4 product-men">
+                <a href="#" class="editContent">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="item-info-product">
+                            <h4 class="">Отчет о выпущенных материалах </h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    <div class="col-md-4 product-men">
+                <a href="{% url 'remove_goods_report' %}" class="editContent">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="item-info-product">
+                            <h4 class="">Отчет о бракованных материалах </h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock report %}
