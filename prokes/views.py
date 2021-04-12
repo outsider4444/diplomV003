@@ -13,7 +13,7 @@ from .models import *
 
 
 # Текущий месяц и его даты
-def days_cur_month():
+def days_cur_month(strdate):
     locale.setlocale(locale.LC_ALL, "")
     m = datetime.now().month
     y = datetime.now().year
@@ -22,7 +22,7 @@ def days_cur_month():
     d2 = date(y, m, ndays)
     delta = d2 - d1
 
-    return [(d1 + timedelta(days=i)).strftime('%d %B %Yг.') for i in range(delta.days + 1)]
+    return [(d1 + timedelta(days=i)).strftime(strdate) for i in range(delta.days + 1)]
 
 
 # Главная страница
@@ -673,10 +673,10 @@ def ReportList(request):
 
 
 def ReportRemoteGoodsList(request):
-    """Отчет о списанных изделиях"""
+    """Отчет о списанных изделиях за месяц"""
     summa_remote_goods = 0
     # получение всех дат текущего месяца
-    date = days_cur_month()
+    delta_date = days_cur_month(strdate='%d %B %Yг.')
 
     months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
               'Декабрь']
@@ -689,16 +689,21 @@ def ReportRemoteGoodsList(request):
     date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
                  28, 29, 30, 31]
 
-    while date_days.__len__() != days_cur_month().__len__():
+    get_date = months[datetime.today().month - 1]
+
+    goods = Goods.objects.filter()
+
+    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
         del date_days[-1]
 
     otk = OTK.objects.filter(
         Q(date__month=date_month) &
         Q(date__year=date_year)
-    )
+    ).order_by('date').distinct()
+
     for otks in otk:
         summa_remote_goods += otks.remote_value
 
-    context = {"date": date, "date_days": date_days, "months":months, "otk": otk,
-               "summa_remote_goods": summa_remote_goods}
+    context = {"date": delta_date, "date_days": date_days, "months":months, "otk": otk,
+               "summa_remote_goods": summa_remote_goods, "get_date": get_date, "goods":goods}
     return render(request, 'reports/goods_reports/remote_goods_report.html', context)

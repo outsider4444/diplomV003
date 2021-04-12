@@ -1,7 +1,7 @@
 {% extends 'reports/base.html' %}
 
-{% block title %} Отчет о бракованных изделиях за месяц {% endblock title %}
-{% block header_title %} Отчет о бракованных изделиях за
+{% block title %} Отчет о бракованных изделиях за {{ get_date }} {% endblock title %}
+{% block header_title %} Отчет о бракованных изделиях за {{ get_date }}
 {% endblock header_title %}
 
 {% block report %}
@@ -12,18 +12,20 @@
         {% endfor %}
         <td>Всего</td>
     </tr>
+    {% for otks in otk %}
+        <tr><td>{{ otks.nariad_code.goods_code.code }}</td>
 
-        {% for otks in otk %}
-            <tr><td>{{ otks.nariad_code.goods_code }}</td>
-            {% for day in date_days %}
-                {% if otks.date.day == day %}
-                    <td>{{ otks.remote_value }}</td>
+        {% for day in date_days %}
+            {% if otks.date == day %}
+                <td>{{ otks.remote_value }}</td>
                 {% else %}
-                    <td></td>
-                {% endif %}
-            {% endfor %}
+                <td></td>
+            {% endif %}
         {% endfor %}
-        <td>{{ summa_remote_goods }}</td>
+        </tr>
+    {% endfor %}
+
+{#        <td>{{ summa_remote_goods }}</td>#}
     </table>
 
 {% endblock report %}
