@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from prokes.templatetags import poll_extras
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -43,6 +45,8 @@ INSTALLED_APPS = [
     'prokes',
     'allauth',
     'allauth.account',
+
+    'prokes.templatetags.poll_extras'
 ]
 
 MIDDLEWARE = [

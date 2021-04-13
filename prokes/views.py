@@ -677,10 +677,8 @@ def ReportRemoteGoodsList(request):
     summa_remote_goods = 0
     # получение всех дат текущего месяца
     delta_date = days_cur_month(strdate='%d %B %Yг.')
-
     months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
               'Декабрь']
-
     # месяц
     date_month = datetime.today().month
     # год
@@ -688,10 +686,7 @@ def ReportRemoteGoodsList(request):
     # дни
     date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
                  28, 29, 30, 31]
-
     get_date = months[datetime.today().month - 1]
-
-    goods = Goods.objects.filter()
 
     while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
         del date_days[-1]
@@ -704,6 +699,6 @@ def ReportRemoteGoodsList(request):
     for otks in otk:
         summa_remote_goods += otks.remote_value
 
-    context = {"date": delta_date, "date_days": date_days, "months":months, "otk": otk,
-               "summa_remote_goods": summa_remote_goods, "get_date": get_date, "goods":goods}
+    context = {"date": delta_date, "date_days": date_days, "months": months, "otk": otk,
+               "summa_remote_goods": summa_remote_goods, "get_date": get_date,  }
     return render(request, 'reports/goods_reports/remote_goods_report.html', context)
