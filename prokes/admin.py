@@ -13,12 +13,16 @@ class GoodsCalendarAdmin(admin.ModelAdmin):
     search_fields = ("goods_code",)
 
 
+@admin.register(OTK)
+class OTKAdmin(admin.ModelAdmin):
+    list_display = ("nariad_code", "goods_value", "remote_value", "date")
+
+
 admin.site.register(Customer)
 admin.site.register(CheckoutGoods)
 admin.site.register(Suppliers)
 admin.site.register(DeliveriesMaterials)
 
 admin.site.register(Nariad)
-admin.site.register(OTK)
 admin.site.register(GoodsStorage)
 admin.site.register(MaterialStorage)
