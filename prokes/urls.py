@@ -69,7 +69,7 @@ urlpatterns = [
     path('storage_goods/<int:pk>/', views.StorageGoodsDetailView, name="storage_goods_detail"),
     path('storage_material/<int:pk>/', views.StorageMaterialsDetailView, name="storage_material_detail"),
     # Список удаленных изделий
-    path("report_list/remove_goods_report", views.ReportRemoteGoodsList, name="remove_goods_report"),
+    path("report_list/remove_goods_report", views.ReportRemoteGoodsListMonth, name="remove_goods_report"),
 
 
     # Список

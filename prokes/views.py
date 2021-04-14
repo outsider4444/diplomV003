@@ -672,7 +672,7 @@ def ReportList(request):
     return render(request, "reports/reports_list.html")
 
 
-def ReportRemoteGoodsList(request):
+def ReportRemoteGoodsListMonth(request):
     """Отчет о списанных изделиях за месяц"""
     summa_remote_goods = 0
     # получение всех дат текущего месяца
@@ -700,5 +700,22 @@ def ReportRemoteGoodsList(request):
         summa_remote_goods += otks.remote_value
 
     context = {"date": delta_date, "date_days": date_days, "months": months, "otk": otk,
-               "summa_remote_goods": summa_remote_goods, "get_date": get_date,  }
-    return render(request, 'reports/goods_reports/remote_goods_report.html', context)
+               "summa_remote_goods": summa_remote_goods, "get_date": get_date,}
+    return render(request, 'reports/goods_reports/remote_goods_report_month.html', context)
+
+
+def ReportRemoteGoodsListWeak(request):
+    """Отчет о списанныз изделиях за неделю"""
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    otk = OTK.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+
+    context = {}
+    return render(request, 'reports/goods_reports/remote_goods_report_weak.html', context)
