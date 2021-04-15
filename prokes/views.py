@@ -740,3 +740,9 @@ def ReportRemoteGoodsListWeek(request):
     context = {"otk": otk, "week_now_days": week_now_days, "date_days": date_days,
                "summa_remote_goods": summa_remote_goods,}
     return render(request, 'reports/goods_reports/remote_goods_report_week.html', context)
+
+
+def ReportRemoteGoodsListToday(request):
+    """Отчет о списанныз изделиях за день"""
+    context = {}
+    return render(request, 'reports/goods_reports/remote_goods_report_today.html', context)
