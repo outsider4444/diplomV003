@@ -722,7 +722,6 @@ def ReportRemoteGoodsListWeek(request):
     week_now_days = week_now("%d %B %a")
     # дни
     date_days = week_now("%d")
-    date_days
     # месяц
     date_month = datetime.today().month
     # год
@@ -733,8 +732,10 @@ def ReportRemoteGoodsListWeek(request):
         Q(date__year=date_year)
     ).order_by('date').distinct()
 
-    for otks in otk:
-        summa_remote_goods += otks.remote_value
+    for days in date_days:
+        for goods_days in otk:
+            if int(days) == goods_days.date.day:
+                summa_remote_goods += goods_days.remote_value
 
     context = {"otk": otk, "week_now_days": week_now_days, "date_days": date_days,
                "summa_remote_goods": summa_remote_goods,}
