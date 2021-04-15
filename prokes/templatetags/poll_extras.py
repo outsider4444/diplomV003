@@ -15,4 +15,9 @@ def distinct(items):
 
 @register.filter()
 def types(items):
-    return (type(items))
+    return type(items)
+
+
+@register.filter()
+def integer(items):
+    return int(items)

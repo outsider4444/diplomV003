@@ -25,6 +25,17 @@ def days_cur_month(strdate):
     return [(d1 + timedelta(days=i)).strftime(strdate) for i in range(delta.days + 1)]
 
 
+# текущая неделю
+def week_now(strdate):
+    locale.setlocale(locale.LC_ALL, "")
+    now = datetime.now()
+    now_day_1 = now - timedelta(days=now.weekday())
+    dates = {}
+    for n_week in range(1):
+        dates[n_week] = [(now_day_1 + timedelta(days=d+n_week*7)).strftime(strdate) for d in range(7)]
+        return dates[n_week]
+
+
 # Главная страница
 def main(request):
     """Главное меню"""
@@ -704,8 +715,14 @@ def ReportRemoteGoodsListMonth(request):
     return render(request, 'reports/goods_reports/remote_goods_report_month.html', context)
 
 
-def ReportRemoteGoodsListWeak(request):
+def ReportRemoteGoodsListWeek(request):
     """Отчет о списанныз изделиях за неделю"""
+    summa_remote_goods = 0
+    # неделя
+    week_now_days = week_now("%d %B %a")
+    # дни
+    date_days = week_now("%d")
+    date_days
     # месяц
     date_month = datetime.today().month
     # год
@@ -716,6 +733,9 @@ def ReportRemoteGoodsListWeak(request):
         Q(date__year=date_year)
     ).order_by('date').distinct()
 
+    for otks in otk:
+        summa_remote_goods += otks.remote_value
 
-    context = {}
-    return render(request, 'reports/goods_reports/remote_goods_report_weak.html', context)
+    context = {"otk": otk, "week_now_days": week_now_days, "date_days": date_days,
+               "summa_remote_goods": summa_remote_goods,}
+    return render(request, 'reports/goods_reports/remote_goods_report_week.html', context)

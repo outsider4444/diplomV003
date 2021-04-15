@@ -1,12 +1,11 @@
 {% extends 'reports/base.html' %}
 {% load poll_extras %}
 
-{% block title %} Отчет о бракованных изделиях за {{ get_date }} {% endblock title %}
-{% block header_title %} Отчет о бракованных изделиях за {{ get_date }}
-{% endblock header_title %}
+
+{% block title %} Отчет о бракованных изделиях за неделю {% endblock title %}
+{% block header_title %} Отчет о бракованных изделиях за неделю {% endblock header_title %}
 
 {% block report %}
-
     <div>
         <a href="{% url 'remove_goods_report_month' %}" class="btn-info">Отчет за месяц</a>
         <a href="{% url 'remove_goods_report_week' %}" class="btn-info">Отчет за неделю</a>
@@ -14,13 +13,12 @@
     </div>
 
     <table border="1px">
-    <tr><td>Дата</td>
-        {% for date in date %}
+        <tr><td>Дата</td>
+            {% for date in week_now_days %}
             <td>{{ date }}</td>
-        {% endfor %}
+            {% endfor %}
         <td>Всего</td>
-    </tr>
-
+        </tr>
     {% for otks in otk.all|values:"nariad_code"|values:"goods_code"|distinct %}
         <tr>
             <td>{{ otks.code }}</td>
@@ -28,7 +26,7 @@
                 <td>
                 {% for otka in otk %}
                     {% if otka.nariad_code.goods_code.code == otks.code %}
-                        {% if otka.date.day == day %}
+                        {% if otka.date.day == day|integer %}
                             {{ otka.remote_value }}
                         {% endif %}
                     {% endif %}
@@ -37,7 +35,8 @@
         {% endfor %}
         </tr>
     {% endfor %}
-    <td>Всего:{{ summa_remote_goods }}</td>
     </table>
+
+
 
 {% endblock report %}
