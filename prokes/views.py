@@ -744,5 +744,22 @@ def ReportRemoteGoodsListWeek(request):
 
 def ReportRemoteGoodsListToday(request):
     """Отчет о списанныз изделиях за день"""
-    context = {}
+    summa_remote_goods = 0
+    # день
+    date_day = datetime.today().day
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    otk = OTK.objects.filter(
+        Q(date__day=date_day) &
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for otks in otk:
+        summa_remote_goods += otks.remote_value
+
+    context = {"otk": otk, }
     return render(request, 'reports/goods_reports/remote_goods_report_today.html', context)
