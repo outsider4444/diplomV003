@@ -795,7 +795,7 @@ def ReportUsedMaterialMonth(request):
     ).order_by('date').distinct()
 
     for nar in nariad:
-        summa_used_material += nar.remote_value
+        summa_used_material += nar.used_materials
 
     context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
                "summa_used_material": summa_used_material, "get_date": get_date, }

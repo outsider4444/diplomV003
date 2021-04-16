@@ -165,7 +165,7 @@ class Nariad(models.Model):
     material_code = models.ForeignKey(Materials, verbose_name='Код смеси', on_delete=models.PROTECT)
     value = models.IntegerField('Количество')
     date = models.DateField('Дата')
-    consumption = models.IntegerField('Расход смеси')
+    used_materials = models.FloatField('Расход смеси', default=0)
 
     def __str__(self):
         return str(self.code)
