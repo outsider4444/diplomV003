@@ -50,7 +50,7 @@ class Goods(models.Model):
     image = models.ImageField("Фотография изделия", upload_to="goods/", blank=True)
     weight_clean = models.FloatField('Вес чистой детали', default=0)
     norma_na_vigruzku = models.FloatField('Норма на выгрузку', default=0)
-    rashod_smesi = models.FloatField('Расход смеси', default=0)
+    used_materials = models.FloatField('Расход смеси', default=0)
 
     def __str__(self):
         return self.code

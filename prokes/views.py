@@ -42,6 +42,12 @@ def main(request):
     return render(request, "main/main.html")
 
 
+# Список отчетов
+def ReportList(request):
+    """Список отчетов"""
+    return render(request, "reports/reports_list.html")
+
+
 # Выводы для фильтров
 class WorkerCategory:
     """Должности сотрудников"""
@@ -678,12 +684,7 @@ class OTKDeleteView(DeleteView):
 
 
 # Отчет о списанных изделиях
-def ReportList(request):
-    """Список отчетов"""
-    return render(request, "reports/reports_list.html")
-
-
-def ReportRemoteGoodsListMonth(request):
+def ReportRemoteGoodsMonth(request):
     """Отчет о списанных изделиях за месяц"""
     summa_remote_goods = 0
     # получение всех дат текущего месяца
@@ -712,10 +713,10 @@ def ReportRemoteGoodsListMonth(request):
 
     context = {"date": delta_date, "date_days": date_days, "months": months, "otk": otk,
                "summa_remote_goods": summa_remote_goods, "get_date": get_date,}
-    return render(request, 'reports/goods_reports/remote_goods_report_month.html', context)
+    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_month.html', context)
 
 
-def ReportRemoteGoodsListWeek(request):
+def ReportRemoteGoodsWeek(request):
     """Отчет о списанныз изделиях за неделю"""
     summa_remote_goods = 0
     # неделя
@@ -739,10 +740,10 @@ def ReportRemoteGoodsListWeek(request):
 
     context = {"otk": otk, "week_now_days": week_now_days, "date_days": date_days,
                "summa_remote_goods": summa_remote_goods,}
-    return render(request, 'reports/goods_reports/remote_goods_report_week.html', context)
+    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_week.html', context)
 
 
-def ReportRemoteGoodsListToday(request):
+def ReportRemoteGoodsToday(request):
     """Отчет о списанныз изделиях за день"""
     summa_remote_goods = 0
     # день
@@ -765,4 +766,37 @@ def ReportRemoteGoodsListToday(request):
         summa_remote_goods += otks.remote_value
 
     context = {"otk": otk, "summa_remote_goods": summa_remote_goods, "date_day": date_day, "delta_date": delta_date, }
-    return render(request, 'reports/goods_reports/remote_goods_report_today.html', context)
+    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_today.html', context)
+
+
+# Отчет о расходе материала
+def ReportUsedMaterialMonth(request):
+    """Отчет о расходе смеси за месяц"""
+    summa_used_material = 0
+    # получение всех дат текущего месяца
+    delta_date = days_cur_month(strdate='%d %B %Yг.')
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+              'Декабрь']
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+    # дни
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+    get_date = months[datetime.today().month - 1]
+
+    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
+        del date_days[-1]
+
+    nariad = Nariad.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for nar in nariad:
+        summa_used_material += nar.remote_value
+
+    context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
+               "summa_used_material": summa_used_material, "get_date": get_date, }
+    return render(request, 'reports/goods_reports/used_materials/used_materials_report_month.html', context)

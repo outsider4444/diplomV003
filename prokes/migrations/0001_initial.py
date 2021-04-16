@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('image', models.ImageField(blank=True, upload_to='goods/', verbose_name='Фотография изделия')),
                 ('weight_clean', models.FloatField(default=0, verbose_name='Вес чистой детали')),
                 ('norma_na_vigruzku', models.FloatField(default=0, verbose_name='Норма на выгрузку')),
-                ('rashod_smesi', models.FloatField(default=0, verbose_name='Расход смеси')),
+                ('used_materials', models.FloatField(default=0, verbose_name='Расход смеси')),
             ],
             options={
                 'verbose_name': 'Изделие',
