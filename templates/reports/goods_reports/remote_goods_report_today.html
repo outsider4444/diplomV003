@@ -2,8 +2,8 @@
 {% load poll_extras %}
 
 
-{% block title %} Отчет о бракованных изделиях за день {% endblock title %}
-{% block header_title %} Отчет о бракованных изделиях за день {% endblock header_title %}
+{% block title %} Отчет о бракованных изделиях за {{ delta_date }}{% endblock title %}
+{% block header_title %} Отчет о бракованных изделиях за {{ delta_date }} {% endblock header_title %}
 
 {% block report %}
     <div style="width: 100%">
@@ -13,6 +13,20 @@
     </div>
 
     <table border="1px">
+    <tr><td>Изделие</td><td>Количество</td></tr>
+        {% for otks in otk.all|values:"nariad_code"|values:"goods_code"|distinct %}
+            <tr>
+                <td>{{ otks.code }}</td>
+            {% for otka in otk %}
+                {% if otka.nariad_code.goods_code.code == otks.code %}
+                    {% if otka.date.day == date_day %}
+                        <td>{{ otka.remote_value }}</td>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+             </tr>
+            <td>Всего:{{ summa_remote_goods }}</td>
+        {% endfor %}
 
     </table>
 

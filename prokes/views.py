@@ -677,7 +677,7 @@ class OTKDeleteView(DeleteView):
     template_name = "otk/otk_form/otk_delete.html"
 
 
-# Отчет
+# Отчет о списанных изделиях
 def ReportList(request):
     """Список отчетов"""
     return render(request, "reports/reports_list.html")
@@ -752,6 +752,9 @@ def ReportRemoteGoodsListToday(request):
     # год
     date_year = datetime.today().year
 
+    # надпись в шапку
+    delta_date = datetime.today().date()
+
     otk = OTK.objects.filter(
         Q(date__day=date_day) &
         Q(date__month=date_month) &
@@ -761,5 +764,5 @@ def ReportRemoteGoodsListToday(request):
     for otks in otk:
         summa_remote_goods += otks.remote_value
 
-    context = {"otk": otk, }
+    context = {"otk": otk, "summa_remote_goods": summa_remote_goods, "date_day": date_day, "delta_date": delta_date, }
     return render(request, 'reports/goods_reports/remote_goods_report_today.html', context)
