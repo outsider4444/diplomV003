@@ -800,15 +800,28 @@ def ReportRemoteGoodsCalendar(request):
     end_date[0] = int(end_date[0])
     end_date[1] = int(end_date[1])
     end_date[2] = int(end_date[2])
+
+    date_years_year = start_date[0]
+    date_years = [date_years_year, ]
+
+    while date_years_year < end_date[0]:
+        date_years_year += 1
+        date_years.append(date_years_year)
+
+    date_months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+
     # календарь
-    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %M %Y')
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
 
     otk = OTK.objects.all()
     otkfilter = OTKFilter(request.GET, queryset=otk)
     otk = otkfilter.qs
 
-    context = {"otkfilter": otkfilter, "otk": otk,
-               "delta_date": delta_date}
+    context = {"otkfilter": otkfilter, "otk": otk, "date_days": date_days, "date_months": date_months,
+               "date_years": date_years, "delta_date": delta_date}
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_calendar.html', context)
 
 
