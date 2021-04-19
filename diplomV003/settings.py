@@ -43,9 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'prokes',
+
     'allauth',
     'allauth.account',
 
+    'django_filters',
     'prokes.templatetags.poll_extras'
 ]
 

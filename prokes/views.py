@@ -8,6 +8,7 @@ from datetime import date, timedelta, datetime
 import locale
 
 from .forms import *
+from .filters import OTKFilter
 
 from .models import *
 
@@ -339,7 +340,7 @@ class FilterGoodsView(ListView):
         return context
 
 
-# Отдел поиска
+# Поиск изделий
 class SearchGoods(ListView):
     """Поиск изделий"""
     template_name = "goods/goods_list.html"
@@ -767,6 +768,13 @@ def ReportRemoteGoodsToday(request):
 
     context = {"otk": otk, "summa_remote_goods": summa_remote_goods, "date_day": date_day, "delta_date": delta_date, }
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_today.html', context)
+
+
+def ReportRemoteGoodsCalendar(request):
+    """Отчет по календарю"""
+    otkfilter = OTKFilter()
+    context = {"otkfilter": otkfilter, }
+    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_calendar.html', context)
 
 
 # Отчет о расходе материала
