@@ -6,6 +6,7 @@ from django.forms import inlineformset_factory
 from requests import request
 from datetime import date, timedelta, datetime
 import locale
+import pandas
 
 from .forms import *
 from .filters import OTKFilter
@@ -26,15 +27,28 @@ def days_cur_month(strdate):
     return [(d1 + timedelta(days=i)).strftime(strdate) for i in range(delta.days + 1)]
 
 
-# текущая неделю
+# текущая неделя
 def week_now(strdate):
     locale.setlocale(locale.LC_ALL, "")
     now = datetime.now()
     now_day_1 = now - timedelta(days=now.weekday())
     dates = {}
     for n_week in range(1):
-        dates[n_week] = [(now_day_1 + timedelta(days=d+n_week*7)).strftime(strdate) for d in range(7)]
+        dates[n_week] = [(now_day_1 + timedelta(days=d + n_week * 7)).strftime(strdate) for d in range(7)]
         return dates[n_week]
+
+
+def calendar(s_date, e_date, strdate):
+    locale.setlocale(locale.LC_ALL, "")
+    start_date = datetime(s_date[0], s_date[1], s_date[2])
+    end_date = datetime(e_date[0], e_date[1], e_date[2])
+
+    res = pandas.date_range(
+        min(start_date, end_date),
+        max(start_date, end_date)
+    ).strftime(strdate).tolist()
+
+    return res
 
 
 # Главная страница
@@ -712,13 +726,15 @@ def ReportRemoteGoodsMonth(request):
     for otks in otk:
         summa_remote_goods += otks.remote_value
 
+    otkfilter = OTKFilter(request.GET, queryset=otk)
+
     context = {"date": delta_date, "date_days": date_days, "months": months, "otk": otk,
-               "summa_remote_goods": summa_remote_goods, "get_date": get_date,}
+               "summa_remote_goods": summa_remote_goods, "get_date": get_date, "otkfilter": otkfilter}
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_month.html', context)
 
 
 def ReportRemoteGoodsWeek(request):
-    """Отчет о списанныз изделиях за неделю"""
+    """Отчет о списанных изделиях за неделю"""
     summa_remote_goods = 0
     # неделя
     week_now_days = week_now("%d %B %a")
@@ -740,7 +756,7 @@ def ReportRemoteGoodsWeek(request):
                 summa_remote_goods += goods_days.remote_value
 
     context = {"otk": otk, "week_now_days": week_now_days, "date_days": date_days,
-               "summa_remote_goods": summa_remote_goods,}
+               "summa_remote_goods": summa_remote_goods, }
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_week.html', context)
 
 
@@ -772,8 +788,27 @@ def ReportRemoteGoodsToday(request):
 
 def ReportRemoteGoodsCalendar(request):
     """Отчет по календарю"""
-    otkfilter = OTKFilter()
-    context = {"otkfilter": otkfilter, }
+    # дата начала
+    start_date = request.GET.get('start_date')
+    start_date = start_date.split("-")
+    start_date[0] = int(start_date[0])
+    start_date[1] = int(start_date[1])
+    start_date[2] = int(start_date[2])
+    # дата окончания
+    end_date = request.GET.get('end_date')
+    end_date = end_date.split("-")
+    end_date[0] = int(end_date[0])
+    end_date[1] = int(end_date[1])
+    end_date[2] = int(end_date[2])
+    # календарь
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %M %Y')
+
+    otk = OTK.objects.all()
+    otkfilter = OTKFilter(request.GET, queryset=otk)
+    otk = otkfilter.qs
+
+    context = {"otkfilter": otkfilter, "otk": otk,
+               "delta_date": delta_date}
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_calendar.html', context)
 
 
