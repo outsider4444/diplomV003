@@ -5,10 +5,14 @@
 {% block header_title %} Отчет о расходе материала за {{ get_date }} {% endblock header_title %}
 
 {% block report %}
-    <div style="width: 100%">
-        <a href="{% url 'used_material_report_month' %}" class="btn-info">Отчет за месяц</a>
-{#        <a href="{% url 'remove_used_material_month' %}" class="btn-info">Отчет за неделю</a>#}
+        <div style="width: 100%">
+        <a href="{% url 'used_material_report_month' %}" class="btn btn-success">Отчет за месяц</a>
+        <a href="{% url 'used_material_report_week' %}" class="btn btn-success">Отчет за неделю</a>
 {#        <a href="{% url 'remove_used_material_month' %}" class="btn-info">Отчет за день</a>#}
+        <form action="{% url 'remove_goods_report_calendar' %}" method="get">
+            {{ report_used_material_filter.form }}
+            <button type="submit" class="btn btn-primary">Поиск</button>
+        </form>
     </div>
 
     <table border="1px">
@@ -17,13 +21,14 @@
                 <td>{{ date }}</td>
             {% endfor %}
         </tr>
-        {% for nar in nariad.all|values:"goods_code"|values:"code"|distinct %}
-            <tr><td>{{ nar }}</td>
-            {% for day in date_days %}
+        {% for nar in nariad.all|values:"material_code"|values:"code"|distinct %}
+            <tr>
+                <td>{{ nar }}</td>
+                {% for day in date_days %}
                     <td>
                         {% for nari in nariad %}
-                            {% if nari.goods_code.code == nar %}
-                                {% if nari.date.day == day %}
+                            {% if nari.material_code.code == nar %}
+                                {% if nari.date.day == day|integer %}
                                     {{ nari.used_materials }}
                                 {% endif %}
                             {% endif %}

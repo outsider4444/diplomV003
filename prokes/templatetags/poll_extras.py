@@ -21,3 +21,8 @@ def types(items):
 @register.filter()
 def integer(items):
     return int(items)
+
+
+@register.filter()
+def string(items):
+    return str(items)

@@ -12,7 +12,7 @@
         <a href="{% url 'remove_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
         <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
         <form action="{% url 'remove_goods_report_calendar' %}" method="get">
-            {{ otkfilter.form }}
+            {{ report_remote_goods_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
         </form>
     </div>

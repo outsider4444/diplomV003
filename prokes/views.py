@@ -9,7 +9,7 @@ import locale
 import pandas
 
 from .forms import *
-from .filters import OTKFilter
+from .filters import ReportRemoteGoodsFilter, ReportUsedMaterialFilter
 
 from .models import *
 
@@ -47,7 +47,6 @@ def calendar(s_date, e_date, strdate):
         min(start_date, end_date),
         max(start_date, end_date)
     ).strftime(strdate).tolist()
-
     return res
 
 
@@ -726,10 +725,11 @@ def ReportRemoteGoodsMonth(request):
     for otks in otk:
         summa_remote_goods += otks.remote_value
 
-    otkfilter = OTKFilter(request.GET, queryset=otk)
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
 
     context = {"date": delta_date, "date_days": date_days, "months": months, "otk": otk,
-               "summa_remote_goods": summa_remote_goods, "get_date": get_date, "otkfilter": otkfilter}
+               "summa_remote_goods": summa_remote_goods, "get_date": get_date,
+               "report_remote_goods_filter": report_remote_goods_filter}
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_month.html', context)
 
 
@@ -755,8 +755,10 @@ def ReportRemoteGoodsWeek(request):
             if int(days) == goods_days.date.day:
                 summa_remote_goods += goods_days.remote_value
 
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+
     context = {"otk": otk, "week_now_days": week_now_days, "date_days": date_days,
-               "summa_remote_goods": summa_remote_goods, }
+               "summa_remote_goods": summa_remote_goods, "report_remote_goods_filter": report_remote_goods_filter}
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_week.html', context)
 
 
@@ -782,12 +784,17 @@ def ReportRemoteGoodsToday(request):
     for otks in otk:
         summa_remote_goods += otks.remote_value
 
-    context = {"otk": otk, "summa_remote_goods": summa_remote_goods, "date_day": date_day, "delta_date": delta_date, }
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+
+    context = {"otk": otk, "summa_remote_goods": summa_remote_goods, "date_day": date_day, "delta_date": delta_date,
+               "report_remote_goods_filter": report_remote_goods_filter}
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_today.html', context)
 
 
 def ReportRemoteGoodsCalendar(request):
     """Отчет по календарю"""
+    summa_remote_goods = 0
+
     # дата начала
     start_date = request.GET.get('start_date')
     start_date = start_date.split("-")
@@ -801,27 +808,20 @@ def ReportRemoteGoodsCalendar(request):
     end_date[1] = int(end_date[1])
     end_date[2] = int(end_date[2])
 
-    date_years_year = start_date[0]
-    date_years = [date_years_year, ]
-
-    while date_years_year < end_date[0]:
-        date_years_year += 1
-        date_years.append(date_years_year)
-
-    date_months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-
-    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-                 28, 29, 30, 31]
-
+    # дни для вывода
+    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
     # календарь
     delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
 
     otk = OTK.objects.all()
-    otkfilter = OTKFilter(request.GET, queryset=otk)
+    otkfilter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
     otk = otkfilter.qs
 
-    context = {"otkfilter": otkfilter, "otk": otk, "date_days": date_days, "date_months": date_months,
-               "date_years": date_years, "delta_date": delta_date}
+    for otks in otk:
+        summa_remote_goods += otks.remote_value
+
+    context = {"otkfilter": otkfilter, "otk": otk, "delta_days": delta_days, "delta_date": delta_date,
+               "summa_remote_goods": summa_remote_goods}
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_calendar.html', context)
 
 
@@ -853,6 +853,38 @@ def ReportUsedMaterialMonth(request):
     for nar in nariad:
         summa_used_material += nar.used_materials
 
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
     context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
-               "summa_used_material": summa_used_material, "get_date": get_date, }
+               "summa_used_material": summa_used_material, "get_date": get_date,
+               "report_used_material_filter": report_used_material_filter}
     return render(request, 'reports/goods_reports/used_materials/used_materials_report_month.html', context)
+
+
+def ReportUsedMaterialWeek(request):
+    """Отчет о расходе смеси за неделю"""
+    summa_used_material = 0
+    # неделя
+    week_now_days = week_now("%d %B %a")
+    # дни
+    date_days = week_now("%d")
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    nariad = Nariad.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for days in date_days:
+        for nariad_days in nariad:
+            if int(days) == nariad_days.date.day:
+                summa_used_material += nariad_days.remote_value
+
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"nariad": nariad, "week_now_days": week_now_days, "date_days": date_days,
+               "summa_used_material": summa_used_material, "report_used_material_filter": report_used_material_filter}
+    return render(request, 'reports/goods_reports/used_materials/used_materials_report_week.html', context)
