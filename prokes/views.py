@@ -763,7 +763,7 @@ def ReportRemoteGoodsWeek(request):
 
 
 def ReportRemoteGoodsToday(request):
-    """Отчет о списанныз изделиях за день"""
+    """Отчет о списанных изделиях за день"""
     summa_remote_goods = 0
     # день
     date_day = datetime.today().day
@@ -888,3 +888,67 @@ def ReportUsedMaterialWeek(request):
     context = {"nariad": nariad, "week_now_days": week_now_days, "date_days": date_days,
                "summa_used_material": summa_used_material, "report_used_material_filter": report_used_material_filter}
     return render(request, 'reports/goods_reports/used_materials/used_materials_report_week.html', context)
+
+
+def ReportUsedMaterialToday(request):
+    """Отчет о списанных изделиях за день"""
+    summa_used_material = 0
+    # день
+    date_day = datetime.today().day
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    # надпись в шапку
+    delta_date = datetime.today().date()
+
+    nariad = Nariad.objects.filter(
+        Q(date__day=date_day) &
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for nar in nariad:
+        summa_used_material += nar.remote_value
+
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"nariad": nariad, "summa_used_material": summa_used_material, "date_day": date_day,
+               "delta_date": delta_date, "report_used_material_filter": report_used_material_filter}
+    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_today.html', context)
+
+
+def ReportUsedMaterialCalendar(request):
+    """Отчет по календарю"""
+    summa_used_material = 0
+
+    # дата начала
+    start_date = request.GET.get('start_date')
+    start_date = start_date.split("-")
+    start_date[0] = int(start_date[0])
+    start_date[1] = int(start_date[1])
+    start_date[2] = int(start_date[2])
+    # дата окончания
+    end_date = request.GET.get('end_date')
+    end_date = end_date.split("-")
+    end_date[0] = int(end_date[0])
+    end_date[1] = int(end_date[1])
+    end_date[2] = int(end_date[2])
+
+    # дни для вывода
+    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
+    # календарь
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
+
+    nariad = Nariad.objects.all()
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+    nariad = report_used_material_filter.qs
+
+    for nari in nariad:
+        summa_used_material += nari.remote_value
+
+    context = {"report_used_material_filter": report_used_material_filter, "nariad": nariad,
+               "delta_days": delta_days, "delta_date": delta_date,
+               "summa_used_material": summa_used_material}
+    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_calendar.html', context)
