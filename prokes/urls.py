@@ -29,7 +29,8 @@ urlpatterns = [
     path("otk_list/<int:pk>/update/", views.OTKUpdateView, name="otk_update"),
     # Склады
     path("storage_goods/<int:pk>/update/", views.StorageGoodsUpdateView.as_view(), name="storage_goods_update"),
-    path("storage_material/<int:pk>/update/", views.StorageMaterialsUpdateView.as_view(), name="storage_material_update"),
+    path("storage_material/<int:pk>/update/", views.StorageMaterialsUpdateView.as_view(),
+         name="storage_material_update"),
 
 
     # Форма создания

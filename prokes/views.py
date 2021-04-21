@@ -1,10 +1,10 @@
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
-from requests import request
-from datetime import date, timedelta, datetime
+from datetime import date, timedelta
 import locale
 import pandas
 
@@ -76,7 +76,7 @@ class WorkerListView(WorkerCategory, ListView):
     model = Workers
     queryset = Workers.objects.filter(fired=False)
     template_name = "workers/worker_list.html"
-    paginate_by = 5
+    paginate_by = 15
 
 
 def WorkerNew(request):
@@ -88,7 +88,7 @@ def WorkerNew(request):
         form = WorkersForm(request.POST)
         if form.is_valid():
             form.save()
-            redirect('workers_list')
+            return redirect(reverse('workers_list'))
         else:
             print(form['code'].value())
             for worker in worker_list:
@@ -205,6 +205,7 @@ def GoodsDetailView(request, pk):
         form = CalendarForm(request.POST)
         if form.is_valid():
             form.save()
+            return redirect(reverse('goods_list'))
         else:
             error = "Форма неверно заполнена"
     context = {"calendar": calendar, "goods": goods, "form": form, "error": error,
@@ -225,6 +226,7 @@ def GoodsNew(request):
     form = GoodsForm()
     goods_list = Goods.objects.all()
     error = ""
+
     if request.method == "POST":
         form = GoodsForm(request.POST, request.FILES)
         # проверка на присутсвие изделия в бд
@@ -235,10 +237,10 @@ def GoodsNew(request):
             else:
                 if form.is_valid():
                     form.save()
-                    return redirect("goods_list")
+                    return redirect(reverse('goods_list'))
                 else:
                     error = "Форма неверно заполнена"
-    return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error, "goods_list": goods_list})
+    return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error, "goods_list": goods_list,})
 
 
 class GoodsDeleteView(DeleteView):
@@ -276,7 +278,7 @@ def GoodsFormNew(request, pk):
         form = FormsGoodsForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("goods_list")
+            return redirect(reverse('goods_list'))
         else:
             error = "Форма неверно заполнена"
     return render(request, 'goods/goods_form/def_form/goods_def_form_new.html', {"form": form,
@@ -392,7 +394,7 @@ def MaterialNew(request):
             else:
                 if form.is_valid():
                     form.save()
-                    return redirect("material_list")
+                    return redirect(reverse('material_list'))
                 else:
                     error = "Форма неверно заполнена"
     return render(request, "materials/materials_form/materials_new.html", {"form": form, "error": error})
@@ -439,7 +441,7 @@ def SupplierNew(request):
         form = SupplierNewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("supplier_list")
+            return redirect(reverse("supplier_list"))
         else:
             error = "Форма неверно заполнена"
     return render(request, "suppliers/supplier_form/supplier_new.html", {"form": form, "error": error})
@@ -499,7 +501,7 @@ def StorageGoodsNew(request):
         form = GoodsStorageNewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("storage_goods_list")
+            return redirect(reverse("storage_goods_list"))
         else:
             error = "Форма неверно заполнена"
     return render(request, "storage_goods/goods_form/goods_new.html", {"form": form, "error": error})
@@ -546,7 +548,7 @@ def StorageMaterialsNew(request):
         form = MaterialsStorageNewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("storage_material_list")
+            return redirect(reverse("storage_material_list"))
         else:
             error = "Форма неверно заполнена"
     return render(request, "storage_materials/materials_form/material_new.html", {"form": form, "error": error})
@@ -594,7 +596,7 @@ def NariadNew(request):
         form = NariadNewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("nariad_list")
+            return redirect(reverse("nariad_list"))
         else:
             for nariad in nariad_list:
                 if int(form['code'].value()) == nariad.code:
@@ -664,7 +666,7 @@ def OTKNew(request):
                 form = OTKNewForm(request.POST)
                 if form.is_valid():
                     form.save()
-                    return redirect("otk_list")
+                    return redirect(reverse("otk_list"))
                 else:
                     error = "Форма неверно заполнена"
     return render(request, "otk/otk_form/otk_new.html", {"form": form, "error": error, "form_nariad": form_nariad,
@@ -683,7 +685,7 @@ def OTKUpdateView(request, pk):
         form = OTKNewForm(request.POST, instance=otk)
         if form.is_valid():
             form.save()
-            return redirect("otk_list")
+            return redirect(reverse("otk_list"))
         else:
             error = "Форма неверно заполнена"
     return render(request, "otk/otk_form/otk_update.html", {"form": form, "error": error, "form_nariad": form_nariad,
@@ -696,7 +698,6 @@ class OTKDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/"
     template_name = "otk/otk_form/otk_delete.html"
-
 
 
 # Отчет о расходе материала
@@ -828,7 +829,40 @@ def ReportUsedMaterialCalendar(request):
     return render(request, 'reports/goods_reports/used_materials/used_materials_report_calendar.html', context)
 
 
-#
+# Отчет о выпущенных изделиях
+def ReportReleasedGoodsMonth(request):
+    """Отчет о выпущенных изделиях за месяц"""
+    summa_released_goods = 0
+    # получение всех дат текущего месяца
+    delta_date = days_cur_month(strdate='%d %B %Yг.')
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+              'Декабрь']
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+    # дни
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+    get_date = months[datetime.today().month - 1]
+
+    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
+        del date_days[-1]
+
+    nariad = Nariad.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for nar in nariad:
+        summa_released_goods += nar.value
+
+    report_released_goods_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
+               "summa_released_goods": summa_released_goods, "get_date": get_date,
+               "report_released_goods_filter": report_released_goods_filter}
+    return render(request, 'reports/goods_reports/released_goods/released_goods_report_month.html', context)
 
 
 # Отчет о списанных изделиях
