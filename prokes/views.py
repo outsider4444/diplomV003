@@ -111,7 +111,7 @@ class WorkerUpdateView(UpdateView):
     """Редактирование информации о сотруднике"""
     model = Workers
     template_name = "workers/workers_form/worker_new.html"
-    success_url = "worker_list"
+    success_url = "/worker_list"
     slug_field = "code"
     form_class = WorkersForm
 
@@ -121,7 +121,7 @@ class WorkerDeleteView(DeleteView):
     model = Workers
     # Изменить на список изделий
     slug_field = 'code'
-    success_url = "worker_list"
+    success_url = "/worker_list"
     template_name = "workers/workers_form/worker_delete.html"
 
 
@@ -142,7 +142,7 @@ def CustomerNew(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("workers_list")
+            return redirect("customer_list")
         else:
             error = "Форма неверно заполнена"
     return render(request, "customer/customer_form/customer_new.html", {"form": form, "error": error})
@@ -173,7 +173,7 @@ class CustomerUpdateView(UpdateView):
     """Редактирование информации о заказчике"""
     model = Customer
     template_name = "customer/customer_form/customer_new.html"
-    success_url = "/"
+    success_url = "/customer_list"
     form_class = CustomerForm
 
 
@@ -181,7 +181,7 @@ class CustomerDeleteView(DeleteView):
     """Удаление заказчика"""
     model = Customer
     # Изменить на список изделий
-    success_url = "/"
+    success_url = '/customer_list'
     template_name = "customer/customer_form/customer_delete.html"
 
 
@@ -245,7 +245,7 @@ class GoodsDeleteView(DeleteView):
     """Удаление изделия"""
     model = Goods
     # Изменить на список изделий
-    success_url = "/"
+    success_url = "/goods_list"
     template_name = "goods/goods_form/goods_delete.html"
 
 
@@ -253,6 +253,7 @@ class GoodsFormUpdateView(UpdateView):
     """Обновление информации о форме изделия"""
     model = GoodsDefaultForm
     template_name = 'goods/goods_form/def_form/goods_def_form_update.html'
+    success_url = "/goods_list"
     form_class = FormsGoodsForm
     slug_field = 'pk'
 
@@ -261,7 +262,7 @@ class GoodsFormDeleteView(DeleteView):
     """Удаление изделия"""
     model = GoodsDefaultForm
     # Изменить на список изделий
-    success_url = "/"
+    success_url = "/goods_list"
     template_name = "goods/goods_form/goods_delete.html"
     slug_field = 'pk'
 
@@ -410,14 +411,14 @@ class MaterialUpdateView(UpdateView):
     template_name = 'materials/materials_form/materials_new.html'
     form_class = MaterialNewForm
     slug_field = 'pk'
-    success_url = '/'
+    success_url = '/material_list'
 
 
 class MaterialDeleteView(DeleteView):
     """Удаление материала"""
     model = Materials
     # Изменить на список смесей
-    success_url = '/'
+    success_url = '/material_list'
     template_name = "materials/materials_form/materials_delete.html"
 
 
@@ -469,7 +470,7 @@ class SupplierUpdateView(UpdateView):
     """Редактирование информации о поставщике"""
     model = Suppliers
     template_name = "suppliers/supplier_form/supplier_new.html"
-    success_url = "/"
+    success_url = "/supplier_list"
     form_class = SupplierNewForm
 
 
@@ -477,7 +478,7 @@ class SupplierDeleteView(DeleteView):
     """Удаление поставщика"""
     model = Suppliers
     # Изменить на список изделий
-    success_url = "/"
+    success_url = "/supplier_list"
     template_name = "suppliers/supplier_form/supplier_delete.html"
 
 
@@ -516,7 +517,7 @@ class StorageGoodsUpdateView(UpdateView):
     """Редактирование информации об изделии на складе"""
     model = GoodsStorage
     template_name = "storage_goods/goods_form/goods_new.html"
-    success_url = "/"
+    success_url = "/storage_goods_list"
     form_class = GoodsStorageNewForm
 
 
@@ -524,7 +525,7 @@ class StorageGoodsDeleteView(DeleteView):
     """Удаление изделия со склада"""
     model = GoodsStorage
     # Изменить на список изделий
-    success_url = "/"
+    success_url = "/storage_goods_list"
     template_name = "storage_goods/goods_form/goods_delete.html"
 
 
@@ -916,7 +917,7 @@ def ReportUsedMaterialToday(request):
 
     context = {"nariad": nariad, "summa_used_material": summa_used_material, "date_day": date_day,
                "delta_date": delta_date, "report_used_material_filter": report_used_material_filter}
-    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_today.html', context)
+    return render(request, 'reports/goods_reports/used_materials/used_materials_report_today.html', context)
 
 
 def ReportUsedMaterialCalendar(request):
@@ -946,9 +947,9 @@ def ReportUsedMaterialCalendar(request):
     nariad = report_used_material_filter.qs
 
     for nari in nariad:
-        summa_used_material += nari.remote_value
+        summa_used_material += nari.used_materials
 
     context = {"report_used_material_filter": report_used_material_filter, "nariad": nariad,
                "delta_days": delta_days, "delta_date": delta_date,
                "summa_used_material": summa_used_material}
-    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_calendar.html', context)
+    return render(request, 'reports/goods_reports/used_materials/used_materials_report_calendar.html', context)
