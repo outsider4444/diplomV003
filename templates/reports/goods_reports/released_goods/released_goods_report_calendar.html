@@ -1,0 +1,48 @@
+{% extends 'reports/base.html' %}
+{% load poll_extras %}
+
+{% block title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock title %}
+{% block header_title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock header_title %}
+
+{% block report %}
+    
+    <div style="width: 100%">
+        <a href="{% url 'remove_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
+        <a href="{% url 'remove_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
+        <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
+        <form action="{% url 'remove_goods_report_calendar' %}" method="get">
+            {% csrf_token %}
+            {{ report_remote_goods_filter.form }}
+
+            <button type="submit" class="btn btn-primary">Поиск</button>
+        </form>
+    </div>
+
+
+
+    <table border="1px">
+    <tr>
+        <td>Дата</td>
+        {% for days in delta_date %}
+            <td> {{ days }} </td>
+        {% endfor %}
+    {% for otks in otk.all|values:"nariad_code"|values:"goods_code"|distinct %}
+            <tr>
+                <td>{{ otks.code }}</td>
+                {% for days in delta_days %}
+                    <td>
+                        {% for otk_date in otk %}
+                            {% if otk_date.date|string == days %}
+                                {{ otk_date.remote_value }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tr>
+
+        <td>Всего:{{ summa_remote_goods }}</td>
+    </table>
+
+{% endblock report %}

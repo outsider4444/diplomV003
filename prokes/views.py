@@ -1,10 +1,10 @@
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
-from requests import request
-from datetime import date, timedelta, datetime
+from datetime import date, timedelta
 import locale
 import pandas
 
@@ -76,7 +76,7 @@ class WorkerListView(WorkerCategory, ListView):
     model = Workers
     queryset = Workers.objects.filter(fired=False)
     template_name = "workers/worker_list.html"
-    paginate_by = 5
+    paginate_by = 15
 
 
 def WorkerNew(request):
@@ -88,7 +88,7 @@ def WorkerNew(request):
         form = WorkersForm(request.POST)
         if form.is_valid():
             form.save()
-            redirect('workers_list')
+            return redirect(reverse('workers_list'))
         else:
             print(form['code'].value())
             for worker in worker_list:
@@ -111,7 +111,7 @@ class WorkerUpdateView(UpdateView):
     """Редактирование информации о сотруднике"""
     model = Workers
     template_name = "workers/workers_form/worker_new.html"
-    success_url = "worker_list"
+    success_url = "/worker_list"
     slug_field = "code"
     form_class = WorkersForm
 
@@ -121,7 +121,7 @@ class WorkerDeleteView(DeleteView):
     model = Workers
     # Изменить на список изделий
     slug_field = 'code'
-    success_url = "worker_list"
+    success_url = "/worker_list"
     template_name = "workers/workers_form/worker_delete.html"
 
 
@@ -142,7 +142,7 @@ def CustomerNew(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("workers_list")
+            return redirect("customer_list")
         else:
             error = "Форма неверно заполнена"
     return render(request, "customer/customer_form/customer_new.html", {"form": form, "error": error})
@@ -173,7 +173,7 @@ class CustomerUpdateView(UpdateView):
     """Редактирование информации о заказчике"""
     model = Customer
     template_name = "customer/customer_form/customer_new.html"
-    success_url = "/"
+    success_url = "/customer_list"
     form_class = CustomerForm
 
 
@@ -181,7 +181,7 @@ class CustomerDeleteView(DeleteView):
     """Удаление заказчика"""
     model = Customer
     # Изменить на список изделий
-    success_url = "/"
+    success_url = '/customer_list'
     template_name = "customer/customer_form/customer_delete.html"
 
 
@@ -205,6 +205,7 @@ def GoodsDetailView(request, pk):
         form = CalendarForm(request.POST)
         if form.is_valid():
             form.save()
+            return redirect(reverse('goods_list'))
         else:
             error = "Форма неверно заполнена"
     context = {"calendar": calendar, "goods": goods, "form": form, "error": error,
@@ -225,6 +226,7 @@ def GoodsNew(request):
     form = GoodsForm()
     goods_list = Goods.objects.all()
     error = ""
+
     if request.method == "POST":
         form = GoodsForm(request.POST, request.FILES)
         # проверка на присутсвие изделия в бд
@@ -235,17 +237,17 @@ def GoodsNew(request):
             else:
                 if form.is_valid():
                     form.save()
-                    return redirect("goods_list")
+                    return redirect(reverse('goods_list'))
                 else:
                     error = "Форма неверно заполнена"
-    return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error, "goods_list": goods_list})
+    return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error, "goods_list": goods_list,})
 
 
 class GoodsDeleteView(DeleteView):
     """Удаление изделия"""
     model = Goods
     # Изменить на список изделий
-    success_url = "/"
+    success_url = "/goods_list"
     template_name = "goods/goods_form/goods_delete.html"
 
 
@@ -253,6 +255,7 @@ class GoodsFormUpdateView(UpdateView):
     """Обновление информации о форме изделия"""
     model = GoodsDefaultForm
     template_name = 'goods/goods_form/def_form/goods_def_form_update.html'
+    success_url = "/goods_list"
     form_class = FormsGoodsForm
     slug_field = 'pk'
 
@@ -261,7 +264,7 @@ class GoodsFormDeleteView(DeleteView):
     """Удаление изделия"""
     model = GoodsDefaultForm
     # Изменить на список изделий
-    success_url = "/"
+    success_url = "/goods_list"
     template_name = "goods/goods_form/goods_delete.html"
     slug_field = 'pk'
 
@@ -275,7 +278,7 @@ def GoodsFormNew(request, pk):
         form = FormsGoodsForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("goods_list")
+            return redirect(reverse('goods_list'))
         else:
             error = "Форма неверно заполнена"
     return render(request, 'goods/goods_form/def_form/goods_def_form_new.html', {"form": form,
@@ -391,7 +394,7 @@ def MaterialNew(request):
             else:
                 if form.is_valid():
                     form.save()
-                    return redirect("material_list")
+                    return redirect(reverse('material_list'))
                 else:
                     error = "Форма неверно заполнена"
     return render(request, "materials/materials_form/materials_new.html", {"form": form, "error": error})
@@ -410,14 +413,14 @@ class MaterialUpdateView(UpdateView):
     template_name = 'materials/materials_form/materials_new.html'
     form_class = MaterialNewForm
     slug_field = 'pk'
-    success_url = '/'
+    success_url = '/material_list'
 
 
 class MaterialDeleteView(DeleteView):
     """Удаление материала"""
     model = Materials
     # Изменить на список смесей
-    success_url = '/'
+    success_url = '/material_list'
     template_name = "materials/materials_form/materials_delete.html"
 
 
@@ -438,7 +441,7 @@ def SupplierNew(request):
         form = SupplierNewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("supplier_list")
+            return redirect(reverse("supplier_list"))
         else:
             error = "Форма неверно заполнена"
     return render(request, "suppliers/supplier_form/supplier_new.html", {"form": form, "error": error})
@@ -469,7 +472,7 @@ class SupplierUpdateView(UpdateView):
     """Редактирование информации о поставщике"""
     model = Suppliers
     template_name = "suppliers/supplier_form/supplier_new.html"
-    success_url = "/"
+    success_url = "/supplier_list"
     form_class = SupplierNewForm
 
 
@@ -477,7 +480,7 @@ class SupplierDeleteView(DeleteView):
     """Удаление поставщика"""
     model = Suppliers
     # Изменить на список изделий
-    success_url = "/"
+    success_url = "/supplier_list"
     template_name = "suppliers/supplier_form/supplier_delete.html"
 
 
@@ -498,7 +501,7 @@ def StorageGoodsNew(request):
         form = GoodsStorageNewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("storage_goods_list")
+            return redirect(reverse("storage_goods_list"))
         else:
             error = "Форма неверно заполнена"
     return render(request, "storage_goods/goods_form/goods_new.html", {"form": form, "error": error})
@@ -516,7 +519,7 @@ class StorageGoodsUpdateView(UpdateView):
     """Редактирование информации об изделии на складе"""
     model = GoodsStorage
     template_name = "storage_goods/goods_form/goods_new.html"
-    success_url = "/"
+    success_url = "/storage_goods_list"
     form_class = GoodsStorageNewForm
 
 
@@ -524,7 +527,7 @@ class StorageGoodsDeleteView(DeleteView):
     """Удаление изделия со склада"""
     model = GoodsStorage
     # Изменить на список изделий
-    success_url = "/"
+    success_url = "/storage_goods_list"
     template_name = "storage_goods/goods_form/goods_delete.html"
 
 
@@ -545,7 +548,7 @@ def StorageMaterialsNew(request):
         form = MaterialsStorageNewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("storage_material_list")
+            return redirect(reverse("storage_material_list"))
         else:
             error = "Форма неверно заполнена"
     return render(request, "storage_materials/materials_form/material_new.html", {"form": form, "error": error})
@@ -593,7 +596,7 @@ def NariadNew(request):
         form = NariadNewForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("nariad_list")
+            return redirect(reverse("nariad_list"))
         else:
             for nariad in nariad_list:
                 if int(form['code'].value()) == nariad.code:
@@ -663,7 +666,7 @@ def OTKNew(request):
                 form = OTKNewForm(request.POST)
                 if form.is_valid():
                     form.save()
-                    return redirect("otk_list")
+                    return redirect(reverse("otk_list"))
                 else:
                     error = "Форма неверно заполнена"
     return render(request, "otk/otk_form/otk_new.html", {"form": form, "error": error, "form_nariad": form_nariad,
@@ -682,7 +685,7 @@ def OTKUpdateView(request, pk):
         form = OTKNewForm(request.POST, instance=otk)
         if form.is_valid():
             form.save()
-            return redirect("otk_list")
+            return redirect(reverse("otk_list"))
         else:
             error = "Форма неверно заполнена"
     return render(request, "otk/otk_form/otk_update.html", {"form": form, "error": error, "form_nariad": form_nariad,
@@ -695,6 +698,171 @@ class OTKDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/"
     template_name = "otk/otk_form/otk_delete.html"
+
+
+# Отчет о расходе материала
+def ReportUsedMaterialMonth(request):
+    """Отчет о расходе смеси за месяц"""
+    summa_used_material = 0
+    # получение всех дат текущего месяца
+    delta_date = days_cur_month(strdate='%d %B %Yг.')
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+              'Декабрь']
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+    # дни
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+    get_date = months[datetime.today().month - 1]
+
+    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
+        del date_days[-1]
+
+    nariad = Nariad.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for nar in nariad:
+        summa_used_material += nar.used_materials
+
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
+               "summa_used_material": summa_used_material, "get_date": get_date,
+               "report_used_material_filter": report_used_material_filter}
+    return render(request, 'reports/goods_reports/used_materials/used_materials_report_month.html', context)
+
+
+def ReportUsedMaterialWeek(request):
+    """Отчет о расходе смеси за неделю"""
+    summa_used_material = 0
+    # неделя
+    week_now_days = week_now("%d %B %a")
+    # дни
+    date_days = week_now("%d")
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    nariad = Nariad.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for days in date_days:
+        for nariad_days in nariad:
+            if int(days) == nariad_days.date.day:
+                summa_used_material += nariad_days.remote_value
+
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"nariad": nariad, "week_now_days": week_now_days, "date_days": date_days,
+               "summa_used_material": summa_used_material, "report_used_material_filter": report_used_material_filter}
+    return render(request, 'reports/goods_reports/used_materials/used_materials_report_week.html', context)
+
+
+def ReportUsedMaterialToday(request):
+    """Отчет о списанных изделиях за день"""
+    summa_used_material = 0
+    # день
+    date_day = datetime.today().day
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    # надпись в шапку
+    delta_date = datetime.today().date()
+
+    nariad = Nariad.objects.filter(
+        Q(date__day=date_day) &
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for nar in nariad:
+        summa_used_material += nar.remote_value
+
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"nariad": nariad, "summa_used_material": summa_used_material, "date_day": date_day,
+               "delta_date": delta_date, "report_used_material_filter": report_used_material_filter}
+    return render(request, 'reports/goods_reports/used_materials/used_materials_report_today.html', context)
+
+
+def ReportUsedMaterialCalendar(request):
+    """Отчет по календарю"""
+    summa_used_material = 0
+
+    # дата начала
+    start_date = request.GET.get('start_date')
+    start_date = start_date.split("-")
+    start_date[0] = int(start_date[0])
+    start_date[1] = int(start_date[1])
+    start_date[2] = int(start_date[2])
+    # дата окончания
+    end_date = request.GET.get('end_date')
+    end_date = end_date.split("-")
+    end_date[0] = int(end_date[0])
+    end_date[1] = int(end_date[1])
+    end_date[2] = int(end_date[2])
+
+    # дни для вывода
+    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
+    # календарь
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
+
+    nariad = Nariad.objects.all()
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+    nariad = report_used_material_filter.qs
+
+    for nari in nariad:
+        summa_used_material += nari.used_materials
+
+    context = {"report_used_material_filter": report_used_material_filter, "nariad": nariad,
+               "delta_days": delta_days, "delta_date": delta_date,
+               "summa_used_material": summa_used_material}
+    return render(request, 'reports/goods_reports/used_materials/used_materials_report_calendar.html', context)
+
+
+# Отчет о выпущенных изделиях
+def ReportReleasedGoodsMonth(request):
+    """Отчет о выпущенных изделиях за месяц"""
+    summa_released_goods = 0
+    # получение всех дат текущего месяца
+    delta_date = days_cur_month(strdate='%d %B %Yг.')
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+              'Декабрь']
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+    # дни
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+    get_date = months[datetime.today().month - 1]
+
+    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
+        del date_days[-1]
+
+    nariad = Nariad.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for nar in nariad:
+        summa_released_goods += nar.value
+
+    report_released_goods_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
+               "summa_released_goods": summa_released_goods, "get_date": get_date,
+               "report_released_goods_filter": report_released_goods_filter}
+    return render(request, 'reports/goods_reports/released_goods/released_goods_report_month.html', context)
 
 
 # Отчет о списанных изделиях
@@ -822,133 +990,4 @@ def ReportRemoteGoodsCalendar(request):
 
     context = {"otkfilter": otkfilter, "otk": otk, "delta_days": delta_days, "delta_date": delta_date,
                "summa_remote_goods": summa_remote_goods}
-    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_calendar.html', context)
-
-
-# Отчет о расходе материала
-def ReportUsedMaterialMonth(request):
-    """Отчет о расходе смеси за месяц"""
-    summa_used_material = 0
-    # получение всех дат текущего месяца
-    delta_date = days_cur_month(strdate='%d %B %Yг.')
-    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
-              'Декабрь']
-    # месяц
-    date_month = datetime.today().month
-    # год
-    date_year = datetime.today().year
-    # дни
-    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-                 28, 29, 30, 31]
-    get_date = months[datetime.today().month - 1]
-
-    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
-        del date_days[-1]
-
-    nariad = Nariad.objects.filter(
-        Q(date__month=date_month) &
-        Q(date__year=date_year)
-    ).order_by('date').distinct()
-
-    for nar in nariad:
-        summa_used_material += nar.used_materials
-
-    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
-
-    context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
-               "summa_used_material": summa_used_material, "get_date": get_date,
-               "report_used_material_filter": report_used_material_filter}
-    return render(request, 'reports/goods_reports/used_materials/used_materials_report_month.html', context)
-
-
-def ReportUsedMaterialWeek(request):
-    """Отчет о расходе смеси за неделю"""
-    summa_used_material = 0
-    # неделя
-    week_now_days = week_now("%d %B %a")
-    # дни
-    date_days = week_now("%d")
-    # месяц
-    date_month = datetime.today().month
-    # год
-    date_year = datetime.today().year
-
-    nariad = Nariad.objects.filter(
-        Q(date__month=date_month) &
-        Q(date__year=date_year)
-    ).order_by('date').distinct()
-
-    for days in date_days:
-        for nariad_days in nariad:
-            if int(days) == nariad_days.date.day:
-                summa_used_material += nariad_days.remote_value
-
-    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
-
-    context = {"nariad": nariad, "week_now_days": week_now_days, "date_days": date_days,
-               "summa_used_material": summa_used_material, "report_used_material_filter": report_used_material_filter}
-    return render(request, 'reports/goods_reports/used_materials/used_materials_report_week.html', context)
-
-
-def ReportUsedMaterialToday(request):
-    """Отчет о списанных изделиях за день"""
-    summa_used_material = 0
-    # день
-    date_day = datetime.today().day
-    # месяц
-    date_month = datetime.today().month
-    # год
-    date_year = datetime.today().year
-
-    # надпись в шапку
-    delta_date = datetime.today().date()
-
-    nariad = Nariad.objects.filter(
-        Q(date__day=date_day) &
-        Q(date__month=date_month) &
-        Q(date__year=date_year)
-    ).order_by('date').distinct()
-
-    for nar in nariad:
-        summa_used_material += nar.remote_value
-
-    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
-
-    context = {"nariad": nariad, "summa_used_material": summa_used_material, "date_day": date_day,
-               "delta_date": delta_date, "report_used_material_filter": report_used_material_filter}
-    return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_today.html', context)
-
-
-def ReportUsedMaterialCalendar(request):
-    """Отчет по календарю"""
-    summa_used_material = 0
-
-    # дата начала
-    start_date = request.GET.get('start_date')
-    start_date = start_date.split("-")
-    start_date[0] = int(start_date[0])
-    start_date[1] = int(start_date[1])
-    start_date[2] = int(start_date[2])
-    # дата окончания
-    end_date = request.GET.get('end_date')
-    end_date = end_date.split("-")
-    end_date[0] = int(end_date[0])
-    end_date[1] = int(end_date[1])
-    end_date[2] = int(end_date[2])
-
-    # дни для вывода
-    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
-    # календарь
-    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
-
-    nariad = Nariad.objects.all()
-    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
-    nariad = report_used_material_filter.qs
-
-    for nari in nariad:
-        summa_used_material += nari.remote_value
-
-    context = {"report_used_material_filter": report_used_material_filter, "nariad": nariad,
-               "delta_days": delta_days, "delta_date": delta_date,
-               "summa_used_material": summa_used_material}
     return render(request, 'reports/goods_reports/remote_goods/remote_goods_report_calendar.html', context)

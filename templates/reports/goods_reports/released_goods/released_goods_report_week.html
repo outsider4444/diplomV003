@@ -7,30 +7,30 @@
 
 {% block report %}
     <div style="width: 100%">
-        <a href="{% url 'used_material_report_month' %}" class="btn btn-success">Отчет за месяц</a>
-        <a href="{% url 'used_material_report_week' %}" class="btn btn-success">Отчет за неделю</a>
-        <a href="{% url 'used_material_report_today' %}" class="btn btn-success">Отчет за день</a>
-        <form action="{% url 'used_material_report_calendar' %}" method="get">
-            {{ report_used_material_filter.form }}
+        <a href="{% url 'remove_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
+        <a href="{% url 'remove_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
+        <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
+        <form action="{% url 'remove_goods_report_calendar' %}" method="get">
+            {{ report_remote_goods_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
         </form>
     </div>
 
-        <table border="1px">
+    <table border="1px">
         <tr><td>Дата</td>
             {% for date in week_now_days %}
                 <td>{{ date }}</td>
             {% endfor %}
         </tr>
-        {% for nar in nariad.all|values:"material_code"|values:"code"|distinct %}
+        {% for otks in otk.all|values:"nariad_code"|values:"goods_code"|distinct %}
             <tr>
-                <td>{{ nar }}</td>
+                <td>{{ otks.code }}</td>
                 {% for day in date_days %}
                     <td>
-                        {% for nari in nariad %}
-                            {% if nari.material_code.code == nar %}
-                                {% if nari.date.day == day|integer %}
-                                    {{ nari.used_materials }}
+                        {% for otka in otk %}
+                            {% if otka.nariad_code.goods_code.code == otks.code %}
+                                {% if otka.date.day == day|integer %}
+                                    {{ otka.remote_value }}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}

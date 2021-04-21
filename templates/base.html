@@ -46,37 +46,32 @@
                     <input type="checkbox" id="drop">
                     <ul class="menu mt-2">
                         <li class="active"><a href="{% url "main" %}">Главная</a></li>
-                        <li>
-                            <!-- First Tier Drop Down -->
-                            <label for="drop-2" class="toggle">Категории <span class="fa fa-angle-down" aria-hidden="true" ></span> </label>
-                            <a href="#">Категории <span class="fa fa-angle-down" aria-hidden="true"></span></a>
-                            <input type="checkbox" id="drop-2">
-                            {% if user.is_authenticated %}
-                                <ul>
-                                    <li><a href="{% url "workers_list" %}">Сотрудники</a></li>
-                                    <li><a href="{% url "material_list" %}">Материалы</a></li>
-                                    <li><a href="{% url "goods_list" %}">Изделия</a></li>
-                                    <li><a href="{% url "supplier_list" %}">Поставщики</a></li>
-                                    <li><a href="{% url "customer_list" %}">Заказчики</a></li>
-                                    <li><a href="{% url "nariad_list" %}">Наряды</a></li>
-                                    <li><a href="{% url "otk_list" %}">ОТК</a></li>
-                                    <li><a href="{% url "storage_goods_list" %}">Изделия на складе</a></li>
-                                    <li><a href="{% url "storage_material_list" %}">Материалы на складе</a></li>
-                                </ul>
-                            {% endif %}
-                        </li>
-                    <li><a href="{% url 'admin:index' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Администратор</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'account_logout' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Выход</a></li>
-                        {% else %}
-                        <li><a href="{% url 'account_login' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Вход</a></li>
-                    {% endif %}
 
+                        <li><a href="{% url 'admin:index' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Администратор</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'account_logout' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Выход</a></li>
+                        {% else %}
+                            <li><a href="{% url 'account_login' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Вход</a></li>
+                        {% endif %}
                     </ul>
                 </nav>
                 <!-- //nav -->
             </div>
+        <div style="background-color: white">
+            <a href="{% url "workers_list" %} " class="btn btn-primary">Сотрудники</a>
+            <a href="{% url "material_list" %}" class="btn btn-primary">Материалы</a>
+            <a href="{% url "goods_list" %}" class="btn btn-primary">Изделия</a>
+            <a href="{% url "supplier_list" %}" class="btn btn-primary">Поставщики</a>
+            <a href="{% url "customer_list" %}" class="btn btn-primary">Заказчики</a>
+            <a href="{% url "nariad_list" %}" class="btn btn-primary">Наряды</a>
+            <a href="{% url "otk_list" %}" class="btn btn-primary">ОТК</a>
+            <a href="{% url "storage_goods_list" %}" class="btn btn-primary">Изделия на складе</a>
+            <a href="{% url "storage_material_list" %}" class="btn btn-primary">Материалы на складе</a>
+            <a href="{% url "report_list" %}" class="btn btn-primary">Отчеты</a>
+        </div>
+
         </header>
+
         <!-- //header -->
         <!--/banner-->
         <div class="banner-info">

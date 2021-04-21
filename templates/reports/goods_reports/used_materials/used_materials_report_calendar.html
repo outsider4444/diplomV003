@@ -1,9 +1,8 @@
 {% extends 'reports/base.html' %}
 {% load poll_extras %}
 
-
-{% block title %} Отчет о бракованных изделиях за неделю {% endblock title %}
-{% block header_title %} Отчет о бракованных изделиях за неделю {% endblock header_title %}
+{% block title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock title %}
+{% block header_title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock header_title %}
 
 {% block report %}
     <div style="width: 100%">
@@ -11,36 +10,33 @@
         <a href="{% url 'used_material_report_week' %}" class="btn btn-success">Отчет за неделю</a>
         <a href="{% url 'used_material_report_today' %}" class="btn btn-success">Отчет за день</a>
         <form action="{% url 'used_material_report_calendar' %}" method="get">
+            {% csrf_token %}
             {{ report_used_material_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
         </form>
     </div>
 
-        <table border="1px">
-        <tr><td>Дата</td>
-            {% for date in week_now_days %}
-                <td>{{ date }}</td>
-            {% endfor %}
-        </tr>
-        {% for nar in nariad.all|values:"material_code"|values:"code"|distinct %}
+    <table border="1px">
+    <tr>
+        <td>Дата</td>
+        {% for days in delta_date %}
+            <td> {{ days }} </td>
+        {% endfor %}
+        {% for nari in nariad.all|values:"material_code"|values:"code"|distinct %}
             <tr>
-                <td>{{ nar }}</td>
-                {% for day in date_days %}
+                <td>{{ nari }}</td>
+                {% for days in delta_days %}
                     <td>
-                        {% for nari in nariad %}
-                            {% if nari.material_code.code == nar %}
-                                {% if nari.date.day == day|integer %}
-                                    {{ nari.used_materials }}
-                                {% endif %}
+                        {% for nariad_date in nariad %}
+                            {% if nariad_date.date|string == days %}
+                                {{ nariad_date.used_materials }}
                             {% endif %}
                         {% endfor %}
                     </td>
                 {% endfor %}
             </tr>
+            <tr><td>Всего:{{ summa_used_material }}</td></tr>
         {% endfor %}
-        <td>Всего:{{ summa_remote_goods }}</td>
     </table>
-
-
 
 {% endblock report %}
