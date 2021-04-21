@@ -69,6 +69,8 @@ urlpatterns = [
     # Склады
     path('storage_goods/<int:pk>/', views.StorageGoodsDetailView, name="storage_goods_detail"),
     path('storage_material/<int:pk>/', views.StorageMaterialsDetailView, name="storage_material_detail"),
+    # Отчет о выпущенных изделиях
+    path("report_list/released_goods_report_month", views.ReportReleasedGoodsMonth, name="released_goods_report_month"),
     # Отчет удаленных изделий_месяц_неделю_день_Календарь
     path("report_list/remove_goods_report_month", views.ReportRemoteGoodsMonth, name="remove_goods_report_month"),
     path("report_list/remove_goods_report_week", views.ReportRemoteGoodsWeek, name="remove_goods_report_week"),
@@ -81,7 +83,6 @@ urlpatterns = [
     path("report_list/used_material_report_today", views.ReportUsedMaterialToday, name="used_material_report_today"),
     path("report_list/used_material_report_calendar", views.ReportUsedMaterialCalendar,
          name="used_material_report_calendar"),
-
 
     # Список
     path("goods_list/", views.GoodsListView.as_view(), name="goods_list"),

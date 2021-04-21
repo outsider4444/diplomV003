@@ -23,24 +23,23 @@
                 <td>{{ date }}</td>
             {% endfor %}
         </tr>
-
-        {% for otks in otk.all|values:"nariad_code"|values:"goods_code"|distinct %}
+        {% for nar in nariad.all|values:"material_code"|values:"code"|distinct %}
             <tr>
-                <td>{{ otks.code }}</td>
+                <td>{{ nar }}</td>
                 {% for day in date_days %}
                     <td>
-                        {% for otka in otk %}
-                            {% if otka.nariad_code.goods_code.code == otks.code %}
-                                {% if otka.date.day == day %}
-                                    {{ otka.remote_value }}
+                        {% for nari in nariad %}
+                            {% if nari.material_code.code == nar %}
+                                {% if nari.date.day == day|integer %}
+                                    {{ nari.goods_value }}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
                     </td>
                 {% endfor %}
             </tr>
+            <td>Всего:{{ summa_used_material }}</td>
         {% endfor %}
-        <td>Всего:{{ summa_remote_goods }}</td>
     </table>
 
 {% endblock report %}

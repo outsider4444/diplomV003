@@ -230,16 +230,23 @@ def GoodsNew(request):
     if request.method == "POST":
         form = GoodsForm(request.POST, request.FILES)
         # проверка на присутсвие изделия в бд
-        for goods in goods_list:
-            if form['code'].value() == goods.code:
-                error = "Такое изделие уже существует!"
-                break
-            else:
-                if form.is_valid():
-                    form.save()
-                    return redirect(reverse('goods_list'))
+        if goods_list.__len__() != 0:
+            for goods in goods_list:
+                if form['code'].value() == goods.code:
+                    error = "Такое изделие уже существует!"
+                    break
                 else:
-                    error = "Форма неверно заполнена"
+                    if form.is_valid():
+                        form.save()
+                        return redirect(reverse('goods_list'))
+                    else:
+                        error = "Форма неверно заполнена"
+        else:
+            if form.is_valid():
+                form.save()
+                return redirect(reverse('goods_list'))
+            else:
+                error = "Форма неверно заполнена"
     return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error, "goods_list": goods_list,})
 
 
@@ -384,19 +391,27 @@ def MaterialNew(request):
     form = MaterialNewForm()
     materials_list = Materials.objects.all()
     error = ""
+
     if request.method == "POST":
         form = MaterialNewForm(request.POST, request.FILES)
-        # проверка на присутсвие материала в бд
-        for material in materials_list:
-            if form['code'].value() == material.code:
-                error = "Такой материал уже существует!"
-                break
-            else:
-                if form.is_valid():
-                    form.save()
-                    return redirect(reverse('material_list'))
+        # проверка на присутсвие изделия в бд
+        if materials_list.__len__() != 0:
+            for material in materials_list:
+                if form['code'].value() == material.code:
+                    error = "Такой материал уже существует!"
+                    break
                 else:
-                    error = "Форма неверно заполнена"
+                    if form.is_valid():
+                        form.save()
+                        return redirect(reverse('material_list'))
+                    else:
+                        error = "Форма неверно заполнена"
+        else:
+            if form.is_valid():
+                form.save()
+                return redirect(reverse('material_list'))
+            else:
+                error = "Форма неверно заполнена"
     return render(request, "materials/materials_form/materials_new.html", {"form": form, "error": error})
 
 
@@ -700,6 +715,42 @@ class OTKDeleteView(DeleteView):
     template_name = "otk/otk_form/otk_delete.html"
 
 
+# Отчет о выпущенных изделиях
+def ReportReleasedGoodsMonth(request):
+    """Отчет о выпущенных изделиях за месяц"""
+    summa_released_goods = 0
+    # получение всех дат текущего месяца
+    delta_date = days_cur_month(strdate='%d %B %Yг.')
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+              'Декабрь']
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+    # дни
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+    get_date = months[datetime.today().month - 1]
+
+    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
+        del date_days[-1]
+
+    nariad = Nariad.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for nar in nariad:
+        summa_released_goods += nar.goods_value
+
+    report_released_goods_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
+               "summa_released_goods": summa_released_goods, "get_date": get_date,
+               "report_released_goods_filter": report_released_goods_filter}
+    return render(request, 'reports/goods_reports/released_goods/released_goods_report_month.html', context)
+
+
 # Отчет о расходе материала
 def ReportUsedMaterialMonth(request):
     """Отчет о расходе смеси за месяц"""
@@ -827,42 +878,6 @@ def ReportUsedMaterialCalendar(request):
                "delta_days": delta_days, "delta_date": delta_date,
                "summa_used_material": summa_used_material}
     return render(request, 'reports/goods_reports/used_materials/used_materials_report_calendar.html', context)
-
-
-# Отчет о выпущенных изделиях
-def ReportReleasedGoodsMonth(request):
-    """Отчет о выпущенных изделиях за месяц"""
-    summa_released_goods = 0
-    # получение всех дат текущего месяца
-    delta_date = days_cur_month(strdate='%d %B %Yг.')
-    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
-              'Декабрь']
-    # месяц
-    date_month = datetime.today().month
-    # год
-    date_year = datetime.today().year
-    # дни
-    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-                 28, 29, 30, 31]
-    get_date = months[datetime.today().month - 1]
-
-    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
-        del date_days[-1]
-
-    nariad = Nariad.objects.filter(
-        Q(date__month=date_month) &
-        Q(date__year=date_year)
-    ).order_by('date').distinct()
-
-    for nar in nariad:
-        summa_released_goods += nar.value
-
-    report_released_goods_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
-
-    context = {"date": delta_date, "date_days": date_days, "months": months, "nariad": nariad,
-               "summa_released_goods": summa_released_goods, "get_date": get_date,
-               "report_released_goods_filter": report_released_goods_filter}
-    return render(request, 'reports/goods_reports/released_goods/released_goods_report_month.html', context)
 
 
 # Отчет о списанных изделиях
