@@ -7,9 +7,13 @@
 
 {% block report %}
     <div style="width: 100%">
-        <a href="{% url 'remove_goods_report_month' %}" class="btn-info">Отчет за месяц</a>
-        <a href="{% url 'remove_goods_report_week' %}" class="btn-info">Отчет за неделю</a>
-        <a href="{% url 'remove_goods_report_today' %}" class="btn-info">Отчет за день</a>
+        <a href="{% url 'remove_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
+        <a href="{% url 'remove_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
+        <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
+        <form action="{% url 'remove_goods_report_calendar' %}" method="get">
+            {{ report_remote_goods_filter.form }}
+            <button type="submit" class="btn btn-primary">Поиск</button>
+        </form>
     </div>
 
     <table border="1px">
