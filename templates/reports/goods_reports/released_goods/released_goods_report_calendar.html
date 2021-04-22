@@ -1,14 +1,14 @@
 {% extends 'reports/base.html' %}
 {% load poll_extras %}
 
-{% block title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock title %}
-{% block header_title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock header_title %}
+{% block title %} Отчет о выпущенных изделиях c {{ get_date }} до {{ get_date }} {% endblock title %}
+{% block header_title %} Отчет о выпущенных изделиях c {{ get_date }} до {{ get_date }} {% endblock header_title %}
 
 {% block report %}
     
     <div style="width: 100%">
-        <a href="{% url 'remove_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
-        <a href="{% url 'remove_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
+        <a href="{% url 'released_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
+        <a href="{% url 'released_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
         <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
         <form action="{% url 'remove_goods_report_calendar' %}" method="get">
             {% csrf_token %}

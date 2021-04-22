@@ -2,8 +2,8 @@
 {% load poll_extras %}
 
 
-{% block title %} Отчет о бракованных изделиях за неделю {% endblock title %}
-{% block header_title %} Отчет о бракованных изделиях за неделю {% endblock header_title %}
+{% block title %} Отчет о расходе материала за неделю {% endblock title %}
+{% block header_title %} Отчет о расходе материала за неделю {% endblock header_title %}
 
 {% block report %}
     <div style="width: 100%">
@@ -11,6 +11,7 @@
         <a href="{% url 'used_material_report_week' %}" class="btn btn-success">Отчет за неделю</a>
         <a href="{% url 'used_material_report_today' %}" class="btn btn-success">Отчет за день</a>
         <form action="{% url 'used_material_report_calendar' %}" method="get">
+            {% csrf_token %}
             {{ report_used_material_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
         </form>

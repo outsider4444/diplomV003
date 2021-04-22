@@ -30,4 +30,4 @@ class ReportUsedMaterialFilter(django_filters.FilterSet):
     class Meta:
         model = Nariad
         fields = '__all__'
-        exclude = ['code', 'worker_code', 'goods_code', 'material_code', 'value', 'date', 'used_materials']
+        exclude = ['code', 'worker_code', 'goods_code', 'material_code', 'goods_value', 'date', 'used_materials']
