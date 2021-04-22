@@ -809,6 +809,41 @@ def ReportReleasedGoodsToday(request):
     return render(request, 'reports/goods_reports/released_goods/released_goods_report_today.html', context)
 
 
+def ReportReleasedGoodsCalendar(request):
+    """Отчет по календарю"""
+    summa_released_goods = 0
+
+    # дата начала
+    start_date = request.GET.get('start_date')
+    start_date = start_date.split("-")
+    start_date[0] = int(start_date[0])
+    start_date[1] = int(start_date[1])
+    start_date[2] = int(start_date[2])
+    # дата окончания
+    end_date = request.GET.get('end_date')
+    end_date = end_date.split("-")
+    end_date[0] = int(end_date[0])
+    end_date[1] = int(end_date[1])
+    end_date[2] = int(end_date[2])
+
+    # дни для вывода
+    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
+    # календарь
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
+
+    nariad = Nariad.objects.all()
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+    nariad = report_used_material_filter.qs
+
+    for nari in nariad:
+        summa_released_goods += nari.goods_value
+
+    context = {"report_used_material_filter": report_used_material_filter, "nariad": nariad,
+               "delta_days": delta_days, "delta_date": delta_date,
+               "summa_released_goods": summa_released_goods}
+    return render(request, 'reports/goods_reports/released_goods/released_goods_report_calendar.html', context)
+
+
 # Отчет о списанных изделиях
 def ReportRemoteGoodsMonth(request):
     """Отчет о списанных изделиях за месяц"""
@@ -926,13 +961,13 @@ def ReportRemoteGoodsCalendar(request):
     delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
 
     otk = OTK.objects.all()
-    otkfilter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
-    otk = otkfilter.qs
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+    otk = report_remote_goods_filter.qs
 
     for otks in otk:
         summa_remote_goods += otks.remote_value
 
-    context = {"otkfilter": otkfilter, "otk": otk, "delta_days": delta_days, "delta_date": delta_date,
+    context = {"report_remote_goods_filter": report_remote_goods_filter, "otk": otk, "delta_days": delta_days, "delta_date": delta_date,
                "summa_remote_goods": summa_remote_goods}
     return render(request, 'reports/goods_reports/remove_goods/remove_goods_report_calendar.html', context)
 

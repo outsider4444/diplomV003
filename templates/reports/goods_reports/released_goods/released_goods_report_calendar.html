@@ -5,20 +5,16 @@
 {% block header_title %} Отчет о выпущенных изделиях c {{ get_date }} до {{ get_date }} {% endblock header_title %}
 
 {% block report %}
-    
     <div style="width: 100%">
         <a href="{% url 'released_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
         <a href="{% url 'released_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
-        <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
-        <form action="{% url 'remove_goods_report_calendar' %}" method="get">
+        <a href="{% url 'released_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
+        <form action="{% url 'released_goods_report_calendar' %}" method="get">
             {% csrf_token %}
-            {{ report_remote_goods_filter.form }}
-
+            {{ report_used_material_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
         </form>
     </div>
-
-
 
     <table border="1px">
     <tr>
@@ -26,23 +22,21 @@
         {% for days in delta_date %}
             <td> {{ days }} </td>
         {% endfor %}
-    {% for otks in otk.all|values:"nariad_code"|values:"goods_code"|distinct %}
+        {% for nari in nariad.all|values:"goods_code"|values:"code"|distinct %}
             <tr>
-                <td>{{ otks.code }}</td>
+                <td>{{ nari }}</td>
                 {% for days in delta_days %}
                     <td>
-                        {% for otk_date in otk %}
-                            {% if otk_date.date|string == days %}
-                                {{ otk_date.remote_value }}
+                        {% for nariad_date in nariad %}
+                            {% if nariad_date.date|string == days %}
+                                {{ nariad_date.goods_value }}
                             {% endif %}
                         {% endfor %}
                     </td>
                 {% endfor %}
             </tr>
+            <tr><td>Всего:{{ summa_used_material }}</td></tr>
         {% endfor %}
-    </tr>
-
-        <td>Всего:{{ summa_remote_goods }}</td>
     </table>
 
 {% endblock report %}

@@ -1,7 +1,6 @@
 {% extends 'reports/base.html' %}
 {% load poll_extras %}
 
-
 {% block title %} Отчет о выпущенных изделиях за неделю {% endblock title %}
 {% block header_title %} Отчет о выпущенных изделиях за неделю {% endblock header_title %}
 
@@ -10,7 +9,8 @@
         <a href="{% url 'released_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
         <a href="{% url 'released_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
         <a href="{% url 'released_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
-        <form action="{% url 'remove_goods_report_calendar' %}" method="get">
+        <form action="{% url 'released_goods_report_calendar' %}" method="get">
+            {% csrf_token %}
             {{ report_used_material_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
         </form>
