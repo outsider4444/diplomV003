@@ -1,6 +1,5 @@
 import django_filters
 from django.forms import DateInput
-from django_filters import DateFilter
 
 from .models import *
 

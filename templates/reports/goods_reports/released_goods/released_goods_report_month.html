@@ -10,7 +10,7 @@
     <div style="width: 100%">
         <a href="{% url 'released_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
         <a href="{% url 'released_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
-        <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
+        <a href="{% url 'released_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
         <form action="{% url 'remove_goods_report_calendar' %}" method="get">
             {{ report_used_material_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
@@ -23,13 +23,13 @@
                 <td>{{ date }}</td>
             {% endfor %}
         </tr>
-        {% for nar in nariad.all|values:"material_code"|values:"code"|distinct %}
+        {% for nar in nariad.all|values:"goods_code"|values:"code"|distinct %}
             <tr>
                 <td>{{ nar }}</td>
                 {% for day in date_days %}
                     <td>
                         {% for nari in nariad %}
-                            {% if nari.material_code.code == nar %}
+                            {% if nari.goods_code.code == nar %}
                                 {% if nari.date.day == day|integer %}
                                     {{ nari.goods_value }}
                                 {% endif %}

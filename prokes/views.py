@@ -780,6 +780,35 @@ def ReportReleasedGoodsWeek(request):
     return render(request, 'reports/goods_reports/released_goods/released_goods_report_week.html', context)
 
 
+def ReportReleasedGoodsToday(request):
+    """Отчет о списанных изделиях за день"""
+    summa_released_goods = 0
+    # день
+    date_day = datetime.today().day
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    # надпись в шапку
+    delta_date = datetime.today().date()
+
+    nariad = Nariad.objects.filter(
+        Q(date__day=date_day) &
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for nar in nariad:
+        summa_released_goods += nar.goods_value
+
+    report_used_material_filter = ReportUsedMaterialFilter(request.GET, queryset=nariad)
+
+    context = {"nariad": nariad, "summa_released_goods": summa_released_goods, "date_day": date_day,
+               "delta_date": delta_date, "report_used_material_filter": report_used_material_filter}
+    return render(request, 'reports/goods_reports/released_goods/released_goods_report_today.html', context)
+
+
 # Отчет о списанных изделиях
 def ReportRemoteGoodsMonth(request):
     """Отчет о списанных изделиях за месяц"""
