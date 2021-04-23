@@ -844,6 +844,42 @@ def ReportReleasedGoodsCalendar(request):
     return render(request, 'reports/goods_reports/released_goods/released_goods_report_calendar.html', context)
 
 
+# Отчет о хороших изделиях
+def ReportGoodGoodsMonth(request):
+    """Отчет о хороших изделиях за месяц"""
+    summa_good_goods = 0
+    # получение всех дат текущего месяца
+    delta_date = days_cur_month(strdate='%d %B %Yг.')
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+              'Декабрь']
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+    # дни
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+    get_date = months[datetime.today().month - 1]
+
+    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
+        del date_days[-1]
+
+    otk = OTK.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for otks in otk:
+        summa_good_goods += otks.goods_value
+
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+
+    context = {"date": delta_date, "date_days": date_days, "months": months, "otk": otk,
+               "summa_good_goods": summa_good_goods, "get_date": get_date,
+               "report_remote_goods_filter": report_remote_goods_filter}
+    return render(request, 'reports/goods_reports/good_goods/good_goods_report_month.html', context)
+
+
 # Отчет о списанных изделиях
 def ReportRemoteGoodsMonth(request):
     """Отчет о списанных изделиях за месяц"""
