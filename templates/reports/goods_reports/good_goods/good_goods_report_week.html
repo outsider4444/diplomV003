@@ -2,15 +2,15 @@
 {% load poll_extras %}
 
 
-{% block title %} Отчет о бракованных изделиях за неделю {% endblock title %}
-{% block header_title %} Отчет о бракованных изделиях за неделю {% endblock header_title %}
+{% block title %} Отчет о хороших изделиях за неделю {% endblock title %}
+{% block header_title %} Отчет о хороших изделиях за неделю {% endblock header_title %}
 
 {% block report %}
     <div style="width: 100%">
-        <a href="{% url 'remove_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
-        <a href="{% url 'remove_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
-        <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
-        <form action="{% url 'remove_goods_report_calendar' %}" method="get">
+        <a href="{% url 'good_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
+        <a href="{% url 'good_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
+        <a href="{% url 'good_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
+        <form action="{% url 'good_goods_report_calendar' %}" method="get">
             {% csrf_token %}
             {{ report_remote_goods_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
@@ -31,7 +31,7 @@
                         {% for otka in otk %}
                             {% if otka.nariad_code.goods_code.code == otks.code %}
                                 {% if otka.date.day == day|integer %}
-                                    {{ otka.remote_value }}
+                                    {{ otka.goods_value }}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
@@ -39,7 +39,7 @@
                 {% endfor %}
             </tr>
         {% endfor %}
-        <td>Всего:{{ summa_remote_goods }}</td>
+        <td>Всего:{{ summa_good_goods }}</td>
     </table>
 
 

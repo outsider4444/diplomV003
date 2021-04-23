@@ -8,10 +8,10 @@
 {% block report %}
 
     <div style="width: 100%">
-        <a href="{% url 'remove_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
-        <a href="{% url 'remove_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
-        <a href="{% url 'remove_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
-        <form action="{% url 'remove_goods_report_calendar' %}" method="get">
+        <a href="{% url 'good_goods_report_month' %}" class="btn btn-success">Отчет за месяц</a>
+        <a href="{% url 'good_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
+        <a href="{% url 'good_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
+        <form action="{% url 'good_goods_report_calendar' %}" method="get">
             {% csrf_token %}
             {{ report_remote_goods_filter.form }}
             <button type="submit" class="btn btn-primary">Поиск</button>
@@ -41,7 +41,7 @@
                 {% endfor %}
             </tr>
         {% endfor %}
-        <td>Всего:{{ summa_remote_goods }}</td>
+        <td>Всего:{{ summa_good_goods }}</td>
     </table>
 
 {% endblock report %}

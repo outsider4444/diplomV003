@@ -78,6 +78,11 @@ urlpatterns = [
          name="released_goods_report_calendar"),
     # Отчет о хороших изделиях_месяц
     path("report_list/good_goods_report_month", views.ReportGoodGoodsMonth, name="good_goods_report_month"),
+    path("report_list/good_goods_report_week", views.ReportGoodGoodsWeek, name="good_goods_report_week"),
+    path("report_list/good_goods_report_today", views.ReportGoodGoodsToday, name="good_goods_report_today"),
+    path("report_list/good_goods_report_calendar", views.ReportGoodGoodsCalendar,
+         name="good_goods_report_calendar"),
+
     # Отчет удаленных изделий_месяц_неделю_день_Календарь
     path("report_list/remove_goods_report_month", views.ReportRemoteGoodsMonth, name="remove_goods_report_month"),
     path("report_list/remove_goods_report_week", views.ReportRemoteGoodsWeek, name="remove_goods_report_week"),

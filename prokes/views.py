@@ -880,6 +880,98 @@ def ReportGoodGoodsMonth(request):
     return render(request, 'reports/goods_reports/good_goods/good_goods_report_month.html', context)
 
 
+def ReportGoodGoodsWeek(request):
+    """Отчет о хороших изделиях за неделю"""
+    summa_good_goods = 0
+    # неделя
+    week_now_days = week_now("%d %B %a")
+    # дни
+    date_days = week_now("%d")
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    otk = OTK.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for days in date_days:
+        for goods_days in otk:
+            if int(days) == goods_days.date.day:
+                summa_good_goods += goods_days.goods_value
+
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+
+    context = {"otk": otk, "week_now_days": week_now_days, "date_days": date_days,
+               "summa_good_goods": summa_good_goods, "report_remote_goods_filter": report_remote_goods_filter}
+    return render(request, 'reports/goods_reports/good_goods/good_goods_report_week.html', context)
+
+
+def ReportGoodGoodsToday(request):
+    """Отчет о хороших изделиях за день"""
+    summa_good_goods = 0
+    # день
+    date_day = datetime.today().day
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    # надпись в шапку
+    delta_date = datetime.today().date()
+
+    otk = OTK.objects.filter(
+        Q(date__day=date_day) &
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for otks in otk:
+        summa_good_goods += otks.goods_value
+
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+
+    context = {"otk": otk, "summa_good_goods": summa_good_goods, "date_day": date_day, "delta_date": delta_date,
+               "report_remote_goods_filter": report_remote_goods_filter}
+    return render(request, 'reports/goods_reports/good_goods/good_goods_report_today.html', context)
+
+
+def ReportGoodGoodsCalendar(request):
+    """Отчет о хороших изделиях по календарю"""
+    summa_good_goods = 0
+
+    # дата начала
+    start_date = request.GET.get('start_date')
+    start_date = start_date.split("-")
+    start_date[0] = int(start_date[0])
+    start_date[1] = int(start_date[1])
+    start_date[2] = int(start_date[2])
+    # дата окончания
+    end_date = request.GET.get('end_date')
+    end_date = end_date.split("-")
+    end_date[0] = int(end_date[0])
+    end_date[1] = int(end_date[1])
+    end_date[2] = int(end_date[2])
+
+    # дни для вывода
+    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
+    # календарь
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
+
+    otk = OTK.objects.all()
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+    otk = report_remote_goods_filter.qs
+
+    for otks in otk:
+        summa_good_goods += otks.goods_value
+
+    context = {"report_remote_goods_filter": report_remote_goods_filter, "otk": otk, "delta_days": delta_days, "delta_date": delta_date,
+               "summa_good_goods": summa_good_goods}
+    return render(request, 'reports/goods_reports/good_goods/good_goods_report_calendar.html', context)
+
+
 # Отчет о списанных изделиях
 def ReportRemoteGoodsMonth(request):
     """Отчет о списанных изделиях за месяц"""
@@ -975,7 +1067,7 @@ def ReportRemoteGoodsToday(request):
 
 
 def ReportRemoteGoodsCalendar(request):
-    """Отчет по календарю"""
+    """Отчет о бракованных изделиях по календарю"""
     summa_remote_goods = 0
 
     # дата начала
