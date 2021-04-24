@@ -44,9 +44,6 @@ INSTALLED_APPS = [
 
     'prokes',
 
-    'allauth',
-    'allauth.account',
-
     'django_filters',
     'prokes.templatetags.poll_extras'
 ]
@@ -133,7 +130,6 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-LOGIN_REDIRECT_URL = "/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

@@ -1,7 +1,10 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
 from datetime import date, timedelta
@@ -48,6 +51,31 @@ def calendar(s_date, e_date, strdate):
         max(start_date, end_date)
     ).strftime(strdate).tolist()
     return res
+
+
+# авторизация
+def loginPage(request):
+    """Авторизация"""
+    if request.user.is_authenticated:
+        return redirect('main')
+    else:
+        if request.method == 'POST':
+            user = request.POST.get('login')
+            password = request.POST.get('password')
+            user = authenticate(request, username=user, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('main')
+            else:
+                messages.info(request, 'Почта ИЛИ пароль не верны')
+        context = {}
+        return render(request, 'accounts/login.html', context)
+
+
+# Выход пользователя
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
 
 
 # Главная страница

@@ -45,14 +45,7 @@
                     <label for="drop" class="toggle">Menu</label>
                     <input type="checkbox" id="drop">
                     <ul class="menu mt-2">
-                        <li class="active"><a href="{% url "main" %}">Главная</a></li>
-
-                        <li><a href="{% url 'admin:index' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Администратор</a></li>
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'account_logout' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Выход</a></li>
-                        {% else %}
-                            <li><a href="{% url 'account_login' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Вход</a></li>
-                        {% endif %}
+                        <li>{% include 'accounts/navbar.html' %}</li>
                     </ul>
                 </nav>
                 <!-- //nav -->
@@ -76,13 +69,7 @@
         <!--/banner-->
         <div class="banner-info">
             {#                        <p class="editContent" ></p>#}
-            <h3 class="mb-4 editContent" style="cursor: default; color: black">
-            {% if user.is_authenticated %}
-                {% block header_title %} {% endblock %}
-            {% else %}
-                Вы не авторизированы!
-            {% endif %}
-            </h3>
+
             {#        <div class="ban-buttons">#}
             {##}
             {#        </div>#}
