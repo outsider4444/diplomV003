@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import DateField
+from django.forms import DateInput
 
 from .models import GoodsCalendar, GoodsDefaultForm, Workers, CheckoutGoods, Goods, Customer, Materials, \
     Suppliers, GoodsStorage, Nariad, OTK, MaterialStorage
@@ -41,6 +41,10 @@ class WorkersForm(forms.ModelForm):
     class Meta:
         model = Workers
         fields = '__all__'
+        widgets ={
+            'birthday' : forms.DateInput(attrs={'type': 'date'}),
+            'email': forms.EmailInput(attrs={'type':'email'}),
+        }
 
 
 # Заказчики

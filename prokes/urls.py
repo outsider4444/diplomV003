@@ -77,7 +77,7 @@ urlpatterns = [
     path("report_list/released_goods_report_today", login_required(login_url='login')(views.ReportReleasedGoodsToday), name="released_goods_report_today"),
     path("report_list/released_goods_report_calendar", login_required(login_url='login')(views.ReportReleasedGoodsCalendar),
          name="released_goods_report_calendar"),
-    # Отчет о хороших изделиях_месяц
+    # Отчет о хороших изделиях_месяц_день_Календарь
     path("report_list/good_goods_report_month", login_required(login_url='login')(views.ReportGoodGoodsMonth), name="good_goods_report_month"),
     path("report_list/good_goods_report_week", login_required(login_url='login')(views.ReportGoodGoodsWeek), name="good_goods_report_week"),
     path("report_list/good_goods_report_today", login_required(login_url='login')(views.ReportGoodGoodsToday), name="good_goods_report_today"),
