@@ -34,7 +34,7 @@
             <h3>Форма детали</h3>
             {% if goods_form %}
                 {% for format in goods_form %}
-                    Код изделия: {{ format.goods_code }}
+                    Код изделия: {{ format.goods_code }}<br>
                     Название дубликата: {{ format.duplicate }}<br>
                     Период чистки: {{ format.cleaning_period }}<br>
                     Номер гнезда: {{ format.number_nest }}<br>

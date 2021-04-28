@@ -107,6 +107,9 @@ class NariadNewForm(forms.ModelForm):
     class Meta:
         model = Nariad
         fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
 class OTKNewForm(forms.ModelForm):
@@ -115,3 +118,6 @@ class OTKNewForm(forms.ModelForm):
     class Meta:
         model = OTK
         fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }

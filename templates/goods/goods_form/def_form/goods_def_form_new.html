@@ -10,7 +10,7 @@
     <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
 
-            <form method="post" enctype="multipart/form-data" name="create" class="col-6" style="min-width: 320px;background-color: #00000045; border-radius: 5px;">
+            <form method="post" enctype="multipart/form-data" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
                 {% csrf_token %}
                 <h3 id="form-h3-content" style="text-align: center; margin-top: 15px; margin-bottom: 15px;">Создание/редактирование формы изделия {{ goods.code }}</h3>
                 <div hidden>Код изделия: {{ form.goods_code }}</div>

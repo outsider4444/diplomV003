@@ -124,7 +124,7 @@ def WorkerNew(request):
                     error = "Сотрудник с таким кодом уже существует"
                     break
                 else:
-                    error = "Форма неверно заполнена"
+                    error = form.errors
     return render(request, "workers/workers_form/worker_new.html", {"form": form, "error": error})
 
 
@@ -172,13 +172,13 @@ def CustomerNew(request):
             form.save()
             return redirect("customer_list")
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, "customer/customer_form/customer_new.html", {"form": form, "error": error})
 
 
 def CustomerDetailView(request, pk):
     """Полная информация о заказчиках"""
-    OrderFormSet = inlineformset_factory(Customer, CheckoutGoods, fields=("code_goods", "values"), extra=10)
+    OrderFormSet = inlineformset_factory(Customer, CheckoutGoods, fields=('date', "code_goods", "values"), extra=10)
     customer = Customer.objects.get(id=pk)
     goods = CheckoutGoods.objects.filter(customer_name=pk)
     formset = OrderFormSet(queryset=CheckoutGoods.objects.none(), instance=customer)
@@ -235,7 +235,7 @@ def GoodsDetailView(request, pk):
             form.save()
             return redirect(reverse('goods_list'))
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     context = {"calendar": calendar, "goods": goods, "form": form, "error": error,
                "goods_form": goods_form, }
     return render(request, "goods/goods_detail.html", context)
@@ -268,13 +268,13 @@ def GoodsNew(request):
                         form.save()
                         return redirect(reverse('goods_list'))
                     else:
-                        error = "Форма неверно заполнена"
+                        error = form.errors
         else:
             if form.is_valid():
                 form.save()
                 return redirect(reverse('goods_list'))
             else:
-                error = "Форма неверно заполнена"
+                error = form.errors
     return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error, "goods_list": goods_list,})
 
 
@@ -315,7 +315,7 @@ def GoodsFormNew(request, pk):
             form.save()
             return redirect(reverse('goods_list'))
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, 'goods/goods_form/def_form/goods_def_form_new.html', {"form": form,
                                                                                  "error": error, "goods": goods})
 
@@ -486,13 +486,13 @@ def SupplierNew(request):
             form.save()
             return redirect(reverse("supplier_list"))
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, "suppliers/supplier_form/supplier_new.html", {"form": form, "error": error})
 
 
 def SuppliersDetailView(request, pk):
     """Просмотр подробности о поставщике"""
-    OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("code_material", "values"), extra=10)
+    OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("date", "code_material", "values"), extra=10)
     supplier = Suppliers.objects.get(id=pk)
     materials = DeliveriesMaterials.objects.filter(supplier_name=pk)
     formset = OrderFormSet(queryset=DeliveriesMaterials.objects.none(), instance=supplier)

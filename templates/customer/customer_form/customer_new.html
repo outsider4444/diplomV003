@@ -5,22 +5,48 @@
     Создание/редактирование информации о заказчике
 {% endblock title %}
 
-{#Надпись в шапке#}
-{% block header_title %}
-    Создание/редактирование информации о заказчике
-{% endblock header_title %}
-
 
 {% block customer %}
-{# Изменить поставщика#}
-    <form method="post" enctype="multipart/form-data" name="create">
-        {% csrf_token %}
-        Имя заказчика:{{ form.name }}<br>
-        Почта:{{ form.email }}<br>
-        Номер телефона:{{ form.phone_number }}<br>
-        Представитель:{{ form.representative }}<br>
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form method="post" enctype="multipart/form-data" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                {% csrf_token %}
+                <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px">Создание/редактирование информации о заказчике</h3>
 
-      <span>{{ error }}</span>
-        <button type="submit">Подтвердить</button>
-        </form>
+                <div class="form-row">
+                    <div class="form-group col-md-10">
+                    <label for="id_name">Имя:</label>
+                        {{ form.name }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_phone_number">Номер телефона:</label>
+                        {{ form.phone_number }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_email">Почта: </label>
+                        {{ form.email }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-10">
+                        <label for="id_representative">Представитель: </label>
+                        {{ form.representative }}
+                    </div>
+                </div>
+                <span>{{ error }}</span>
+
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    id_name = document.getElementById('id_name'); id_name.className = 'form-control';
+    id_email = document.getElementById('id_email'); id_email.className = 'form-control';
+    id_phone_number = document.getElementById('id_phone_number'); id_phone_number.className = 'form-control';
+    id_representative = document.getElementById('id_representative'); id_representative.className = 'form-control';
+    </script>
 {% endblock customer %}

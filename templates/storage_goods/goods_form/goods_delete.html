@@ -1,4 +1,4 @@
-{% extends "goods/base.html" %}
+{% extends "storage_goods/base.html" %}
 
 {#Надпись в Title#}
 {% block title %}
@@ -11,11 +11,11 @@
 {% endblock header_title %}
 
 
-{% block goods %}
+{% block storage_goods %}
 <h3>Вы действительно хотите удалить изделие?</h3>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <button type="submit" class="btn btn-danger" style="margin-top:15px;margin-bottom: 15px">Удалить изделие</button>
         </form>
-{% endblock goods %}
+{% endblock storage_goods %}

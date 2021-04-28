@@ -1,4 +1,4 @@
-{% extends "goods/base.html" %}
+{% extends "storage_goods/base.html" %}
 
 {#Надпись в Title#}
 {% block title %}
@@ -11,7 +11,7 @@
 {% endblock header_title %}
 
 
-{% block goods %}
+{% block storage_goods %}
 
     <form method="post" enctype="multipart/form-data" name="create">
         {% csrf_token %}
@@ -25,4 +25,4 @@
         <button type="submit">Подтвердить</button>
         </form>
 
-{% endblock goods %}
+{% endblock storage_goods %}
