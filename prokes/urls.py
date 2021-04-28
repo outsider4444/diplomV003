@@ -47,17 +47,17 @@ urlpatterns = [
     path("storage_material/storage_material_create/", login_required(login_url='login')(views.StorageMaterialsNew), name="storage_material_create"),
 
 
-
     # Обновить форму изделия
     path("goods_list/<int:pk>/update_goods_form/", login_required(login_url='login')(views.GoodsFormUpdateView.as_view()), name="update_goods_form"),
     # Добавить форму изделия
     path("goods_list/<int:pk>/create_goods_form/", login_required(login_url='login')(views.GoodsFormNew), name="create_goods_form"),
 
+
     # Фильтры
     path("goods_list/goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
-
     # Поиск
     path('goods_list/goods_search/', views.SearchGoods.as_view(), name='goods_search'),
+
 
     # Подробности
     path("goods_list/<int:pk>/", login_required(login_url='login')(views.GoodsDetailView), name="goods_detail"),

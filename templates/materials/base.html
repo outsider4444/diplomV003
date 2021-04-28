@@ -48,15 +48,15 @@
 {% endblock tabs_bar %}
 
     {% block content %}
-            <section class="ab-info-main py-md-5 py-4 editContent" style="padding-left: 1rem; padding-right: 1rem;">
-        <div class="container-fluid py-md-3">
-            <div class="row">
-{#                {% include 'include/sidebars/material_sidebar.html' %}#}
-                {% block material %}
+        <section class="ab-info-main py-md-5 py-4 editContent" style="min-width: 320px">
+            <div class="container-fluid py-md-3">
+                <div class="row">
+                    {#                {% include 'include/sidebars/material_sidebar.html' %}#}
+                    {% block material %}
 
-                {% endblock material %}
+                    {% endblock material %}
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 {% endblock content %}
 

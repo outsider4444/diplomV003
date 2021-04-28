@@ -296,11 +296,11 @@ class GoodsFormUpdateView(UpdateView):
 
 
 class GoodsFormDeleteView(DeleteView):
-    """Удаление изделия"""
+    """Удаление формы изделия"""
     model = GoodsDefaultForm
     # Изменить на список изделий
     success_url = "/goods_list"
-    template_name = "goods/goods_form/goods_delete.html"
+    template_name = "goods/goods_form/def_form/goods_form_delete.html"
     slug_field = 'pk'
 
 
