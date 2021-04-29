@@ -700,18 +700,20 @@ def OTKNew(request):
     form_nariad = NariadNewForm()
     nariad_list = Nariad.objects.all()
     error = ""
+
     if request.method == "POST":
-        for otk in otk_list:
-            if form['nariad_code'] == otk.nariad_code:
-                error = "ОТК с данным кодом уже существует!"
-                break
-            else:
-                form = OTKNewForm(request.POST)
-                if form.is_valid():
-                    form.save()
-                    return redirect(reverse("otk_list"))
+        form = OTKNewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse("otk_list"))
+        else:
+            print(form['code'].value())
+            for otk in otk_list:
+                if int(form['nariad_code'].value()) == otk.nariad_code.code:
+                    error = "ОТК с данным кодом уже существует!"
+                    break
                 else:
-                    error = "Форма неверно заполнена"
+                    error = form.errors
     return render(request, "otk/otk_form/otk_new.html", {"form": form, "error": error, "form_nariad": form_nariad,
                                                          "nariad_list": nariad_list})
 

@@ -112,6 +112,7 @@ class NariadNewForm(forms.ModelForm):
         }
 
 
+# ОТК
 class OTKNewForm(forms.ModelForm):
     """Форма добавления нового ОТК"""
 
@@ -120,4 +121,5 @@ class OTKNewForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
+            'goods_value': forms.TextInput(attrs={'type': 'number', 'id': 'id_goods_value2'})
         }

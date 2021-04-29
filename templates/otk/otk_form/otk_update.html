@@ -12,45 +12,69 @@
 
 
 {% block otk %}
-{# Изменить поставщика#}
-    <form method="post" enctype="multipart/form-data" name="create">
-        {% csrf_token %}
-        Код наряда: {{ form.nariad_code }}<br>
-        Общее количество изделий: {{ form_nariad.value }}<br>
-        Количество хороших изделий: {{ form.goods_value }}<br>
-        Количество бракованных изделий: {{ form.remote_value }}<br>
-        Дата проверки: {{ form.date }}<br>
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form method="post" enctype="multipart/form-data" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                {% csrf_token %}
+                <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px">Создание/редактирование информации об ОТК</h3>
 
-        <span>{{ error }}</span>
-        <button type="submit">Подтвердить</button>
-    </form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_nariad_code">Код наряда: </label>
+                        {{ form.nariad_code }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_nariad_code">Общее количество изделий: </label>
+                        {{ form_nariad.goods_value }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_goods_value">Количество хороших изделий: </label>
+                        {{ form.goods_value }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_remote_value">Количество бракованных изделий: </label>
+                        {{ form.remote_value }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_remote_value">Дата проверки: </label>
+                        {{ form.date }}
+                    </div>
+                </div>
+                <br>
 
+                <span>{{ error }}</span>
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
+            </form>
+        </div>
+    </div>
     <script>
-    let value_goods = document.getElementById("id_value");
-    value_goods.readOnly = true;
+    let id_nariad_code = document.getElementById('id_nariad_code'); id_nariad_code.className = 'form-control';
+    let id_goods_value = document.getElementById('id_goods_value'); id_goods_value.className = 'form-control'; id_goods_value.readOnly = true;
+    let id_good_goods = document.getElementById('id_goods_value2'); id_good_goods.className = 'form-control';
+    let id_remote_value = document.getElementById('id_remote_value'); id_remote_value.className = 'form-control';
+    let id_date= document.getElementById('id_date'); id_date.className = 'form-control';
 
-    let good_value = document.getElementById("id_goods_value");
-    let remote_value = document.getElementById("id_remote_value");
-    let nariad_code = document.getElementById("id_nariad_code");
-
-    nariad_code.onchange = function(){
+    id_nariad_code.onchange = function(){
         {% for nariad in nariad_list %}
-            if (nariad_code.options[nariad_code.selectedIndex].text == {{ nariad.code }}){
-                value_goods.value = {{ nariad.value }}
+            if (id_nariad_code.options[id_nariad_code.selectedIndex].text == {{ nariad.code }}){
+                id_goods_value.value = {{ nariad.goods_value }}
                 console.log({{ nariad.code }})
             }
         {% endfor %}
     }
 
     // Изменение бракованных изделий
-    remote_value.onchange = function () {
-        good_value.value = value_goods.value - remote_value.value;
+    id_remote_value.onchange = function () {
+        id_good_goods.value = id_goods_value.value - id_remote_value.value;
     }
     // Изменение хороших изделий
-    good_value.onchange = function () {
-    remote_value.value = value_goods.value - good_value.value;
+    id_good_goods.onchange = function () {
+        id_remote_value.value = id_goods_value.value - id_good_goods.value;
     }
 
-
+    id_good_goods.max = id_goods_value.value;
+    id_remote_value.max = id_goods_value.value;
     </script>
 {% endblock otk %}

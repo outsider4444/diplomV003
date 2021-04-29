@@ -5,27 +5,61 @@
     Создание/редактирование наряда
 {% endblock title %}
 
-{#Надпись в шапке#}
-{% block header_title %}
-    Создание/редактирование наряда
-{% endblock header_title %}
-
 
 {% block nariad %}
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form method="post" enctype="multipart/form-data" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                {% csrf_token %}
+                <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px">Создание/редактирование наряда</h3>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_code">Код наряда: </label>
+                        {{ form.code }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_date">Дата: </label>
+                        {{ form.date }}
+                    </div>
+                </div>
+                    <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_worker_code">Код сотрудника: </label>
+                        {{ form.worker_code }}
+                    </div>
+                    </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_goods_code">Код изделия: </label>
+                        {{ form.goods_code }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_goods_value">Количество изделий: </label>
+                        {{ form.goods_value }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_material_code">Код смеси: </label>
+                        {{ form.material_code }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_used_materials">Расход смеси: </label>
+                        {{ form.used_materials }}
+                    </div>
+                </div>
+                <span>{{ error }}</span>
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
+            </form>
+        </div>
+    </div>
 
-    <form method="post" enctype="multipart/form-data" name="create">
-        {% csrf_token %}
-        <h3>Введите информацию о наряде</h3>
-        Код наряда: {{ form.code }}<br>
-        Код сотрудника: {{ form.worker_code }}<br>
-        Код изделия: {{ form.goods_code }}<br>
-        Код смеси: {{ form.material_code }}<br>
-        Количество: {{ form.goods_value }}<br>
-        Дата: {{ form.date }}<br>
-        Расход смеси: {{ form.used_materials }}<br>
-
-        <span>{{ error }}</span>
-        <button type="submit">Подтвердить</button>
-    </form>
+    <script>
+    let id_code = document.getElementById('id_code'); id_code.className = 'form-control'
+    let id_worker_code = document.getElementById('id_worker_code'); id_worker_code.className = 'form-control'
+    let id_goods_code = document.getElementById('id_goods_code'); id_goods_code.className = 'form-control'
+    let id_material_code = document.getElementById('id_material_code'); id_material_code.className = 'form-control'
+    let id_goods_value = document.getElementById('id_goods_value'); id_goods_value.className = 'form-control'
+    let id_date = document.getElementById('id_date'); id_date.className = 'form-control'
+    let id_used_materials = document.getElementById('id_used_materials'); id_used_materials.className = 'form-control'
+    </script>
 
 {% endblock nariad %}
