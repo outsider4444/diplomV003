@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'prokes',
 
     'django_filters',
-    'prokes.templatetags.poll_extras'
+    'prokes.templatetags.poll_extras',
 ]
 
 MIDDLEWARE = [

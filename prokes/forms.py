@@ -84,11 +84,33 @@ class SupplierNewForm(forms.ModelForm):
 
 # Склад изделий
 class GoodsStorageNewForm(forms.ModelForm):
-    """Форма добавления материала на склад"""
+    """Форма добавления изделия на склад"""
 
     class Meta:
         model = GoodsStorage
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['customer_checkout'].queryset = CheckoutGoods.objects.none()
+
+        if 'goods_code' in self.data:
+            try:
+                goods_code = int(self.data.get('goods_code'))
+                self.fields['customer_checkout'].queryset = CheckoutGoods.objects.filter(code_goods_id=goods_code).order_by('code_goods_id')
+            except (ValueError, TypeError):
+                pass # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['customer_checkout'].queryset = self.instance.goods.checkoutgoods_set.order_by('code_goods_id')
+
+        if 'customer_code' in self.data:
+            try:
+                customer_code = int(self.data.get('customer_code'))
+                self.fields['customer_checkout'].queryset = CheckoutGoods.objects.filter(customer_name_id=customer_code).order_by('customer_name_id')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['customer_checkout'].queryset = self.instance.goods.checkoutgoods_set.order_by('customer_name_id')
 
 
 # Склад материалов

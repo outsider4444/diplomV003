@@ -159,7 +159,7 @@ class CustomerListView(ListView):
     model = Customer
     queryset = Customer.objects.all()
     template_name = "customer/customer_list.html"
-    paginate_by = 1
+    paginate_by = 10
 
 
 def CustomerNew(request):
@@ -203,6 +203,16 @@ class CustomerUpdateView(UpdateView):
     template_name = "customer/customer_form/customer_new.html"
     success_url = "/customer_list"
     form_class = CustomerForm
+
+
+# AJAX
+def load_goods(request):
+    goods_code = request.GET.get('id_goods_code')
+    customer_code = request.GET.get('id_customer_code')
+    checkout_list = CheckoutGoods.objects.filter(code_goods__code=goods_code).all()
+    checkout_list = checkout_list.filter(customer_name__name=customer_code).all()
+    return render(request, 'storage_goods/goods_form/checkout_dropdown_list_options.html', {'checkout_list': checkout_list})
+    # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 
 class CustomerDeleteView(DeleteView):
@@ -539,15 +549,22 @@ class StorageGoodsListView(ListView):
 def StorageGoodsNew(request):
     """Создание нового изделия на склад"""
     form = GoodsStorageNewForm()
+    customer_list = Customer.objects.all()
+    goods_list = Goods.objects.all()
+    checkout_customer_list = CheckoutGoods.objects.all()
     error = ""
     if request.method == "POST":
+        print(request.GET.get('id_checkout_customer'))
         form = GoodsStorageNewForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect(reverse("storage_goods_list"))
         else:
-            error = "Форма неверно заполнена"
-    return render(request, "storage_goods/goods_form/goods_new.html", {"form": form, "error": error})
+            error = form.errors
+    return render(request, "storage_goods/goods_form/goods_new.html", {"form": form, "error": error,
+                                                                       'customer_list': customer_list,
+                                                                       'checkout_customer_list': checkout_customer_list,
+                                                                       "goods_list": goods_list})
 
 
 def StorageGoodsDetailView(request, pk):
@@ -700,7 +717,6 @@ def OTKNew(request):
     form_nariad = NariadNewForm()
     nariad_list = Nariad.objects.all()
     error = ""
-
     if request.method == "POST":
         form = OTKNewForm(request.POST)
         if form.is_valid():

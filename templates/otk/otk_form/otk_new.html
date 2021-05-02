@@ -63,7 +63,6 @@
         {% for nariad in nariad_list %}
             if (id_nariad_code.options[id_nariad_code.selectedIndex].text == {{ nariad.code }}){
                 id_goods_value.value = {{ nariad.goods_value }}
-                console.log({{ nariad.code }})
             }
         {% endfor %}
     }

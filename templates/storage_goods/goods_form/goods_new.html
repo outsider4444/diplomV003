@@ -1,28 +1,66 @@
 {% extends "storage_goods/base.html" %}
+{% load static %}
 
 {#Надпись в Title#}
 {% block title %}
     Создание/редактирование изделия
 {% endblock title %}
 
-{#Надпись в шапке#}
-{% block header_title %}
-    Создание/редактирование изделия
-{% endblock header_title %}
-
 
 {% block storage_goods %}
 
-    <form method="post" enctype="multipart/form-data" name="create">
-        {% csrf_token %}
-        <h3>Введите информацию о детали</h3>
-        Код изделия: {{ form.goods_code }}<br>
-        Количество:{{ form.value }}<br>
-        Заказчик: {{ form.customer_code }} <br>
-        Код ОТК: {{ form.OTK_code }}<br>
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form method="post" enctype="multipart/form-data" id="goods_create_Form" data-goods-url="{% url 'ajax_load_goods' %}" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                {% csrf_token %}
+               Код изделия: {{ form.goods_code }} <br>
+                Количество на складе: {{ form.value }} <br>
+                Имя заказчика: {{ form.customer_code }} <br>
+                Код заказа: {{ form.customer_checkout }} <br>
+                <span>{{ error }}</span>
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
+            </form>
+        </div>
+    </div>
 
-      <span>{{ error }}</span>
-        <button type="submit">Подтвердить</button>
-        </form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_goods_code").change(function () {
+        const url = $("#goods_create_Form").attr("data-goods-url");  // get the url of the `load_cities` view
+        const goods_code = $('#id_goods_code option:selected').text();  // get the selected country ID from the HTML input
+        const customer_code = $('#id_customer_code option:selected').text();
 
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'id_customer_code': customer_code,       // add the country id to the GET parameters
+                'id_goods_code': goods_code       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_customer_checkout").html(data);  // replace the contents of the city input with the data that came from the server
+
+            }
+        });
+
+    });
+
+    $("#id_customer_code").change(function () {
+        const url = $("#goods_create_Form").attr("data-goods-url");  // get the url of the `load_cities` view
+        const customer_code = $('#id_customer_code option:selected').text();  // get the selected country ID from the HTML input
+        const goods_code = $('#id_goods_code option:selected').text();
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'id_customer_code': customer_code,       // add the country id to the GET parameters
+                'id_goods_code': goods_code       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_customer_checkout").html(data);  // replace the contents of the city input with the data that came from the server
+
+            }
+        });
+
+    });
+</script>
 {% endblock storage_goods %}

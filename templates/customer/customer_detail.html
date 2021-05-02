@@ -38,7 +38,7 @@
             <b>Дата заказа: </b>{{ goods_date.date }}<br>
                 {% for goods in goods %}
                     {% if goods.date == goods_date.date %}
-                        <b>Код изделия:</b> {{ goods.goods_code }}<br>
+                        <b>Код изделия:</b> {{ goods.code_goods.code }}<br>
                         Количество: {{ goods.values }}<br>
                     {% endif %}
                 {% endfor %}<hr>

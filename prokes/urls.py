@@ -46,6 +46,8 @@ urlpatterns = [
     path("storage_goods/storage_goods_create/", login_required(login_url='login')(views.StorageGoodsNew), name="goods_storage_create"),
     path("storage_material/storage_material_create/", login_required(login_url='login')(views.StorageMaterialsNew), name="storage_material_create"),
 
+    path('storage_goods/storage_goods_create/ajax/load-goods/', views.load_goods, name='ajax_load_goods'),  # AJAX
+
 
     # Обновить форму изделия
     path("goods_list/<int:pk>/update_goods_form/", login_required(login_url='login')(views.GoodsFormUpdateView.as_view()), name="update_goods_form"),
@@ -115,6 +117,8 @@ urlpatterns = [
     # Авторизация
     path("login/", views.loginPage, name='login'),
     path('logout/', views.logoutUser, name="logout"),
+
+
 
     # Главная страница
     path("", login_required(login_url='login')(views.main), name="main")
