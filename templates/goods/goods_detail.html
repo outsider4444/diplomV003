@@ -5,16 +5,14 @@
 {% block header_title %}Изделие: {{ goods.code }} {% endblock header_title %}
 
 {% block goods %}
-    <!-- product right -->
     <div class="left-ads-display col-lg-8">
-        {#                Изменить стили #}
         <div class="container">
 
             <div class="desc1-right col-md-6 pl-lg-4" >
 
                 <form>
                     <input type="button" onclick='location.href="update"' value="Редактировать изделие">
-                    <input type="button" onclick='location.href="delete"' value="Удалить изделие">
+                    <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить изделие">
                 </form>
                 <ul style="margin-top: 15px">
                     <li style="list-style: none"><span><b>Название изделия: </b>{{ goods.name }}</span>
@@ -30,7 +28,7 @@
         </div>
 
         <div class="container">
-            <!-- Форма детали -->
+
             <h3>Форма детали</h3>
             {% if goods_form %}
                 {% for format in goods_form %}
@@ -46,9 +44,7 @@
             {% else %}
                 <input type="button" onclick='location.href="create_goods_form"' value="Добавить форму">
             {% endif %}
-            <!-- //Форма детали -->
 
-        <!-- Таблица -->
         <h3>Календарь</h3>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-responsive">
@@ -111,7 +107,6 @@
                         {% endfor %}
                     </tr>
                 </table>
-            <!--// Таблица -->
 
             <!--Добавить информацию в календарь -->
             <h3>Добавить месяц в календарь</h3>
@@ -138,7 +133,7 @@
             </div>
         </div>
     </div>
-    <!-- //contact -->
+
 <script>
     //Скрытый <select> для редактирования календаря
     let code_goods = document.getElementById("id_goods_code");

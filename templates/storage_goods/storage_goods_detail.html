@@ -5,17 +5,13 @@
 {% block header_title %}Изделие: {{ goods.goods_code }} {% endblock header_title %}
 
 {% block storage_goods %}
-    <!-- product right -->
     <div class="left-ads-display col-lg-8">
-        {#                Изменить стили #}
         <div class="container">
 
             <div class="desc1-right col-md-6 pl-lg-4" >
 
-                <form>
                     <input type="button" onclick='location.href="update"' value="Редактировать изделие">
-                    <input type="button" onclick='location.href="delete"' value="Удалить изделие">
-                </form>
+                    <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить изделие">
                 <ul style="margin-top: 15px">
                     <li style="list-style: none"><span><b>Код изделия: </b>{{ goods.goods_code }}</span>
                     </li>
