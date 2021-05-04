@@ -26,3 +26,4 @@ def integer(items):
 @register.filter()
 def string(items):
     return str(items)
+

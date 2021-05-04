@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for checkout in checkout_list %}
+    <option value="{{ checkout.id }}">{{ checkout }}</option>
+{% endfor %}

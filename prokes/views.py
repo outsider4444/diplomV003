@@ -1,7 +1,10 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
 from datetime import date, timedelta
@@ -27,7 +30,7 @@ def days_cur_month(strdate):
     return [(d1 + timedelta(days=i)).strftime(strdate) for i in range(delta.days + 1)]
 
 
-# текущая неделя
+# Текущая неделя
 def week_now(strdate):
     locale.setlocale(locale.LC_ALL, "")
     now = datetime.now()
@@ -38,6 +41,7 @@ def week_now(strdate):
         return dates[n_week]
 
 
+# Календарь
 def calendar(s_date, e_date, strdate):
     locale.setlocale(locale.LC_ALL, "")
     start_date = datetime(s_date[0], s_date[1], s_date[2])
@@ -48,6 +52,31 @@ def calendar(s_date, e_date, strdate):
         max(start_date, end_date)
     ).strftime(strdate).tolist()
     return res
+
+
+# Авторизация
+def loginPage(request):
+    """Авторизация"""
+    if request.user.is_authenticated:
+        return redirect('main')
+    else:
+        if request.method == 'POST':
+            user = request.POST.get('login')
+            password = request.POST.get('password')
+            user = authenticate(request, username=user, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('main')
+            else:
+                messages.info(request, 'Почта ИЛИ пароль не верны')
+        context = {}
+        return render(request, 'accounts/login.html', context)
+
+
+# Выход пользователя
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
 
 
 # Главная страница
@@ -67,7 +96,7 @@ class WorkerCategory:
     """Должности сотрудников"""
 
     def get_category(self):
-        return Workers.objects.filter(fired=False).values("category").distinct()
+        return Workers.objects.values("category").distinct()
 
 
 # Сотрудники
@@ -96,7 +125,7 @@ def WorkerNew(request):
                     error = "Сотрудник с таким кодом уже существует"
                     break
                 else:
-                    error = "Форма неверно заполнена"
+                    error = form.errors
     return render(request, "workers/workers_form/worker_new.html", {"form": form, "error": error})
 
 
@@ -125,13 +154,50 @@ class WorkerDeleteView(DeleteView):
     template_name = "workers/workers_form/worker_delete.html"
 
 
+# Фильтр сотрудников
+class FilterWorkerView(ListView, WorkerCategory):
+    """Фильтр сотрудников"""
+    template_name = "workers/worker_list.html"
+
+    def get_queryset(self):
+        queryset = ""
+        worker_select = self.request.GET.get("worker_select")
+        if worker_select == '0':
+            queryset = Workers.objects.all()
+        else:
+            queryset = Workers.objects.filter(category=worker_select)
+
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["worker_select"] = ''.join([f"worker_select={x}&" for x in self.request.GET.getlist("worker_select")])
+        return context
+
+
+# Поиск сотрудников
+class SearchWorkers(ListView, WorkerCategory):
+    """Поиск сотрудников"""
+    template_name = "workers/worker_list.html"
+
+    def get_queryset(self):
+        queryset = self.request.GET.get("q")
+        # return Workers.objects.filter(Q(code=queryset))
+        return Workers.objects.filter(Q(name__icontains=queryset))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
 # Заказчики
 class CustomerListView(ListView):
     """Список заказчиков"""
     model = Customer
     queryset = Customer.objects.all()
     template_name = "customer/customer_list.html"
-    paginate_by = 1
+    paginate_by = 10
 
 
 def CustomerNew(request):
@@ -144,13 +210,13 @@ def CustomerNew(request):
             form.save()
             return redirect("customer_list")
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, "customer/customer_form/customer_new.html", {"form": form, "error": error})
 
 
 def CustomerDetailView(request, pk):
     """Полная информация о заказчиках"""
-    OrderFormSet = inlineformset_factory(Customer, CheckoutGoods, fields=("code_goods", "values"), extra=10)
+    OrderFormSet = inlineformset_factory(Customer, CheckoutGoods, fields=('date', "code_goods", "values"), extra=10)
     customer = Customer.objects.get(id=pk)
     goods = CheckoutGoods.objects.filter(customer_name=pk)
     formset = OrderFormSet(queryset=CheckoutGoods.objects.none(), instance=customer)
@@ -207,7 +273,7 @@ def GoodsDetailView(request, pk):
             form.save()
             return redirect(reverse('goods_list'))
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     context = {"calendar": calendar, "goods": goods, "form": form, "error": error,
                "goods_form": goods_form, }
     return render(request, "goods/goods_detail.html", context)
@@ -240,13 +306,13 @@ def GoodsNew(request):
                         form.save()
                         return redirect(reverse('goods_list'))
                     else:
-                        error = "Форма неверно заполнена"
+                        error = form.errors
         else:
             if form.is_valid():
                 form.save()
                 return redirect(reverse('goods_list'))
             else:
-                error = "Форма неверно заполнена"
+                error = form.errors
     return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error, "goods_list": goods_list,})
 
 
@@ -268,11 +334,11 @@ class GoodsFormUpdateView(UpdateView):
 
 
 class GoodsFormDeleteView(DeleteView):
-    """Удаление изделия"""
+    """Удаление формы изделия"""
     model = GoodsDefaultForm
     # Изменить на список изделий
     success_url = "/goods_list"
-    template_name = "goods/goods_form/goods_delete.html"
+    template_name = "goods/goods_form/def_form/goods_form_delete.html"
     slug_field = 'pk'
 
 
@@ -287,7 +353,7 @@ def GoodsFormNew(request, pk):
             form.save()
             return redirect(reverse('goods_list'))
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, 'goods/goods_form/def_form/goods_def_form_new.html', {"form": form,
                                                                                  "error": error, "goods": goods})
 
@@ -458,13 +524,13 @@ def SupplierNew(request):
             form.save()
             return redirect(reverse("supplier_list"))
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, "suppliers/supplier_form/supplier_new.html", {"form": form, "error": error})
 
 
 def SuppliersDetailView(request, pk):
     """Просмотр подробности о поставщике"""
-    OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("code_material", "values"), extra=10)
+    OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("date", "code_material", "values"), extra=10)
     supplier = Suppliers.objects.get(id=pk)
     materials = DeliveriesMaterials.objects.filter(supplier_name=pk)
     formset = OrderFormSet(queryset=DeliveriesMaterials.objects.none(), instance=supplier)
@@ -511,15 +577,21 @@ class StorageGoodsListView(ListView):
 def StorageGoodsNew(request):
     """Создание нового изделия на склад"""
     form = GoodsStorageNewForm()
+    customer_list = Customer.objects.all()
+    goods_list = Goods.objects.all()
+    checkout_customer_list = CheckoutGoods.objects.all()
     error = ""
     if request.method == "POST":
+        print(request.GET.get('id_checkout_customer'))
         form = GoodsStorageNewForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect(reverse("storage_goods_list"))
         else:
-            error = "Форма неверно заполнена"
-    return render(request, "storage_goods/goods_form/goods_new.html", {"form": form, "error": error})
+            error = form.errors
+    return render(request, "storage_goods/goods_form/goods_new.html",
+                  {"form": form, "error": error, 'customer_list': customer_list,
+                   'checkout_customer_list': checkout_customer_list, "goods_list": goods_list})
 
 
 def StorageGoodsDetailView(request, pk):
@@ -534,8 +606,8 @@ class StorageGoodsUpdateView(UpdateView):
     """Редактирование информации об изделии на складе"""
     model = GoodsStorage
     template_name = "storage_goods/goods_form/goods_new.html"
-    success_url = "/storage_goods_list"
-    form_class = GoodsStorageNewForm
+    success_url = "/storage_goods/"
+    fields = ('goods_code', 'value', 'customer_code', 'customer_checkout')
 
 
 class StorageGoodsDeleteView(DeleteView):
@@ -544,6 +616,16 @@ class StorageGoodsDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/storage_goods_list"
     template_name = "storage_goods/goods_form/goods_delete.html"
+
+
+# AJAX
+def load_goods(request):
+    goods_code = request.GET.get('id_goods_code')
+    customer_code = request.GET.get('id_customer_code')
+    checkout_list = CheckoutGoods.objects.filter(code_goods__code=goods_code).all()
+    checkout_list = checkout_list.filter(customer_name__name=customer_code).all()
+    return render(request, 'storage_goods/goods_form/checkout_dropdown_list_options.html', {'checkout_list': checkout_list})
+    # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 
 # Склад материалов
@@ -565,7 +647,7 @@ def StorageMaterialsNew(request):
             form.save()
             return redirect(reverse("storage_material_list"))
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, "storage_materials/materials_form/material_new.html", {"form": form, "error": error})
 
 
@@ -588,7 +670,6 @@ class StorageMaterialsUpdateView(UpdateView):
 class StorageMaterialsDeleteView(DeleteView):
     """Удаление материала со склада"""
     model = GoodsStorage
-    # Изменить на список изделий
     success_url = "/"
     template_name = "storage_materials/materials_form/material_delete.html"
 
@@ -673,17 +754,18 @@ def OTKNew(request):
     nariad_list = Nariad.objects.all()
     error = ""
     if request.method == "POST":
-        for otk in otk_list:
-            if form['nariad_code'] == otk.nariad_code:
-                error = "ОТК с данным кодом уже существует!"
-                break
-            else:
-                form = OTKNewForm(request.POST)
-                if form.is_valid():
-                    form.save()
-                    return redirect(reverse("otk_list"))
+        form = OTKNewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse("otk_list"))
+        else:
+            print(form['code'].value())
+            for otk in otk_list:
+                if int(form['nariad_code'].value()) == otk.nariad_code.code:
+                    error = "ОТК с данным кодом уже существует!"
+                    break
                 else:
-                    error = "Форма неверно заполнена"
+                    error = form.errors
     return render(request, "otk/otk_form/otk_new.html", {"form": form, "error": error, "form_nariad": form_nariad,
                                                          "nariad_list": nariad_list})
 
@@ -844,6 +926,134 @@ def ReportReleasedGoodsCalendar(request):
     return render(request, 'reports/goods_reports/released_goods/released_goods_report_calendar.html', context)
 
 
+# Отчет о хороших изделиях
+def ReportGoodGoodsMonth(request):
+    """Отчет о хороших изделиях за месяц"""
+    summa_good_goods = 0
+    # получение всех дат текущего месяца
+    delta_date = days_cur_month(strdate='%d %B %Yг.')
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
+              'Декабрь']
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+    # дни
+    date_days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+                 28, 29, 30, 31]
+    get_date = months[datetime.today().month - 1]
+
+    while date_days.__len__() != days_cur_month(strdate='%d %B %Yг.').__len__():
+        del date_days[-1]
+
+    otk = OTK.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for otks in otk:
+        summa_good_goods += otks.goods_value
+
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+
+    context = {"date": delta_date, "date_days": date_days, "months": months, "otk": otk,
+               "summa_good_goods": summa_good_goods, "get_date": get_date,
+               "report_remote_goods_filter": report_remote_goods_filter}
+    return render(request, 'reports/goods_reports/good_goods/good_goods_report_month.html', context)
+
+
+def ReportGoodGoodsWeek(request):
+    """Отчет о хороших изделиях за неделю"""
+    summa_good_goods = 0
+    # неделя
+    week_now_days = week_now("%d %B %a")
+    # дни
+    date_days = week_now("%d")
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    otk = OTK.objects.filter(
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for days in date_days:
+        for goods_days in otk:
+            if int(days) == goods_days.date.day:
+                summa_good_goods += goods_days.goods_value
+
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+
+    context = {"otk": otk, "week_now_days": week_now_days, "date_days": date_days,
+               "summa_good_goods": summa_good_goods, "report_remote_goods_filter": report_remote_goods_filter}
+    return render(request, 'reports/goods_reports/good_goods/good_goods_report_week.html', context)
+
+
+def ReportGoodGoodsToday(request):
+    """Отчет о хороших изделиях за день"""
+    summa_good_goods = 0
+    # день
+    date_day = datetime.today().day
+    # месяц
+    date_month = datetime.today().month
+    # год
+    date_year = datetime.today().year
+
+    # надпись в шапку
+    delta_date = datetime.today().date()
+
+    otk = OTK.objects.filter(
+        Q(date__day=date_day) &
+        Q(date__month=date_month) &
+        Q(date__year=date_year)
+    ).order_by('date').distinct()
+
+    for otks in otk:
+        summa_good_goods += otks.goods_value
+
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+
+    context = {"otk": otk, "summa_good_goods": summa_good_goods, "date_day": date_day, "delta_date": delta_date,
+               "report_remote_goods_filter": report_remote_goods_filter}
+    return render(request, 'reports/goods_reports/good_goods/good_goods_report_today.html', context)
+
+
+def ReportGoodGoodsCalendar(request):
+    """Отчет о хороших изделиях по календарю"""
+    summa_good_goods = 0
+
+    # дата начала
+    start_date = request.GET.get('start_date')
+    start_date = start_date.split("-")
+    start_date[0] = int(start_date[0])
+    start_date[1] = int(start_date[1])
+    start_date[2] = int(start_date[2])
+    # дата окончания
+    end_date = request.GET.get('end_date')
+    end_date = end_date.split("-")
+    end_date[0] = int(end_date[0])
+    end_date[1] = int(end_date[1])
+    end_date[2] = int(end_date[2])
+
+    # дни для вывода
+    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
+    # календарь
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
+
+    otk = OTK.objects.all()
+    report_remote_goods_filter = ReportRemoteGoodsFilter(request.GET, queryset=otk)
+    otk = report_remote_goods_filter.qs
+
+    for otks in otk:
+        summa_good_goods += otks.goods_value
+
+    context = {"report_remote_goods_filter": report_remote_goods_filter, "otk": otk, "delta_days": delta_days, "delta_date": delta_date,
+               "summa_good_goods": summa_good_goods}
+    return render(request, 'reports/goods_reports/good_goods/good_goods_report_calendar.html', context)
+
+
 # Отчет о списанных изделиях
 def ReportRemoteGoodsMonth(request):
     """Отчет о списанных изделиях за месяц"""
@@ -939,7 +1149,7 @@ def ReportRemoteGoodsToday(request):
 
 
 def ReportRemoteGoodsCalendar(request):
-    """Отчет по календарю"""
+    """Отчет о бракованных изделиях по календарю"""
     summa_remote_goods = 0
 
     # дата начала

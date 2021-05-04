@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+from smart_selects.db_fields import ChainedForeignKey
+
 
 # Create your models here.
 
@@ -115,12 +117,13 @@ class Customer(models.Model):
 class CheckoutGoods(models.Model):
     """Заказчики и изделия"""
     customer_name = models.ForeignKey(Customer, verbose_name="Имя заказчика", on_delete=models.CASCADE)
-    date = models.DateField("Дата заказа", default=default_datetime)
+    date = models.DateField("Дата заказа", default='')
     code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
     values = models.IntegerField("Количество")
 
     def __str__(self):
-        return str(self.date)
+        header = str(self.date) + ' | ' + str(self.code_goods.code) + ' | ' + str(self.values)
+        return header
 
     class Meta:
         verbose_name = "Дата заказа"
@@ -208,8 +211,8 @@ class GoodsStorage(models.Model):
     """Склад изделий"""
     goods_code = models.ForeignKey(Goods, verbose_name='Код изделия', on_delete=models.PROTECT)
     value = models.IntegerField('Количество')
-    OTK_code = models.ForeignKey(OTK, verbose_name='Код ОТК', on_delete=models.PROTECT)
     customer_code = models.ForeignKey(Customer, verbose_name='Код заказчика', on_delete=models.PROTECT)
+    customer_checkout = models.ForeignKey(CheckoutGoods, verbose_name='Код заказа', on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.goods_code)

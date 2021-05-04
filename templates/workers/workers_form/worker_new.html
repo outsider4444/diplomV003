@@ -5,26 +5,60 @@
     Создание/редактирование сотрудника
 {% endblock title %}
 
-{#Надпись в шапке#}
-{% block header_title %}
-    Создание/редактирование сотрудника
-{% endblock header_title %}
-
 
 {% block worker %}
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form method="post" enctype="multipart/form-data" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                {% csrf_token %}
+                <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px">Создание/редактирование сотрудника</h3>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_code">Код:</label>
+                        {{ form.code }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_name">ФИО:</label>
+                        {{ form.name }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_birthday">Дата рождения:</label>
+                        {{ form.birthday }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_category">Должность:</label>
+                        {{ form.category }}
+                    </div>
+                </div>
 
-    <form method="post" enctype="multipart/form-data" name="create">
-        {% csrf_token %}
-        <h3>Введите информацию о сотруднике</h3>
-        Код сотрудника:{{ form.code }}<br>
-        ФИО сотрудника: {{ form.name }}<br>
-        Дата рождения: {{ form.birthday }}<br>
-        Должность сотрудника: {{ form.category }}<br>
-        Номер телефона сотрудника: {{ form.phone_number }}<br>
-        Почта сотрудника (опционально): {{ form.email }}<br>
-        Оклад: {{ form.salary }}<br>
-        <span>{{ error }}</span>
-        <button type="submit">Подтвердить</button>
-        </form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_phone_number">Номер телефона:</label>
+                        {{ form.phone_number }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_email">Почта (опционально): </label>
+                        {{ form.email }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_category" class="col-sm-2 col-form-label">Оклад: </label>
+                        {{ form.salary }}
+                    </div>
+                </div>
+                <span>{{ error }}</span>
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
+            </form>
+        </div>
+    </div>
 
+    <script>
+    id_worker_code = document.getElementById('id_code');id_worker_code.className = 'form-control';
+    id_worker_name = document.getElementById('id_name');id_worker_name.className = 'form-control';
+    id_worker_birthday = document.getElementById('id_birthday');id_worker_birthday.className = 'form-control';
+    id_worker_category = document.getElementById('id_category');id_worker_category.className = 'form-control';
+    id_phone_number = document.getElementById('id_phone_number');id_phone_number.className = 'form-control';
+    id_salary = document.getElementById('id_salary');id_salary.className = 'form-control';
+    id_email = document.getElementById('id_email');id_email.className = 'form-control';</script>
 {% endblock worker %}

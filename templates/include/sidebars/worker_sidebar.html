@@ -1,0 +1,29 @@
+{% load poll_extras %}
+<div class="side-bar col-lg-3">
+
+    <div class="search-bar w3layouts-newsletter">
+        <h3 class="sear-head editContent" >Поиск сотрудников</h3>
+        <form action="{% url "worker_search" %}" method="get" class="d-flex editContent" >
+            <input type="search" placeholder="Введите ФИО сотрудника ..." name="q" class="form-control" required="">
+            <button type="submit" class="btn1 btn" ><span class="fa fa-search" aria-hidden="true" ></span></button>
+        </form>
+    </div>
+    <!--preference -->
+    <form action="{% url 'worker_filter' %}" method="get" name="filter">
+        <div class="left-side my-4">
+            <h3 class="sear-head editContent">Фильтры</h3>
+
+                    <span class="span editContent">Должность</span>
+                <select  id="id_worker_select" name="worker_select">
+                    <option value="0">----------</option>
+                    {% for worker_category in view.get_category %}
+                            <option value="{{ worker_category.category }}">{{ worker_category.category }}</option>
+                    {% endfor %}
+                     </select>
+                </li>
+                
+
+        </div>
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+</div>

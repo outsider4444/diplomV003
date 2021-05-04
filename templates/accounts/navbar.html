@@ -1,0 +1,20 @@
+{% load static %}
+
+<style>
+    .hello-msg{
+        font-size: 18px;
+        color: #fff;
+        margin-right: 20px;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+    <img src="{% static 'images/logo.png' %}" alt="">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+    </div>
+    <li><a href="{% url 'admin:index' %}" style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Панель администратора</a></li>
+    <span><a class="hello-msg" href="{% url 'logout' %}">Выйти</a></span>
+</nav>

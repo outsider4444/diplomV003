@@ -4,6 +4,54 @@
 {% block title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock title %}
 {% block header_title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock header_title %}
 
+
+{% block tabs_bar %}
+        <ul class="nav nav-tabs">
+
+            <li class="nav-tabs">
+                <a class="nav-link"  href="{% url "main" %}">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "workers_list" %}">Сотурудники</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "goods_list" %}">Изделия</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "material_list" %}">Материалы</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "supplier_list" %}">Поставщики</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "customer_list" %}">Заказчики</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "nariad_list" %}">Наряды</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "otk_list" %}">ОТК</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "storage_goods_list" %}">Изделия на складе</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "storage_material_list" %}">Материалы на складе</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Отчеты</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url "released_goods_report_month" %}">Всего изделий</a></li>
+                    <li><a class="dropdown-item " href="{% url "good_goods_report_month" %}">Хороших изделий</a></li>
+                    <li><a class="dropdown-item active" href="{% url "remove_goods_report_month" %}">Бракованных изделий</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url "used_material_report_month" %}">Расход материала</a></li>
+                </ul>
+            </li>
+        </ul>
+{% endblock tabs_bar %}
+
+
 {% block report %}
     
     <div style="width: 100%">
@@ -19,7 +67,7 @@
 
 
 
-    <table border="1px">
+    <table border="1px" class="table table-bordered table-hover table-responsive">
     <tr>
         <td>Дата</td>
         {% for days in delta_date %}

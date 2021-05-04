@@ -4,15 +4,11 @@
 
 
 {% block customer %}
-    <!-- product right -->
     <div class="left-ads-display col-lg-8">
 
-{#    Сделать "изменение #}
-<input type="button" onclick='location.href="update"' value="Изменить информацию о заказчике">
-<input type="button" onclick='location.href="delete"' value="Удалить заказчика">
-{# Красиво выводить#}
+        <input type="button" onclick='location.href="update"' value="Изменить информацию о заказчике">
+        <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить заказчика">
 
-        {#                Изменить стили #}
         <div class="row">
 
             <div class="desc1-right col-md-6 pl-lg-4" >
@@ -32,13 +28,13 @@
                 </ul>
             </div>
         </div>
-{#        Календарь поставок#}
+
     <h3>Даты заказов:</h3>
         {% for goods_date in date %}
             <b>Дата заказа: </b>{{ goods_date.date }}<br>
                 {% for goods in goods %}
                     {% if goods.date == goods_date.date %}
-                        <b>Код изделия:</b> {{ goods.goods_code }}<br>
+                        <b>Код изделия:</b> {{ goods.code_goods.code }}<br>
                         Количество: {{ goods.values }}<br>
                     {% endif %}
                 {% endfor %}<hr>

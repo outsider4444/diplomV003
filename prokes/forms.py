@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import DateField
+from django.forms import DateInput
 
 from .models import GoodsCalendar, GoodsDefaultForm, Workers, CheckoutGoods, Goods, Customer, Materials, \
     Suppliers, GoodsStorage, Nariad, OTK, MaterialStorage
@@ -41,6 +41,10 @@ class WorkersForm(forms.ModelForm):
     class Meta:
         model = Workers
         fields = '__all__'
+        widgets ={
+            'birthday' : forms.DateInput(attrs={'type': 'date'}),
+            'email': forms.EmailInput(attrs={'type':'email'}),
+        }
 
 
 # Заказчики
@@ -80,11 +84,33 @@ class SupplierNewForm(forms.ModelForm):
 
 # Склад изделий
 class GoodsStorageNewForm(forms.ModelForm):
-    """Форма добавления материала на склад"""
+    """Форма добавления изделия на склад"""
 
     class Meta:
         model = GoodsStorage
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['customer_checkout'].queryset = CheckoutGoods.objects.none()
+
+        if 'goods_code' in self.data:
+            try:
+                goods_code = int(self.data.get('goods_code'))
+                self.fields['customer_checkout'].queryset = CheckoutGoods.objects.filter(code_goods_id=goods_code).order_by('code_goods_id')
+            except (ValueError, TypeError):
+                pass # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['customer_checkout'].queryset = self.instance.goods.checkoutgoods_set.order_by('code_goods_id')
+
+        if 'customer_code' in self.data:
+            try:
+                customer_code = int(self.data.get('customer_code'))
+                self.fields['customer_checkout'].queryset = CheckoutGoods.objects.filter(customer_name_id=customer_code).order_by('customer_name_id')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['customer_checkout'].queryset = self.instance.goods.checkoutgoods_set.order_by('customer_name_id')
 
 
 # Склад материалов
@@ -94,6 +120,9 @@ class MaterialsStorageNewForm(forms.ModelForm):
     class Meta:
         model = MaterialStorage
         fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
 # Наряды
@@ -103,11 +132,19 @@ class NariadNewForm(forms.ModelForm):
     class Meta:
         model = Nariad
         fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
+# ОТК
 class OTKNewForm(forms.ModelForm):
     """Форма добавления нового ОТК"""
 
     class Meta:
         model = OTK
         fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+            'goods_value': forms.TextInput(attrs={'type': 'number', 'id': 'id_goods_value2'})
+        }
