@@ -120,6 +120,9 @@ class MaterialsStorageNewForm(forms.ModelForm):
     class Meta:
         model = MaterialStorage
         fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
 # Наряды

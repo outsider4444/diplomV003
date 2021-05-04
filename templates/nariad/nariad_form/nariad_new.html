@@ -12,7 +12,7 @@
             <form method="post" enctype="multipart/form-data" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
                 {% csrf_token %}
                 <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px">Создание/редактирование наряда</h3>
-                <div class="form-row">
+                <div class="form-row justify-content-center">
                     <div class="form-group col-md-6">
                         <label for="id_code">Код наряда: </label>
                         {{ form.code }}
@@ -22,13 +22,14 @@
                         {{ form.date }}
                     </div>
                 </div>
-                    <div class="form-row">
+                <div class="form-row justify-content-center">
                     <div class="form-group col-md-6">
                         <label for="id_worker_code">Код сотрудника: </label>
                         {{ form.worker_code }}
                     </div>
-                    </div>
-                <div class="form-row">
+                    <div class="form-group col-md-6"></div>
+                </div>
+                <div class="form-row justify-content-center">
                     <div class="form-group col-md-6">
                         <label for="id_goods_code">Код изделия: </label>
                         {{ form.goods_code }}

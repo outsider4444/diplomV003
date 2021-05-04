@@ -1,11 +1,6 @@
 {% extends "storage_goods/base.html" %}
 {% load static %}
 
-{#Надпись в Title#}
-{% block title %}
-    Создание/редактирование изделия
-{% endblock title %}
-
 
 {% block storage_goods %}
 
@@ -13,10 +8,31 @@
         <div class="row h-100 justify-content-center align-items-center">
             <form method="post" enctype="multipart/form-data" id="goods_create_Form" data-goods-url="{% url 'ajax_load_goods' %}" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
                 {% csrf_token %}
-               Код изделия: {{ form.goods_code }} <br>
-                Количество на складе: {{ form.value }} <br>
-                Имя заказчика: {{ form.customer_code }} <br>
-                Код заказа: {{ form.customer_checkout }} <br>
+                <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px"> Создание/редактирование изделия на складе </h3>
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="id_nariad_code">Код изделия: </label>
+                        {{ form.goods_code }}
+                    </div>
+                </div>
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="id_nariad_code">Количество на складе: </label>
+                        {{ form.value }}
+                    </div>
+                </div>
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="id_nariad_code">Имя заказчика: </label>
+                        {{ form.customer_code }}
+                    </div>
+                </div>
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="id_nariad_code">Код заказа: </label>
+                        {{ form.customer_checkout }}
+                    </div>
+                </div>
                 <span>{{ error }}</span>
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
             </form>
@@ -25,6 +41,10 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
+    let id_goods_code = document.getElementById('id_goods_code'); id_goods_code.className = 'form-control';
+    let id_value = document.getElementById('id_value'); id_value.className = 'form-control';
+    let id_customer_code = document.getElementById('id_customer_code'); id_customer_code.className = 'form-control';
+    let id_customer_checkout = document.getElementById('id_customer_checkout'); id_customer_checkout.className = 'form-control';
     $("#id_goods_code").change(function () {
         const url = $("#goods_create_Form").attr("data-goods-url");  // get the url of the `load_cities` view
         const goods_code = $('#id_goods_code option:selected').text();  // get the selected country ID from the HTML input

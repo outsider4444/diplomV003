@@ -12,30 +12,31 @@
                 {% csrf_token %}
                 <h3 style="text-align: center; margin-bottom: 15px; margin-top: 15px">Создание/редактирование материала</h3>
 
-                <div class="form-group row justify-content-center">
-                    <label for="id_code" class="col-sm-4 col-form-label">Код:</label>
-                    <div class="col-sm-6">
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                    <label for="id_code">Код:</label>
                         {{ form.code }}
                     </div>
                 </div>
 
-                <div class="form-group row justify-content-center">
-                    <label for="id_weight" class="col-sm-4 col-form-label">Вес:</label>
-                    <div class="col-sm-6">
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                    <label for="id_weight">Вес:</label>
                         {{ form.weight }}
                     </div>
                 </div>
 
-                <div class="form-group row justify-content-center">
-                    <label for="id_batch_number" class="col-sm-4 col-form-label">Номер партии:</label>
-                    <div class="col-sm-6">
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                    <label for="id_batch_number">Номер партии:</label>
                         {{ form.batch_number }}
                     </div>
                 </div>
 
-                <div class="form-group row justify-content-center">
-                    <label for="id_pallet_number" class="col-sm-4 col-form-label">Номер поддона:</label>
-                    <div class="col-sm-6">
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                    <label for="id_pallet_number">Номер поддона:</label>
                         {{ form.pallet_number }}
                     </div>
                 </div>

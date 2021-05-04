@@ -579,8 +579,8 @@ class StorageGoodsUpdateView(UpdateView):
     """Редактирование информации об изделии на складе"""
     model = GoodsStorage
     template_name = "storage_goods/goods_form/goods_new.html"
-    success_url = "/storage_goods_list"
-    form_class = GoodsStorageNewForm
+    success_url = "/storage_goods/"
+    fields = ('goods_code', 'value', 'customer_code', 'customer_checkout')
 
 
 class StorageGoodsDeleteView(DeleteView):
@@ -610,7 +610,7 @@ def StorageMaterialsNew(request):
             form.save()
             return redirect(reverse("storage_material_list"))
         else:
-            error = "Форма неверно заполнена"
+            error = form.errors
     return render(request, "storage_materials/materials_form/material_new.html", {"form": form, "error": error})
 
 
@@ -633,9 +633,9 @@ class StorageMaterialsUpdateView(UpdateView):
 class StorageMaterialsDeleteView(DeleteView):
     """Удаление материала со склада"""
     model = GoodsStorage
-    # Изменить на список изделий
     success_url = "/"
     template_name = "storage_materials/materials_form/material_delete.html"
+
 
 
 # Наряды

@@ -119,7 +119,6 @@ urlpatterns = [
     path('logout/', views.logoutUser, name="logout"),
 
 
-
     # Главная страница
     path("", login_required(login_url='login')(views.main), name="main")
 ]
