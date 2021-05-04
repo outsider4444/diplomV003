@@ -30,7 +30,7 @@ def days_cur_month(strdate):
     return [(d1 + timedelta(days=i)).strftime(strdate) for i in range(delta.days + 1)]
 
 
-# текущая неделя
+# Текущая неделя
 def week_now(strdate):
     locale.setlocale(locale.LC_ALL, "")
     now = datetime.now()
@@ -41,6 +41,7 @@ def week_now(strdate):
         return dates[n_week]
 
 
+# Календарь
 def calendar(s_date, e_date, strdate):
     locale.setlocale(locale.LC_ALL, "")
     start_date = datetime(s_date[0], s_date[1], s_date[2])
@@ -53,7 +54,7 @@ def calendar(s_date, e_date, strdate):
     return res
 
 
-# авторизация
+# Авторизация
 def loginPage(request):
     """Авторизация"""
     if request.user.is_authenticated:
@@ -95,7 +96,7 @@ class WorkerCategory:
     """Должности сотрудников"""
 
     def get_category(self):
-        return Workers.objects.filter(fired=False).values("category").distinct()
+        return Workers.objects.values("category").distinct()
 
 
 # Сотрудники
@@ -153,6 +154,43 @@ class WorkerDeleteView(DeleteView):
     template_name = "workers/workers_form/worker_delete.html"
 
 
+# Фильтр сотрудников
+class FilterWorkerView(ListView, WorkerCategory):
+    """Фильтр сотрудников"""
+    template_name = "workers/worker_list.html"
+
+    def get_queryset(self):
+        queryset = ""
+        worker_select = self.request.GET.get("worker_select")
+        if worker_select == '0':
+            queryset = Workers.objects.all()
+        else:
+            queryset = Workers.objects.filter(category=worker_select)
+
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["worker_select"] = ''.join([f"worker_select={x}&" for x in self.request.GET.getlist("worker_select")])
+        return context
+
+
+# Поиск сотрудников
+class SearchWorkers(ListView, WorkerCategory):
+    """Поиск сотрудников"""
+    template_name = "workers/worker_list.html"
+
+    def get_queryset(self):
+        queryset = self.request.GET.get("q")
+        # return Workers.objects.filter(Q(code=queryset))
+        return Workers.objects.filter(Q(name__icontains=queryset))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
 # Заказчики
 class CustomerListView(ListView):
     """Список заказчиков"""
@@ -203,16 +241,6 @@ class CustomerUpdateView(UpdateView):
     template_name = "customer/customer_form/customer_new.html"
     success_url = "/customer_list"
     form_class = CustomerForm
-
-
-# AJAX
-def load_goods(request):
-    goods_code = request.GET.get('id_goods_code')
-    customer_code = request.GET.get('id_customer_code')
-    checkout_list = CheckoutGoods.objects.filter(code_goods__code=goods_code).all()
-    checkout_list = checkout_list.filter(customer_name__name=customer_code).all()
-    return render(request, 'storage_goods/goods_form/checkout_dropdown_list_options.html', {'checkout_list': checkout_list})
-    # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 
 class CustomerDeleteView(DeleteView):
@@ -561,10 +589,9 @@ def StorageGoodsNew(request):
             return redirect(reverse("storage_goods_list"))
         else:
             error = form.errors
-    return render(request, "storage_goods/goods_form/goods_new.html", {"form": form, "error": error,
-                                                                       'customer_list': customer_list,
-                                                                       'checkout_customer_list': checkout_customer_list,
-                                                                       "goods_list": goods_list})
+    return render(request, "storage_goods/goods_form/goods_new.html",
+                  {"form": form, "error": error, 'customer_list': customer_list,
+                   'checkout_customer_list': checkout_customer_list, "goods_list": goods_list})
 
 
 def StorageGoodsDetailView(request, pk):
@@ -589,6 +616,16 @@ class StorageGoodsDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/storage_goods_list"
     template_name = "storage_goods/goods_form/goods_delete.html"
+
+
+# AJAX
+def load_goods(request):
+    goods_code = request.GET.get('id_goods_code')
+    customer_code = request.GET.get('id_customer_code')
+    checkout_list = CheckoutGoods.objects.filter(code_goods__code=goods_code).all()
+    checkout_list = checkout_list.filter(customer_name__name=customer_code).all()
+    return render(request, 'storage_goods/goods_form/checkout_dropdown_list_options.html', {'checkout_list': checkout_list})
+    # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 
 # Склад материалов
@@ -635,7 +672,6 @@ class StorageMaterialsDeleteView(DeleteView):
     model = GoodsStorage
     success_url = "/"
     template_name = "storage_materials/materials_form/material_delete.html"
-
 
 
 # Наряды

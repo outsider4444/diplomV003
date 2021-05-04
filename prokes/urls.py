@@ -57,7 +57,10 @@ urlpatterns = [
 
     # Фильтры
     path("goods_list/goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
+    path("worker_list/worker_filter/", views.FilterWorkerView.as_view(), name="worker_filter"),
+
     # Поиск
+    path('worker_list/worker_search/', views.SearchWorkers.as_view(), name='worker_search'),
     path('goods_list/goods_search/', views.SearchGoods.as_view(), name='goods_search'),
 
 
