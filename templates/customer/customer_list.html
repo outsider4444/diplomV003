@@ -6,11 +6,9 @@
 
 {% block customer %}
     <!-- product right -->
-    <form>
-        <input type="button" onclick='location.href="{% url "customer_create" %}"' value="Добавить нового заказчика">
-    </form>
-
+            {% include 'include/sidebars/customer_sidebar.html' %}
     <div class="left-ads-display col-lg-9">
+        <input type="button" onclick='location.href="{% url "customer_create" %}"' value="Добавить нового заказчика">
         <div class="row">
             {% for customer in customer_list %}
                 <div class="col-md-4 product-men">

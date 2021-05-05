@@ -1,9 +1,9 @@
 <div class="side-bar col-lg-3">
 
     <div class="search-bar w3layouts-newsletter">
-        <h3 class="sear-head editContent" >Поиск изделий</h3>
-        <form action="{% url "goods_search" %}" method="get" class="d-flex editContent" >
-            <input type="search" placeholder="Введите код или название изделия ..." name="q" class="form-control" required="">
+        <h3 class="sear-head editContent" >Поиск материалов на складе</h3>
+        <form action="{% url "storage_material_search" %}" method="get" class="d-flex editContent" >
+            <input type="search" placeholder="Введите код материала ..." name="q" class="form-control" required="">
             <button type="submit" class="btn1 btn" ><span class="fa fa-search" aria-hidden="true" ></span></button>
         </form>
     </div>

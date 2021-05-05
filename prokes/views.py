@@ -154,6 +154,22 @@ class WorkerDeleteView(DeleteView):
     template_name = "workers/workers_form/worker_delete.html"
 
 
+# Поиск и фильтр сотрудников
+class SearchWorkers(ListView, WorkerCategory):
+    """Поиск сотрудников"""
+    template_name = "workers/worker_list.html"
+
+    def get_queryset(self):
+        queryset = self.request.GET.get("q")
+        # return Workers.objects.filter(Q(code=queryset))
+        return Workers.objects.filter(Q(name__icontains=queryset))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
 # Фильтр сотрудников
 class FilterWorkerView(ListView, WorkerCategory):
     """Фильтр сотрудников"""
@@ -175,29 +191,13 @@ class FilterWorkerView(ListView, WorkerCategory):
         return context
 
 
-# Поиск сотрудников
-class SearchWorkers(ListView, WorkerCategory):
-    """Поиск сотрудников"""
-    template_name = "workers/worker_list.html"
-
-    def get_queryset(self):
-        queryset = self.request.GET.get("q")
-        # return Workers.objects.filter(Q(code=queryset))
-        return Workers.objects.filter(Q(name__icontains=queryset))
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context["q"] = f'q={self.request.GET.get("q")}&'
-        return context
-
-
 # Заказчики
 class CustomerListView(ListView):
     """Список заказчиков"""
     model = Customer
     queryset = Customer.objects.all()
     template_name = "customer/customer_list.html"
-    paginate_by = 10
+    paginate_by = 15
 
 
 def CustomerNew(request):
@@ -251,13 +251,30 @@ class CustomerDeleteView(DeleteView):
     template_name = "customer/customer_form/customer_delete.html"
 
 
+# Поиск заказчиков
+class SearchCustomer(ListView):
+    """Поиск заказчиков"""
+    template_name = "customer/customer_list.html"
+
+    def get_queryset(self):
+        return Customer.objects.filter(
+            Q(name__icontains=self.request.GET.get("q")) |
+            Q(representative__icontains=self.request.GET.get("q"))
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
 # Изделия
 class GoodsListView(ListView):
     """Список изделий"""
     model = Goods
     queryset = Goods.objects.all()
     template_name = "goods/goods_list.html"
-    paginate_by = 5
+    paginate_by = 15
 
 
 def GoodsDetailView(request, pk):
@@ -358,6 +375,23 @@ def GoodsFormNew(request, pk):
                                                                                  "error": error, "goods": goods})
 
 
+# Поиск и фильтр изделий
+class SearchGoods(ListView):
+    """Поиск изделий"""
+    template_name = "goods/goods_list.html"
+
+    def get_queryset(self):
+        return Goods.objects.filter(
+            Q(code__icontains=self.request.GET.get("q")) |
+            Q(name__icontains=self.request.GET.get("q"))
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
 # Фильтры для изделий
 class FilterGoodsView(ListView):
     """Фильтр изделий"""
@@ -365,81 +399,13 @@ class FilterGoodsView(ListView):
 
     def get_queryset(self):
         queryset = ""
-        temp = self.request.GET.get("temp")
-        malt = self.request.GET.get("malt")
-        pres = self.request.GET.get("pres")
-        strength = self.request.GET.get("strength")
-        if temp == "" and malt == "" and pres == "" and strength == "":
-            queryset = Goods.objects.all()
-        elif temp != "" and malt != "" and pres != "" and strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp)) &
-                Q(min_malt__lte=int(malt)) &
-                Q(min_pressure__lte=int(pres)) &
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        elif temp != "" and malt != "" and pres != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp)) &
-                Q(min_malt__lte=int(malt)) &
-                Q(min_pressure__lte=int(pres))
-            ).distinct()
-        elif temp != "" and malt != "" and strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp)) &
-                Q(min_malt__lte=int(malt)) &
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        elif temp != "" and pres != "" and strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp)) &
-                Q(min_pressure__lte=int(pres)) &
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        elif malt != "" and pres != "" and strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_malt__lte=int(malt)) &
-                Q(min_pressure__lte=int(pres)) &
-                Q(min_strength__lte=int(strength))
-            ).distinct()
-        elif temp != "":
-            queryset = Goods.objects.filter(
-                Q(min_temperature__lte=int(temp))
-            ).distinct()
-        elif malt != "":
-            queryset = Goods.objects.filter(
-                Q(min_malt__lte=int(malt))
-            ).distinct()
-        elif pres != "":
-            queryset = Goods.objects.filter(
-                Q(min_pressure__lte=int(pres))
-            ).distinct()
-        elif strength != "":
-            queryset = Goods.objects.filter(
-                Q(min_strength__lte=int(strength))
-            ).distinct()
+
         return queryset
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["temp"] = ''.join([f"temp={x}&" for x in self.request.GET.getlist("temp")])
         context["malt"] = ''.join([f"malt={x}&" for x in self.request.GET.getlist("malt")])
-        context["pres"] = ''.join([f"pres={x}&" for x in self.request.GET.getlist("pres")])
-        context["strength"] = ''.join([f"strength={x}&" for x in self.request.GET.getlist("strength")])
-        return context
-
-
-# Поиск изделий
-class SearchGoods(ListView):
-    """Поиск изделий"""
-    template_name = "goods/goods_list.html"
-
-    def get_queryset(self):
-        return Goods.objects.filter(code__icontains=self.request.GET.get("q"))
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context["q"] = f'q={self.request.GET.get("q")}&'
         return context
 
 
@@ -505,6 +471,22 @@ class MaterialDeleteView(DeleteView):
     template_name = "materials/materials_form/materials_delete.html"
 
 
+# Поиск материалов
+class SearchMaterials(ListView):
+    """Поиск материалов"""
+    template_name = "materials/material_list.html"
+
+    def get_queryset(self):
+        return Materials.objects.filter(
+            Q(code__icontains=self.request.GET.get("q"))
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
 # Поставщики
 class SuppliersListView(ListView):
     """Список поставщиков"""
@@ -565,13 +547,30 @@ class SupplierDeleteView(DeleteView):
     template_name = "suppliers/supplier_form/supplier_delete.html"
 
 
+# Поиск поставщиков
+class SearchSuppliers(ListView):
+    """Поиск поставщиков"""
+    template_name = "suppliers/suppliers_list.html"
+
+    def get_queryset(self):
+        return Suppliers.objects.filter(
+            Q(name__icontains=self.request.GET.get("q")) |
+            Q(representative__icontains=self.request.GET.get("q"))
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
 # Склад изделий
 class StorageGoodsListView(ListView):
     """Список изделий на складе"""
     model = GoodsStorage
     queryset = GoodsStorage.objects.all()
     template_name = "storage_goods/storage_goods_list.html"
-    # paginate_by = 5
+    paginate_by = 15
 
 
 def StorageGoodsNew(request):
@@ -628,6 +627,24 @@ def load_goods(request):
     # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 
+# Поиск изделий на складе
+class SearchStorageGoods(ListView):
+    """Поиск изделий на складе"""
+    template_name = "storage_goods/storage_goods_list.html"
+
+    def get_queryset(self):
+        return GoodsStorage.objects.filter(
+            Q(goods_code__code__icontains=self.request.GET.get("q")) |
+            Q(customer_code__name__icontains=self.request.GET.get("q")) |
+            Q(customer_code__representative__icontains=self.request.GET.get("q"))
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
+
+
 # Склад материалов
 class StorageMaterialsListView(ListView):
     """Список материалов на складе"""
@@ -672,6 +689,22 @@ class StorageMaterialsDeleteView(DeleteView):
     model = GoodsStorage
     success_url = "/"
     template_name = "storage_materials/materials_form/material_delete.html"
+
+
+# Поиск материалов на складе
+class SearchStorageMaterials(ListView):
+    """Поиск изделий на складе"""
+    template_name = "storage_materials/storage_materials_list.html"
+
+    def get_queryset(self):
+        return MaterialStorage.objects.filter(
+            Q(material_code__code__icontains=self.request.GET.get("q"))
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
 
 
 # Наряды
@@ -727,6 +760,22 @@ class NariadDeleteView(DeleteView):
     success_url = "/"
     slug_field = 'code'
     template_name = "nariad/nariad_form/nariad_delete.html"
+
+
+# Поиск наряда
+class SearchNariad(ListView):
+    """Поиск наряда"""
+    template_name = "nariad/nariad_list.html"
+
+    def get_queryset(self):
+        return Nariad.objects.filter(
+            Q(code__icontains=self.request.GET.get("q"))
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
 
 
 # ОТК
@@ -795,6 +844,22 @@ class OTKDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/"
     template_name = "otk/otk_form/otk_delete.html"
+
+
+# Поиск ОТК
+class SearchOTK(ListView):
+    """Поиск ОТК"""
+    template_name = "otk/otk_list.html"
+
+    def get_queryset(self):
+        return OTK.objects.filter(
+            Q(nariad_code__code__icontains=self.request.GET.get("q"))
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = f'q={self.request.GET.get("q")}&'
+        return context
 
 
 # Отчет о выпущенных изделиях

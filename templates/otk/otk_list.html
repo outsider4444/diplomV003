@@ -5,12 +5,11 @@
 
 
 {% block otk %}
+        {% include 'include/sidebars/otk_sidebar.html' %}
     <!-- product right -->
-    <form>
-        <input type="button" onclick='location.href="{% url "otk_create" %}"' value="Добавить новое ОТК">
-    </form>
 
     <div class="left-ads-display col-lg-9">
+    <input type="button" onclick='location.href="{% url "otk_create" %}"' value="Добавить новое ОТК">
         <div class="row">
             {% for otk in otk_list %}
                 <div class="col-md-4 product-men">
