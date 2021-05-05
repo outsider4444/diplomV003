@@ -6,11 +6,9 @@
 
 {% block suppliers %}
     <!-- product right -->
-    <form>
-        <input type="button" onclick='location.href="{% url "supplier_create" %}"' value="Добавить нового поставщика">
-    </form>
-
+        {% include 'include/sidebars/suppliers_sidebar.html' %}
     <div class="left-ads-display col-lg-9">
+        <input type="button" onclick='location.href="{% url "supplier_create" %}"' value="Добавить нового поставщика">
         <div class="row">
             {% for supplier in suppliers_list %}
                 <div class="col-md-4 product-men">
