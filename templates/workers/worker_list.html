@@ -4,6 +4,7 @@
 {% block header_title %} Список сотрудников {% endblock header_title %}
 
 {% block worker %}
+    {% include 'include/sidebars/worker_sidebar.html' %}
     <!-- product right -->
     <div class="left-ads-display col-lg-9">
             <input type="button" onclick='location.href="{% url "workers_create" %}"' value="Создать нового сотрудника">

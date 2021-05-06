@@ -60,8 +60,15 @@ urlpatterns = [
     path("worker_list/worker_filter/", views.FilterWorkerView.as_view(), name="worker_filter"),
 
     # Поиск
-    path('worker_list/worker_search/', views.SearchWorkers.as_view(), name='worker_search'),
     path('goods_list/goods_search/', views.SearchGoods.as_view(), name='goods_search'),
+    path('worker_list/worker_search/', views.SearchWorkers.as_view(), name='worker_search'),
+    path('customer_list/customer_search/', views.SearchCustomer.as_view(), name='customer_search'),
+    path('material_list/material_search/', views.SearchMaterials.as_view(), name='material_search'),
+    path('supplier_list/supplier_search/', views.SearchSuppliers.as_view(), name='supplier_search'),
+    path('nariad_list/nariad_search/', views.SearchNariad.as_view(), name='nariad_search'),
+    path('otk_list/otk_search/', views.SearchOTK.as_view(), name='otk_search'),
+    path('storage_goods/storage_goods_search/', views.SearchStorageGoods.as_view(), name='storage_goods_search'),
+    path('storage_material/storage_material_search/', views.SearchStorageMaterials.as_view(), name='storage_material_search'),
 
 
     # Подробности
