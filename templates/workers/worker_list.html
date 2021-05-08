@@ -8,14 +8,23 @@
     <!-- product right -->
     <div class="left-ads-display col-lg-9">
             <input type="button" onclick='location.href="{% url "workers_create" %}"' value="Создать нового сотрудника">
-        <div class="row">
+    Сортировать по:
+        <select name="" id="id_select_sort_worker" data-sort-url="{% url 'worker_ajax' %}">
+            <option value="0">----------------</option>
+            <option value="1">ФИО: Возрастанию</option>
+            <option value="2">ФИО: Убыванию</option>
+            <option value="3">Коду сотрудника: Возрастанию</option>
+            <option value="4">Коду сотрудника: Убыванию</option>
+        </select>
+
+        <div class="row" id="id_content">
             {% for worker in workers_list %}
                 <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <h4 class="">
                                 <a href="{{ worker.code }}" class="editContent" >
-                                    {{ worker.name }}
+                                    Код:{{ worker.code }} | {{ worker.name }}
                                 </a>
                             </h4>
                             <div class="product_price">
@@ -29,8 +38,30 @@
             {% endfor %}
         </div>
         <div class="grid-img-right mt-4 text-right bg bg1" >
-            {% include 'include/pagination/worker_pagination.html' %}
+{#            {% include 'include/pagination/worker_pagination.html' %}#}
         </div>
     </div>
-    <!-- //contact -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+        $("#id_select_sort_worker").change(function () {
+            const url = $("#id_select_sort_worker").attr("data-sort-url");
+            const id_sort = $('#id_select_sort_worker').val();  // get the selected country ID from the HTML input
+            console.log(id_sort)
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+                data: {
+                    'id_sort': id_sort       // add the country id to the GET parameters
+                },
+                success: function (data) {
+                    $("#id_content").html(data);  // replace the contents of the city input with the data that came from the server
+
+                }
+            });
+
+        });
+
+    </script>
 {% endblock worker %}

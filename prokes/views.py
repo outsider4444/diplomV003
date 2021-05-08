@@ -105,7 +105,35 @@ class WorkerListView(WorkerCategory, ListView):
     model = Workers
     queryset = Workers.objects.filter(fired=False)
     template_name = "workers/worker_list.html"
-    paginate_by = 15
+    # paginate_by = 2
+
+
+# AJAX для сортировки
+from django.core.paginator import Paginator
+def load_sort_workers(request):
+    id_sort = request.GET.get('id_sort')
+    print(id_sort)
+
+    workers_list = Workers.objects.all().distinct()
+
+    if id_sort == '0':
+        workers_list = Workers.objects.all().distinct()
+    elif id_sort == '1':
+        workers_list = workers_list.order_by("name").distinct()
+    elif id_sort == '2':
+        workers_list = workers_list.order_by('-name').distinct()
+    elif id_sort == '3':
+        workers_list = workers_list.order_by("code").distinct()
+    elif id_sort == '4':
+        workers_list = workers_list.order_by("-code").distinct()
+
+    paginator = Paginator(workers_list, 3)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {"page_obj": page_obj}
+    return render(request, 'workers/worker_list_sorted.html', context)
 
 
 def WorkerNew(request):

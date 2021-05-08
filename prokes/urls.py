@@ -109,6 +109,9 @@ urlpatterns = [
     path("report_list/used_material_report_calendar", login_required(login_url='login')(views.ReportUsedMaterialCalendar),
          name="used_material_report_calendar"),
 
+    # Сортировка
+    path("worker_list/sorted", login_required(login_url='login')(views.load_sort_workers), name="worker_ajax"),
+
     # Список
     path("goods_list/", login_required(login_url='login')(views.GoodsListView.as_view()), name="goods_list"),
     path("worker_list/", login_required(login_url='login')(views.WorkerListView.as_view()), name="workers_list"),
