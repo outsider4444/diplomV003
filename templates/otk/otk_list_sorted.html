@@ -1,0 +1,24 @@
+
+{% for otk in otk_list %}
+    <div class="col-md-4 product-men">
+        <div class="product-shoe-info editContent text-center mt-lg-4" >
+            <div class="men-thumb-item">
+                <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
+            </div>
+            <div class="item-info-product">
+                <h4 class="">
+                    <a href="{{ otk.id }}" class="editContent" >
+                        Код наряда:{{ otk.nariad_code }}
+                    </a>
+                </h4>
+                <div class="product_price">
+                    <div class="grid-price">
+                        <a href="{{ otk.id }}">
+                            <span class="money editContent" >Код изделия:{{ otk.nariad_code.goods_code }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

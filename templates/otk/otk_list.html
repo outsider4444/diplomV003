@@ -10,6 +10,12 @@
 
     <div class="left-ads-display col-lg-9">
     <input type="button" onclick='location.href="{% url "otk_create" %}"' value="Добавить новое ОТК">
+        Сортировать по:
+        <select name="" id="id_select_sort" data-sort-url="{% url 'otk_ajax' %}">
+            <option value="0">----------------</option>
+            <option value="1">Код ОТК: Возрастанию</option>
+            <option value="2">Код ОТК: Убыванию</option>
+        </select>
         <div class="row">
             {% for otk in otk_list %}
                 <div class="col-md-4 product-men">

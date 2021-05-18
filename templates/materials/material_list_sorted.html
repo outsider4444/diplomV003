@@ -1,0 +1,14 @@
+<table class="table table-bordered table-hover">
+    <thead>
+    <th>Код материала</th>
+    <th>Вес</th>
+    </thead>
+    <tbody>
+    {% for material in materials_list %}
+        <tr>
+            <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">{{ material.code }}</a></td>
+            <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">{{ material.weight }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

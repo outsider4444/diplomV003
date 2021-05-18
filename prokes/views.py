@@ -12,7 +12,7 @@ import locale
 import pandas
 
 from .forms import *
-from .filters import ReportRemoteGoodsFilter, ReportUsedMaterialFilter
+from .filters import ReportRemoteGoodsFilter, ReportUsedMaterialFilter, SearchSuppliersDeliveryFilter
 
 from .models import *
 
@@ -109,10 +109,8 @@ class WorkerListView(WorkerCategory, ListView):
 
 
 # AJAX для сортировки
-from django.core.paginator import Paginator
 def load_sort_workers(request):
     id_sort = request.GET.get('id_sort')
-    print(id_sort)
 
     workers_list = Workers.objects.all().distinct()
 
@@ -127,12 +125,7 @@ def load_sort_workers(request):
     elif id_sort == '4':
         workers_list = workers_list.order_by("-code").distinct()
 
-    paginator = Paginator(workers_list, 3)
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {"page_obj": page_obj}
+    context = {"workers_list": workers_list}
     return render(request, 'workers/worker_list_sorted.html', context)
 
 
@@ -182,7 +175,7 @@ class WorkerDeleteView(DeleteView):
     template_name = "workers/workers_form/worker_delete.html"
 
 
-# Поиск и фильтр сотрудников
+# Поиск сотрудников
 class SearchWorkers(ListView, WorkerCategory):
     """Поиск сотрудников"""
     template_name = "workers/worker_list.html"
@@ -201,7 +194,7 @@ class SearchWorkers(ListView, WorkerCategory):
 # Фильтр сотрудников
 class FilterWorkerView(ListView, WorkerCategory):
     """Фильтр сотрудников"""
-    template_name = "workers/worker_list.html"
+    template_name = "workers/worker_list_filters.html"
 
     def get_queryset(self):
         queryset = ""
@@ -216,7 +209,33 @@ class FilterWorkerView(ListView, WorkerCategory):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context["worker_select"] = ''.join([f"worker_select={x}&" for x in self.request.GET.getlist("worker_select")])
+        context["worker_category"] = ''.join([f"{x}" for x in self.request.GET.getlist("worker_select")])
         return context
+
+
+# AJAX для сортировки отфильтрованных сотрудинков
+def load_sort_filters_workers(request):
+    id_sort = request.GET.get('id_sort')
+    worker_select = request.GET.get("id_worker_select")
+
+    if worker_select == '----------':
+        workers_list = Workers.objects.all().distinct()
+    else:
+        workers_list = Workers.objects.filter(category=worker_select).distinct()
+
+        if id_sort == '0':
+            workers_list = Workers.objects.filter(category=worker_select).distinct()
+        elif id_sort == '1':
+            workers_list = workers_list.order_by("name").distinct()
+        elif id_sort == '2':
+            workers_list = workers_list.order_by('-name').distinct()
+        elif id_sort == '3':
+            workers_list = workers_list.order_by("code").distinct()
+        elif id_sort == '4':
+            workers_list = workers_list.order_by("-code").distinct()
+
+    context = {"workers_list": workers_list}
+    return render(request, 'workers/worker_list_sorted.html', context)
 
 
 # Заказчики
@@ -225,7 +244,34 @@ class CustomerListView(ListView):
     model = Customer
     queryset = Customer.objects.all()
     template_name = "customer/customer_list.html"
-    paginate_by = 15
+    # paginate_by = 15
+
+
+# AJAX сортировка
+def load_sort_customer(request):
+    id_sort = request.GET.get('id_sort')
+    print(id_sort)
+
+    customer_list = Customer.objects.all().distinct()
+
+    if id_sort == '0':
+        customer_list = Customer.objects.all().distinct()
+    elif id_sort == '1':
+        customer_list = customer_list.order_by("name").distinct()
+    elif id_sort == '2':
+        customer_list = customer_list.order_by('-name').distinct()
+    elif id_sort == '3':
+        customer_list = customer_list.order_by("code").distinct()
+    elif id_sort == '4':
+        customer_list = customer_list.order_by("-code").distinct()
+
+    # paginator = Paginator(workers_list, 3)
+
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)
+
+    context = {"customer_list": customer_list}
+    return render(request, 'customer/customer_list_sorted.html', context)
 
 
 def CustomerNew(request):
@@ -302,7 +348,24 @@ class GoodsListView(ListView):
     model = Goods
     queryset = Goods.objects.all()
     template_name = "goods/goods_list.html"
-    paginate_by = 15
+    # paginate_by = 15
+
+
+# AJAX сортировка
+def load_sort_goods(request):
+    id_sort = request.GET.get('id_sort')
+
+    goods_list = Goods.objects.all().distinct()
+
+    if id_sort == '0':
+        goods_list = Goods.objects.all().distinct()
+    elif id_sort == '1':
+        goods_list = goods_list.order_by("code").distinct()
+    elif id_sort == '2':
+        goods_list = goods_list.order_by('-code').distinct()
+
+    context = {"goods_list": goods_list}
+    return render(request, 'goods/goods_list_sorted.html', context)
 
 
 def GoodsDetailView(request, pk):
@@ -446,6 +509,23 @@ class MaterialListView(ListView):
     # paginate_by = 5
 
 
+# AJAX сортировка
+def load_sort_materials(request):
+    id_sort = request.GET.get('id_sort')
+
+    material_list = Materials.objects.all().distinct()
+
+    if id_sort == '0':
+        material_list = Materials.objects.all().distinct()
+    elif id_sort == '1':
+        material_list = Materials.objects.all().order_by("code").distinct()
+    elif id_sort == '2':
+        material_list = Materials.objects.all().order_by('-code').distinct()
+
+    context = {"material_list": material_list}
+    return render(request, 'materials/material_list_sorted.html', context)
+
+
 def MaterialNew(request):
     """Создание нового материала"""
     form = MaterialNewForm()
@@ -524,6 +604,23 @@ class SuppliersListView(ListView):
     # paginate_by = 5
 
 
+# AJAX сортировка
+def load_sort_supplier(request):
+    id_sort = request.GET.get('id_sort')
+
+    supplier_list = Suppliers.objects.all().distinct()
+
+    if id_sort == '0':
+        supplier_list = Suppliers.objects.all().distinct()
+    elif id_sort == '1':
+        supplier_list = supplier_list.order_by("code").distinct()
+    elif id_sort == '2':
+        supplier_list = supplier_list.order_by('-code').distinct()
+
+    context = {"supplier_list": supplier_list}
+    return render(request, 'suppliers/suppliers_list_sorted.html', context)
+
+
 def SupplierNew(request):
     """Создание нового заказчика"""
     form = SupplierNewForm()
@@ -544,7 +641,10 @@ def SuppliersDetailView(request, pk):
     supplier = Suppliers.objects.get(id=pk)
     materials = DeliveriesMaterials.objects.filter(supplier_name=pk)
     formset = OrderFormSet(queryset=DeliveriesMaterials.objects.none(), instance=supplier)
-    date = DeliveriesMaterials.objects.order_by().values('date').order_by("date").distinct()
+    dates = DeliveriesMaterials.objects.values('date').order_by("date").distinct()
+
+    calendar_filters = SearchSuppliersDeliveryFilter(request.GET, queryset=materials)
+
     error = ""
     if request.method == "POST":
         formset = OrderFormSet(request.POST, instance=supplier)
@@ -554,9 +654,50 @@ def SuppliersDetailView(request, pk):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
             error = formset.errors
-    context = {"supplier": supplier, "formset": formset,
-               "error": error, "date": date, "materials": materials}
+    context = {"supplier": supplier, "formset": formset, 'calendar_filters': calendar_filters,
+               "error": error, "dates": dates, "materials": materials}
     return render(request, "suppliers/suppliers_detail.html", context)
+
+
+def SuppliersDetail_Calendar_Filter_View(request, pk):
+    """Календарь по выбору"""
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    # дата начала
+    start_date = request.GET.get('start_date')
+    start_date = start_date.split("-")
+    start_date[0] = int(start_date[0])
+    start_date[1] = int(start_date[1])
+    start_date[2] = int(start_date[2])
+    # дата окончания
+    end_date = request.GET.get('end_date')
+    end_date = end_date.split("-")
+    end_date[0] = int(end_date[0])
+    end_date[1] = int(end_date[1])
+    end_date[2] = int(end_date[2])
+
+    # дни для вывода
+    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
+    # календарь
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
+
+    OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("date", "code_material", "values"), extra=10)
+    supplier = Suppliers.objects.get(id=pk)
+    materials = DeliveriesMaterials.objects.filter(supplier_name=pk).order_by("date")
+    formset = OrderFormSet(queryset=DeliveriesMaterials.objects.none(), instance=supplier)
+    calendar_filters = SearchSuppliersDeliveryFilter(request.GET, queryset=materials)
+    error = ""
+    if request.method == "POST":
+        formset = OrderFormSet(request.POST, instance=supplier)
+        if formset.is_valid():
+            formset.save()
+            # перенаправление на ту же страницу
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            error = formset.errors
+    context = {"supplier": supplier, "formset": formset, 'calendar_filters': calendar_filters,
+               "error": error, "materials": materials, "delta_days": delta_days}
+    return render(request, "suppliers/suppliers_detail_calendar_filter.html", context)
 
 
 class SupplierUpdateView(UpdateView):
@@ -744,6 +885,23 @@ class NariadListView(ListView):
     # paginate_by = 5
 
 
+# AJAX сортировка
+def load_sort_nariad(request):
+    id_sort = request.GET.get('id_sort')
+
+    nariad_list = Nariad.objects.all().distinct()
+
+    if id_sort == '0':
+        nariad_list = Nariad.objects.all().distinct()
+    elif id_sort == '1':
+        nariad_list = nariad_list.order_by("code").distinct()
+    elif id_sort == '2':
+        nariad_list = nariad_list.order_by('-code').distinct()
+
+    context = {"nariad_list": nariad_list}
+    return render(request, 'nariad/nariad_list_sorted.html', context)
+
+
 def NariadNew(request):
     """Создание нового изделия на склад"""
     nariad_list = Nariad.objects.all()
@@ -813,6 +971,24 @@ class OTKListView(ListView):
     queryset = OTK.objects.all()
     template_name = "otk/otk_list.html"
     # paginate_by = 5
+
+
+# AJAX для сортировки
+def load_sort_otk(request):
+    id_sort = request.GET.get('id_sort')
+    print(id_sort)
+
+    otk_list = OTK.objects.all().distinct()
+
+    if id_sort == '0':
+        otk_list = OTK.objects.all().distinct()
+    elif id_sort == '1':
+        otk_list = otk_list.order_by("nariad_code").distinct()
+    elif id_sort == '2':
+        otk_list = otk_list.order_by('-nariad_code').distinct()
+
+    context = {"otk_list": otk_list}
+    return render(request, 'otk/otk_list_sorted.html', context)
 
 
 def OTKDetailView(request, pk):

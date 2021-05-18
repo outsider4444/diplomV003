@@ -9,7 +9,13 @@
     <!-- product right -->
     <div class="left-ads-display col-lg-9">
             <input type="button" onclick='location.href="{% url "nariad_create" %}"' value="Создать новый наряд">
-        <div class="row">
+        Сортировать по:
+        <select name="" id="id_select_sort" data-sort-url="{% url 'nariad_ajax' %}">
+            <option value="0">----------------</option>
+            <option value="1">Код наряда: Возрастанию</option>
+            <option value="2">Код наряда: Убыванию</option>
+        </select>
+        <div class="row" id="id_content">
             {% for nariad in nariad_list %}
                 <div class="col-md-4 product-men">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
@@ -38,5 +44,25 @@
 {#            {% include 'include/pagination/goods_pagination.html' %}#}
 {#        </div>#}
     </div>
-    <!-- //contact -->
+
+    <script>
+        $("#id_select_sort_worker").change(function () {
+            const url = $("#id_select_sort").attr("data-sort-url");
+            const id_sort = $('#id_select_sort').val();  // get the selected country ID from the HTML input
+            console.log(id_sort)
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+                data: {
+                    'id_sort': id_sort       // add the country id to the GET parameters
+                },
+                success: function (data) {
+                    $("#id_content").html(data);  // replace the contents of the city input with the data that came from the server
+
+                }
+            });
+
+        });
+
+    </script>
 {% endblock nariad %}

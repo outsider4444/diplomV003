@@ -29,7 +29,7 @@
                               background-color: rgba(0, 0, 0, 0); font-family: &quot;Source Sans Pro&quot;
                               , sans-serif;">PROKES.RUS</a></h1>
                 </div>
-                <label for="drop" class="toggle">Menu</label>
+                <label for="drop" class="toggle">Меню</label>
                 <input type="checkbox" id="drop">
                 <ul class="menu mt-2">
                     <li>{% include 'accounts/navbar.html' %}</li>
@@ -41,9 +41,6 @@
         {% block tabs_bar %}{% endblock tabs_bar %}</div>
     </header>
 
-         <h4 class="mb-3 editContent" style="cursor: default; color: black">
-             {% block header_title %} {% endblock %}
-         </h4>
 
     {% block content %}{% endblock content %}
 
@@ -52,34 +49,60 @@
 </body>
 <script src="{% static 'js/scripts.js' %}"></script>
 <style>
-    .nav-tabs {
+     .nav-tabs {
         border-bottom: 0;
         font-weight: bold;
     }
-    {#.nav-link{#}
-    {#    color: white;}#}
-
+     .nav-tabs a {
+         color: #007bff;
+     }
+    .content-text{
+        font-weight: bold;
+    }
 
     a:hover{
         text-decoration: none;
     }
-    @media (min-width: 320px) {
-        .nav-tabs {
-            font-size: smaller;
+    @media (min-width: 100px) {
+        .nav-item {
+            font-size: small;
+            font-weight: bold;
+        }
+        .content-text{
+            font-size: medium;
+        }
+    }@media (min-width: 425px) {
+        .nav-item {
+            font-size: 8pt;
+            font-weight: bolder;
         }
     }
-    @media (min-width: 425px) {
-        .nav-tabs {
-            font-size: small;
+    @media (min-width: 768px) {
+        .nav-item {
+            font-size: 10pt;
+            font-weight: bolder;
+        }
+        .content-text{
+            font-size: large;
+        }
+    }
+    @media (min-width: 1200px) {
+        .nav-item {
+            font-size: 10pt;
+            font-weight: bolder;
         }
     }
     @media (min-width: 1400px) {
-        .nav-tabs {
+        .nav-item {
             font-size: medium;
+            font-weight: bolder;
+        }
+        .content-text{
+            font-size: larger;
         }
     }
     @media (min-width: 2000px) {
-        .nav-tabs {
+        .nav-item {
             font-size: large;
         }
     }

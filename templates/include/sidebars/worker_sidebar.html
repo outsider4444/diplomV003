@@ -4,22 +4,25 @@
         <h3 class="sear-head editContent" >Поиск сотрудников</h3>
         <form action="{% url "worker_search" %}" method="get" class="d-flex editContent" >
             <input type="search" placeholder="Введите ФИО сотрудника ..." name="q" class="form-control" required="">
-            <button type="submit" class="btn1 btn" ><span class="fa fa-search" aria-hidden="true" ></span></button>
+            <button type="submit" class="btn1 btn" style="color: #f0f2f5"><span class="fa fa-search" aria-hidden="true" ></span></button>
         </form>
     </div>
     <!--preference -->
-    <form action="{% url 'worker_filter' %}" method="get" name="filter">
+    <form action="{% url 'worker_filter' %}" method="get" name="filter" class="col-12">
         <div class="left-side my-4">
             <h3 class="sear-head editContent">Фильтры</h3>
 
-                    <span class="span editContent">Должность</span>
-                <select  id="id_worker_select" name="worker_select">
-                    <option value="0">----------</option>
-                    {% for worker_category in view.get_category %}
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="id_worker_select">Код:</label>
+                    <select class="form-control"  id="id_worker_select" name="worker_select">
+                        <option value="0">----------</option>
+                        {% for worker_category in view.get_category %}
                             <option value="{{ worker_category.category }}">{{ worker_category.category }}</option>
-                    {% endfor %}
-                 </select>
-
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">Найти</button>
     </form>

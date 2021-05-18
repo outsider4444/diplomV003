@@ -58,6 +58,9 @@ urlpatterns = [
     # Фильтры
     path("goods_list/goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
     path("worker_list/worker_filter/", views.FilterWorkerView.as_view(), name="worker_filter"),
+    # Сортировка после фильтра
+    path("worker_list/worker_filter/sorted", views.load_sort_filters_workers, name="worker_ajax_filter"),
+
 
     # Поиск
     path('goods_list/goods_search/', views.SearchGoods.as_view(), name='goods_search'),
@@ -69,6 +72,11 @@ urlpatterns = [
     path('otk_list/otk_search/', views.SearchOTK.as_view(), name='otk_search'),
     path('storage_goods/storage_goods_search/', views.SearchStorageGoods.as_view(), name='storage_goods_search'),
     path('storage_material/storage_material_search/', views.SearchStorageMaterials.as_view(), name='storage_material_search'),
+
+
+    # Подробности с фильтром календаря
+    path('supplier_list/<int:pk>_filter_calendar/', login_required(login_url='login')(views.SuppliersDetail_Calendar_Filter_View),
+         name="supplier_calendar_filter"),
 
 
     # Подробности
@@ -111,6 +119,14 @@ urlpatterns = [
 
     # Сортировка
     path("worker_list/sorted", login_required(login_url='login')(views.load_sort_workers), name="worker_ajax"),
+    path("customer_list/sorted", login_required(login_url='login')(views.load_sort_customer), name="customer_ajax"),
+    path("goods_list/sorted", login_required(login_url='login')(views.load_sort_goods), name="goods_ajax"),
+    path("material_list/sorted", login_required(login_url='login')(views.load_sort_materials), name="material_ajax"),
+    path("supplier_list/sorted", login_required(login_url='login')(views.load_sort_supplier), name="supplier_ajax"),
+    path("nariad_list/sorted", login_required(login_url='login')(views.load_sort_nariad), name="nariad_ajax"),
+    path("otk_list/sorted", login_required(login_url='login')(views.load_sort_otk), name="otk_ajax"),
+
+
 
     # Список
     path("goods_list/", login_required(login_url='login')(views.GoodsListView.as_view()), name="goods_list"),
