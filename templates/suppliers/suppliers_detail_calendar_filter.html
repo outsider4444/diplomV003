@@ -63,8 +63,6 @@
                                     </div>
                                 </div>
                             </form>
-
-
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -76,29 +74,27 @@
                             {% for day in delta_days %}
                                 {% for material in materials|values:"date"|distinct %}
                                     <tr>
-                                    {% if day == material|string %}
-                                        <td>
-                                            {{ material }}
-                                        </td>
-                                        <td>
-                                            {% for mater in materials %}
-                                                {% if mater.date|string == material|string %}
-                                                    {{ mater.code_material.code }} <br>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </td>
-                                        <td>
-                                            {% for mater in materials %}
-                                                {% if mater.date|string == material|string %}
-                                                    {{ mater.values }} шт.<br>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </td>
-                                    {% endif %}
+                                        {% if day == material|string %}
+                                            <td>
+                                                {{ material }}
+                                            </td>
+                                            <td>
+                                                {% for mater in materials %}
+                                                    {% if mater.date == material %}
+                                                        {{ mater.code_material.code }} <br>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for mater in materials %}
+                                                    {% if mater.date == material %}
+                                                        {{ mater.values }} шт.<br>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
                                 {% endfor %}
-
-
-                            </tr>
                             {% endfor %}
                             </tbody>
                         </table>

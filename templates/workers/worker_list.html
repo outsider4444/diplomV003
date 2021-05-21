@@ -48,22 +48,24 @@
             </div>
         </div>
         <div class="" id="id_content" style="margin-top: 15px">
-            <table border="1px" class="table table-bordered table-hover">
-                <thead>
-                <th>Код сотрудника</th>
-                <th>ФИО сотрудника</th>
-                <th>Категория (Должность)</th>
-                </thead>
-                <tbody>
-                {% for worker in workers_list %}
-                    <tr>
-                        <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.code }}</a></td>
-                        <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.name }}</a></td>
-                        <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.category }}</a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table border="1px" class="table table-bordered table-hover">
+                    <thead>
+                    <th>Код сотрудника</th>
+                    <th>ФИО сотрудника</th>
+                    <th>Категория (Должность)</th>
+                    </thead>
+                    <tbody>
+                    {% for worker in workers_list %}
+                        <tr>
+                            <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.code }}</a></td>
+                            <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.name }}</a></td>
+                            <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.category }}</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

@@ -1,10 +1,5 @@
 {% extends "otk/base.html" %}
-
-{#Надпись в Title#}
-{% block title %}
-    Создание/редактирование информации об ОТК
-{% endblock title %}
-
+{% block title %}Создание/редактирование информации об ОТК{% endblock title %}
 
 {% block otk %}
     <div class="container h-100">
@@ -37,9 +32,9 @@
                         {{ form.date }}
                     </div>
                 </div>
-                <br>
-
-                <span>{{ error }}</span>
+                {% for foo in form %}
+                    {{ foo.errors }}
+                {% endfor %}
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
             </form>
         </div>

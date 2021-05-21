@@ -1,29 +1,55 @@
 {% extends 'storage_materials/base.html' %}
 
 {% load static %}
-{% block title %}Изделие: {{ material.material_code }} {% endblock title %}
-{% block header_title %}Изделие: {{ material.material_code }} {% endblock header_title %}
+{% block title %}Изделие: {{ material.material_code.code }} {% endblock title %}
 
 {% block storage_materials %}
-    <!-- product right -->
-    <div class="left-ads-display col-lg-8">
-        {#                Изменить стили #}
-        <div class="container">
-
-            <div class="desc1-right col-md-6 pl-lg-4" >
-
-                    <input type="button" onclick='location.href="update"' value="Редактировать материал">
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form enctype="multipart/form-data" class="col-8" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 5px">Материал: {{ material.material_code.code }}</h3>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
+                    <input type="button" class="btn btn-info" onclick='location.href="update"' value="Редактировать материал">
                     <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить материал">
+                </div>
 
-                <ul style="margin-top: 15px">
-                    <li style="list-style: none"><span><b>Код материала: </b>{{ material.material_code }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Количество на складе: </b>{{ material.value }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Дата проверки: </b>{{ material.date }}</span>
-                    </li>
-                </ul>
-            </div>
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-5">
+                        <h5>Код материала: </h5>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label>{{ material.material_code.code }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-5">
+                        <h5>Количество на складе: </h5>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label>{{ material.value }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-5">
+                        <h5>Поставщик: </h5>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label>{{ material.supplier_code.name }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-5">
+                        <h5>Дата проверки: </h5>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label>{{ material.date }}</label>
+                    </div>
+                </div>
+
+            </form>
         </div>
     </div>
 

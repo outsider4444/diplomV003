@@ -1,16 +1,18 @@
-<table class="table table-bordered table-hover">
-    <thead>
-    <th>Имя поставщика</th>
-    <th>Номер телефона</th>
-    <th>Представитель</th>
-    </thead>
-    <tbody>
-    {% for supplier in suppliers_list %}
-        <tr>
-            <td><a href="{{ supplier.id }}" title="Перейти на страницу сотрудника {{ supplier.name }}">{{ supplier.name }}</a></td>
-            <td><a href="{{ supplier.id }}" title="Перейти на страницу сотрудника {{ supplier.name }}">{{ supplier.phone_number }}</a></td>
-            <td><a href="{{ supplier.id }}" title="Перейти на страницу сотрудника {{ supplier.name }}">{{ supplier.representative }}</a></td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table border="1px" class="table table-bordered table-hover">
+        <thead>
+        <th>Код сотрудника</th>
+        <th>ФИО сотрудника</th>
+        <th>Категория (Должность)</th>
+        </thead>
+        <tbody>
+        {% for worker in workers_list %}
+            <tr>
+                <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.code }}</a></td>
+                <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.name }}</a></td>
+                <td><a href="{{ worker.code }}" title="Перейти на страницу сотрудника {{ worker.code }}">{{ worker.category }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

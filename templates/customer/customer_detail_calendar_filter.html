@@ -68,24 +68,28 @@
                         <th>Количество</th>
                         </thead>
                         <tbody>
-                        {% for gs in goods|values:"date"|distinct %}
-                            <tr>
-                                <td>{{ gs }}</td>
-                            <td>
-                                {% for good in goods %}
-                                    {% if good.date == gs %}
-                                        {{ good.code_goods.code }} <br>
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            <td>
-                                {% for good in goods %}
-                                    {% if good.date == gs %}
-                                        {{ good.values }} шт. <br>
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            </tr>
+                        {% for day in delta_days %}
+                            {% for gs in goods|values:"date"|distinct %}
+                                <tr>
+                                    {% if day == gs|string %}
+                                    <td>{{ gs }}</td>
+                                    <td>
+                                        {% for good in goods %}
+                                            {% if good.date == gs %}
+                                                {{ good.code_goods.code }} <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for good in goods %}
+                                            {% if good.date == gs %}
+                                                {{ good.values }} шт. <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% endif %}
+                                </tr>
+                            {% endfor %}
                         {% endfor %}
                         </tbody>
                     </table>

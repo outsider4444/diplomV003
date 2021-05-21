@@ -1,0 +1,16 @@
+<table class="table table-bordered table-hover">
+    <thead class="table table-bordered table-hover">
+    <th>Код изделия</th>
+    <th>Поставщик</th>
+    <th>Количество</th>
+    </thead>
+    <tbody>
+    {% for material in materialstorage_list %}
+        <tr>
+            <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.material_code.code }}</a></td>
+            <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.supplier_code.name }}</a></td>
+            <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.value }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

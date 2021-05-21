@@ -12,7 +12,8 @@ import locale
 import pandas
 
 from .forms import *
-from .filters import ReportRemoteGoodsFilter, ReportUsedMaterialFilter, SearchSuppliersDeliveryFilter
+from .filters import ReportRemoteGoodsFilter, ReportUsedMaterialFilter, SearchSuppliersDeliveryFilter, \
+    SearchCheckoutGoodsFilter
 
 from .models import *
 
@@ -70,7 +71,7 @@ def loginPage(request):
             else:
                 messages.info(request, 'Почта ИЛИ пароль не верны')
         context = {}
-        return render(request, 'accounts/login.html', context)
+        return render(request, 'include/login.html', context)
 
 
 # Выход пользователя
@@ -105,7 +106,6 @@ class WorkerListView(WorkerCategory, ListView):
     model = Workers
     queryset = Workers.objects.filter(fired=False)
     template_name = "workers/worker_list.html"
-    # paginate_by = 2
 
 
 # AJAX для сортировки
@@ -194,7 +194,7 @@ class SearchWorkers(ListView, WorkerCategory):
 # Фильтр сотрудников
 class FilterWorkerView(ListView, WorkerCategory):
     """Фильтр сотрудников"""
-    template_name = "workers/worker_list_filters.html"
+    template_name = "workers/worker_list_filtred.html"
 
     def get_queryset(self):
         queryset = ""
@@ -292,9 +292,11 @@ def CustomerDetailView(request, pk):
     """Полная информация о заказчиках"""
     OrderFormSet = inlineformset_factory(Customer, CheckoutGoods, fields=('date', "code_goods", "values"), extra=10)
     customer = Customer.objects.get(id=pk)
-    goods = CheckoutGoods.objects.filter(customer_name=pk)
+    goods = CheckoutGoods.objects.filter(customer_name=pk).order_by("date")
     formset = OrderFormSet(queryset=CheckoutGoods.objects.none(), instance=customer)
-    date = CheckoutGoods.objects.order_by().values('date').order_by("date").distinct()
+
+    calendar_filters = SearchCheckoutGoodsFilter(request.GET, queryset=goods)
+
     error = ""
     if request.method == "POST":
         formset = OrderFormSet(request.POST, instance=customer)
@@ -305,8 +307,52 @@ def CustomerDetailView(request, pk):
         else:
             error = formset.errors
     context = {"customer": customer, "formset": formset,
-               "error": error, "date": date, "goods": goods}
+               "error": error, "goods": goods, "calendar_filters": calendar_filters}
     return render(request, "customer/customer_detail.html", context)
+
+
+def CustomerDetail_Calendar_Filter_View(request, pk):
+    """Календарь по выбору"""
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    # дата начала
+    start_date = request.GET.get('start_date')
+    start_date = start_date.split("-")
+    start_date[0] = int(start_date[0])
+    start_date[1] = int(start_date[1])
+    start_date[2] = int(start_date[2])
+    # дата окончания
+    end_date = request.GET.get('end_date')
+    end_date = end_date.split("-")
+    end_date[0] = int(end_date[0])
+    end_date[1] = int(end_date[1])
+    end_date[2] = int(end_date[2])
+
+    # дни для вывода
+    delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
+    # календарь
+    delta_date = calendar(s_date=start_date, e_date=end_date, strdate='%d %B %Yг.')
+
+    OrderFormSet = inlineformset_factory(Customer, CheckoutGoods, fields=("date", "code_goods", "values"), extra=10)
+    customer = Customer.objects.get(id=pk)
+    goods = CheckoutGoods.objects.filter(customer_name=pk)
+    formset = OrderFormSet(queryset=CheckoutGoods.objects.none(), instance=customer)
+
+    calendar_filters = SearchCheckoutGoodsFilter(request.GET, queryset=goods)
+
+    error = ""
+    if request.method == "POST":
+        formset = OrderFormSet(request.POST, instance=customer)
+        if formset.is_valid():
+            formset.save()
+            # перенаправление на ту же страницу
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            error = formset.errors
+    context = {"customer": customer, "formset": formset,
+               "error": error, "goods": goods, "calendar_filters": calendar_filters, "delta_days":delta_days}
+    return render(request, "customer/customer_detail_calendar_filter.html", context)
+
 
 
 class CustomerUpdateView(UpdateView):
@@ -387,14 +433,6 @@ def GoodsDetailView(request, pk):
     return render(request, "goods/goods_detail.html", context)
 
 
-class GoodsUpdateView(UpdateView):
-    """Редактирование информации о детали"""
-    model = Goods
-    template_name = "goods/goods_form/goods_new.html"
-    success_url = "/goods_list"
-    form_class = GoodsForm
-
-
 def GoodsNew(request):
     """Создание нового изделия"""
     form = GoodsForm()
@@ -422,6 +460,14 @@ def GoodsNew(request):
             else:
                 error = form.errors
     return render(request, "goods/goods_form/goods_new.html", {"form": form, "error": error, "goods_list": goods_list,})
+
+
+class GoodsUpdateView(UpdateView):
+    """Редактирование информации о детали"""
+    model = Goods
+    template_name = "goods/goods_form/goods_new.html"
+    success_url = "/goods_list"
+    form_class = GoodsForm
 
 
 class GoodsDeleteView(DeleteView):
@@ -637,11 +683,11 @@ def SupplierNew(request):
 
 def SuppliersDetailView(request, pk):
     """Просмотр подробности о поставщике"""
-    OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("date", "code_material", "values"), extra=10)
+    OrderFormSet = inlineformset_factory(Suppliers, DeliveriesMaterials, fields=("date", "code_material", "values"),
+                                         extra=10)
     supplier = Suppliers.objects.get(id=pk)
-    materials = DeliveriesMaterials.objects.filter(supplier_name=pk)
+    materials = DeliveriesMaterials.objects.filter(supplier_name=pk).order_by("date")
     formset = OrderFormSet(queryset=DeliveriesMaterials.objects.none(), instance=supplier)
-    dates = DeliveriesMaterials.objects.values('date').order_by("date").distinct()
 
     calendar_filters = SearchSuppliersDeliveryFilter(request.GET, queryset=materials)
 
@@ -655,7 +701,7 @@ def SuppliersDetailView(request, pk):
         else:
             error = formset.errors
     context = {"supplier": supplier, "formset": formset, 'calendar_filters': calendar_filters,
-               "error": error, "dates": dates, "materials": materials}
+               "error": error, "materials": materials}
     return render(request, "suppliers/suppliers_detail.html", context)
 
 
@@ -739,7 +785,23 @@ class StorageGoodsListView(ListView):
     model = GoodsStorage
     queryset = GoodsStorage.objects.all()
     template_name = "storage_goods/storage_goods_list.html"
-    paginate_by = 15
+
+
+def load_sort_storage_goods(request):
+    id_sort = request.GET.get('id_sort')
+    print(id_sort)
+
+    goodsstorage_list = GoodsStorage.objects.all().distinct()
+
+    if id_sort == '0':
+        goodsstorage_list = GoodsStorage.objects.all().distinct()
+    elif id_sort == '1':
+        goodsstorage_list = goodsstorage_list.order_by("goods_code").distinct()
+    elif id_sort == '2':
+        goodsstorage_list = goodsstorage_list.order_by('-goods_code').distinct()
+
+    context = {"goodsstorage_list": goodsstorage_list}
+    return render(request, 'storage_goods/storage_goods_list_sorted.html', context)
 
 
 def StorageGoodsNew(request):
@@ -775,13 +837,20 @@ class StorageGoodsUpdateView(UpdateView):
     model = GoodsStorage
     template_name = "storage_goods/goods_form/goods_new.html"
     success_url = "/storage_goods/"
-    fields = ('goods_code', 'value', 'customer_code', 'customer_checkout')
+    form_class = GoodsStorageNewForm
+
+
+class StorageGoodsMoreGoodsView(UpdateView):
+    """Добовление изделий на склад"""
+    model = GoodsStorage
+    template_name = "storage_goods/goods_form/goods_more_goods.html"
+    success_url = "/storage_goods/"
+    form_class = GoodsStorageNewForm
 
 
 class StorageGoodsDeleteView(DeleteView):
     """Удаление изделия со склада"""
     model = GoodsStorage
-    # Изменить на список изделий
     success_url = "/storage_goods_list"
     template_name = "storage_goods/goods_form/goods_delete.html"
 
@@ -820,7 +889,22 @@ class StorageMaterialsListView(ListView):
     model = MaterialStorage
     queryset = MaterialStorage.objects.all()
     template_name = "storage_materials/storage_materials_list.html"
-    # paginate_by = 5
+
+
+def load_sort_storage_materials(request):
+    id_sort = request.GET.get('id_sort')
+
+    materialstorage_list = MaterialStorage.objects.all().distinct()
+
+    if id_sort == '0':
+        materialstorage_list = MaterialStorage.objects.all().distinct()
+    elif id_sort == '1':
+        materialstorage_list = materialstorage_list.order_by("material_code").distinct()
+    elif id_sort == '2':
+        materialstorage_list = materialstorage_list.order_by('-material_code').distinct()
+
+    context = {"materialstorage_list": materialstorage_list}
+    return render(request, 'storage_materials/storage_materials_list_sorted.html', context)
 
 
 def StorageMaterialsNew(request):
@@ -878,11 +962,10 @@ class SearchStorageMaterials(ListView):
 
 # Наряды
 class NariadListView(ListView):
-    """Список изделий на складе"""
+    """Список нарядов"""
     model = Nariad
     queryset = Nariad.objects.all()
     template_name = "nariad/nariad_list.html"
-    # paginate_by = 5
 
 
 # AJAX сортировка
@@ -903,7 +986,7 @@ def load_sort_nariad(request):
 
 
 def NariadNew(request):
-    """Создание нового изделия на склад"""
+    """Создание нового наряда"""
     nariad_list = Nariad.objects.all()
     form = NariadNewForm()
     error = ""
@@ -964,13 +1047,62 @@ class SearchNariad(ListView):
         return context
 
 
+# Фильтрация списка нарядов
+class FilterNariadView(ListView, WorkerCategory):
+    """Фильтр нарядов"""
+    template_name = "nariad/nariad_list_filtred.html"
+
+    def get_queryset(self):
+        queryset = Nariad.objects.all()
+        start_date = self.request.GET.get("start_date")
+        end_date = self.request.GET.get("end_date")
+
+        queryset = Nariad.objects.filter(
+            Q(date__gte=start_date) &
+            Q(date__lte=end_date)
+        )
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["start_date"] = ''.join([f"start_date={x}&" for x in self.request.GET.getlist("start_date")])
+        context["end_date"] = ''.join([f"end_date={x}&" for x in self.request.GET.getlist("end_date")])
+        context["start_date_calendar"] = ''.join([f"{x}" for x in self.request.GET.getlist("start_date")])
+        context["end_date_calendar"] = ''.join([f"{x}" for x in self.request.GET.getlist("end_date")])
+        return context
+
+
+# Ajax для отфильтрованных
+def load_sort_nariad_filtred(request):
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+    id_sort = request.GET.get('id_sort')
+
+    nariad_list = Nariad.objects.filter(
+        Q(date__gte=start_date) &
+        Q(date__lte=end_date)
+    )
+
+    if id_sort == '0':
+        nariad_list = Nariad.objects.filter(
+            Q(date__gte=start_date) &
+            Q(date__lte=end_date)
+        )
+    elif id_sort == '1':
+        nariad_list = nariad_list.order_by("code").distinct()
+    elif id_sort == '2':
+        nariad_list = nariad_list.order_by('-code').distinct()
+
+    context = {"nariad_list": nariad_list}
+    return render(request, 'nariad/nariad_list_filtred_sorted.html', context)
+
+
 # ОТК
 class OTKListView(ListView):
     """Список ОТК"""
     model = OTK
     queryset = OTK.objects.all()
     template_name = "otk/otk_list.html"
-    # paginate_by = 5
 
 
 # AJAX для сортировки
@@ -1012,13 +1144,7 @@ def OTKNew(request):
             form.save()
             return redirect(reverse("otk_list"))
         else:
-            print(form['code'].value())
-            for otk in otk_list:
-                if int(form['nariad_code'].value()) == otk.nariad_code.code:
-                    error = "ОТК с данным кодом уже существует!"
-                    break
-                else:
-                    error = form.errors
+            error = form
     return render(request, "otk/otk_form/otk_new.html", {"form": form, "error": error, "form_nariad": form_nariad,
                                                          "nariad_list": nariad_list})
 
@@ -1048,6 +1174,56 @@ class OTKDeleteView(DeleteView):
     # Изменить на список изделий
     success_url = "/"
     template_name = "otk/otk_form/otk_delete.html"
+
+
+# Фильтрация списка ОТК
+class FilterOTKView(ListView, WorkerCategory):
+    """Фильтр ОТК"""
+    template_name = "otk/otk_list_filtred.html"
+
+    def get_queryset(self):
+        queryset = OTK.objects.all()
+        start_date = self.request.GET.get("start_date")
+        end_date = self.request.GET.get("end_date")
+
+        queryset = OTK.objects.filter(
+            Q(date__gte=start_date) &
+            Q(date__lte=end_date)
+        )
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["start_date"] = ''.join([f"start_date={x}&" for x in self.request.GET.getlist("start_date")])
+        context["end_date"] = ''.join([f"end_date={x}&" for x in self.request.GET.getlist("end_date")])
+        context["start_date_calendar"] = ''.join([f"{x}" for x in self.request.GET.getlist("start_date")])
+        context["end_date_calendar"] = ''.join([f"{x}" for x in self.request.GET.getlist("end_date")])
+        return context
+
+
+# Ajax для отфильтрованных
+def load_sort_otk_filtred(request):
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+    id_sort = request.GET.get('id_sort')
+
+    otk_list = OTK.objects.filter(
+        Q(date__gte=start_date) &
+        Q(date__lte=end_date)
+    )
+
+    if id_sort == '0':
+        otk_list = OTK.objects.filter(
+            Q(date__gte=start_date) &
+            Q(date__lte=end_date)
+        )
+    elif id_sort == '1':
+        otk_list = otk_list.order_by("nariad_code").distinct()
+    elif id_sort == '2':
+        otk_list = otk_list.order_by('-nariad_code').distinct()
+
+    context = {"otk_list": otk_list}
+    return render(request, 'otk/otk_list_filtred_sorted.html', context)
 
 
 # Поиск ОТК

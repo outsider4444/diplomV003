@@ -33,6 +33,9 @@ urlpatterns = [
     path("storage_material/<int:pk>/update/", login_required(login_url='login')(views.StorageMaterialsUpdateView.as_view()),
          name="storage_material_update"),
 
+    path("storage_goods/<int:pk>/more_goods/", login_required(login_url='login')(views.StorageGoodsMoreGoodsView.as_view()),
+         name="storage_goods_more_goods"),
+
 
     # Форма создания
     path("goods_list/goods_create/", login_required(login_url='login')(views.GoodsNew), name="goods_create"),
@@ -55,28 +58,11 @@ urlpatterns = [
     path("goods_list/<int:pk>/create_goods_form/", login_required(login_url='login')(views.GoodsFormNew), name="create_goods_form"),
 
 
-    # Фильтры
-    path("goods_list/goods_filter/", views.FilterGoodsView.as_view(), name="goods_filter"),
-    path("worker_list/worker_filter/", views.FilterWorkerView.as_view(), name="worker_filter"),
-    # Сортировка после фильтра
-    path("worker_list/worker_filter/sorted", views.load_sort_filters_workers, name="worker_ajax_filter"),
-
-
-    # Поиск
-    path('goods_list/goods_search/', views.SearchGoods.as_view(), name='goods_search'),
-    path('worker_list/worker_search/', views.SearchWorkers.as_view(), name='worker_search'),
-    path('customer_list/customer_search/', views.SearchCustomer.as_view(), name='customer_search'),
-    path('material_list/material_search/', views.SearchMaterials.as_view(), name='material_search'),
-    path('supplier_list/supplier_search/', views.SearchSuppliers.as_view(), name='supplier_search'),
-    path('nariad_list/nariad_search/', views.SearchNariad.as_view(), name='nariad_search'),
-    path('otk_list/otk_search/', views.SearchOTK.as_view(), name='otk_search'),
-    path('storage_goods/storage_goods_search/', views.SearchStorageGoods.as_view(), name='storage_goods_search'),
-    path('storage_material/storage_material_search/', views.SearchStorageMaterials.as_view(), name='storage_material_search'),
-
-
     # Подробности с фильтром календаря
     path('supplier_list/<int:pk>_filter_calendar/', login_required(login_url='login')(views.SuppliersDetail_Calendar_Filter_View),
          name="supplier_calendar_filter"),
+    path('customer_list/<int:pk>_filter_calendar/', login_required(login_url='login')(views.CustomerDetail_Calendar_Filter_View),
+         name="customer_calendar_filter"),
 
 
     # Подробности
@@ -125,6 +111,30 @@ urlpatterns = [
     path("supplier_list/sorted", login_required(login_url='login')(views.load_sort_supplier), name="supplier_ajax"),
     path("nariad_list/sorted", login_required(login_url='login')(views.load_sort_nariad), name="nariad_ajax"),
     path("otk_list/sorted", login_required(login_url='login')(views.load_sort_otk), name="otk_ajax"),
+    path("storage_goods_list/sorted", login_required(login_url='login')(views.load_sort_storage_goods), name="storage_goods_ajax"),
+    path("storage_material_list/sorted", login_required(login_url='login')(views.load_sort_storage_materials), name="storage_material_ajax"),
+
+
+    # Фильтры
+    path("worker_list/worker_filter/", views.FilterWorkerView.as_view(), name="worker_filter"),
+    path("nariad_list/nariad_filter/", views.FilterNariadView.as_view(), name="nariad_filter"),
+    path("otk_list/otk_filter/", views.FilterOTKView.as_view(), name="otk_filter"),
+    # Сортировка после фильтра
+    path("worker_list/worker_filter/sorted", views.load_sort_filters_workers, name="worker_ajax_filter"),
+    path("nariad_list/nariad_filter/sorted", views.load_sort_nariad_filtred, name="nariad_ajax_filter"),
+    path("otk_list/otk_filter/sorted", views.load_sort_otk_filtred, name="otk_ajax_filter"),
+
+
+    # Поиск
+    path('goods_list/goods_search/', views.SearchGoods.as_view(), name='goods_search'),
+    path('worker_list/worker_search/', views.SearchWorkers.as_view(), name='worker_search'),
+    path('customer_list/customer_search/', views.SearchCustomer.as_view(), name='customer_search'),
+    path('material_list/material_search/', views.SearchMaterials.as_view(), name='material_search'),
+    path('supplier_list/supplier_search/', views.SearchSuppliers.as_view(), name='supplier_search'),
+    path('nariad_list/nariad_search/', views.SearchNariad.as_view(), name='nariad_search'),
+    path('otk_list/otk_search/', views.SearchOTK.as_view(), name='otk_search'),
+    path('storage_goods_list/storage_goods_search/', views.SearchStorageGoods.as_view(), name='storage_goods_search'),
+    path('storage_material_list/storage_material_search/', views.SearchStorageMaterials.as_view(), name='storage_material_search'),
 
 
 

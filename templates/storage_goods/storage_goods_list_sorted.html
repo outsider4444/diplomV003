@@ -1,0 +1,22 @@
+<table class="table table-bordered table-hover">
+    <thead>
+    <th>Код материала</th>
+    <th>Заказчик</th>
+    <th>Количество</th>
+    <th>Достаточно ли?</th>
+    </thead>
+    <tbody>
+    {% for material in goodsstorage_list %}
+        <tr>
+            <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">{{ material.goods_code.code }}</a></td>
+            <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">{{ material.customer_code.name }}</a></td>
+            <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">{{ material.value }}</a></td>
+            {% if material.value >= material.customer_checkout.values %}
+                <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">Да</a></td>
+            {% else %}
+                <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">Нет</a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

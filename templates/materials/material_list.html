@@ -33,12 +33,10 @@
         }
     </style>
         {% include 'include/sidebars/material_sidebar.html' %}
-    <!-- product right -->
-
 
     <div class="left-ads-display col-lg-9">
         <div class="form-group row">
-            <input type="button" style="margin-left: 15px" class="bitbutton info" onclick='location.href="{% url "goods_create" %}"' value="Добавить новый материал">
+            <input type="button" style="margin-left: 15px" class="bitbutton info" onclick='location.href="{% url "material_create" %}"' value="Добавить новый материал">
             <label style="margin-left: 15px" for="id_worker_select" class="col-form-label col-form-label-sm">Сортировать по:</label>
             <div class="col-sm-4">
                 <select name="" id="id_select_sort" data-sort-url="{% url 'material_create' %}" class="form-control">

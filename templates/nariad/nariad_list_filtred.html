@@ -38,7 +38,7 @@
             <input type="button" style="margin-left: 15px" class="bitbutton info" onclick='location.href="{% url "nariad_create" %}"' value="Добавить новый наряд">
             <label style="margin-left: 15px" for="id_worker_select" class="col-form-label col-form-label-sm">Сортировать по:</label>
             <div class="col-sm-4">
-                <select name="" id="id_select_sort" class="form-control" data-sort-url="{% url 'nariad_ajax' %}">
+                <select name="" id="id_select_sort" class="form-control" data-sort-url="{% url 'nariad_ajax_filter' %}">
                     <option value="0">----------------</option>
                     <option value="1">Код наряда: Возрастание</option>
                     <option value="2">Код наряда: Убывание</option>
@@ -57,10 +57,10 @@
                 <tbody>
                 {% for nariad in nariad_list %}
                     <tr>
-                        <td><a href="{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.code }}</a></td>
-                        <td><a href="{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.worker_code }}</a></td>
-                        <td><a href="{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.goods_code }}</a></td>
-                        <td><a href="{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.date }}</a></td>
+                        <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.code }}</a></td>
+                        <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.worker_code }}</a></td>
+                        <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.goods_code }}</a></td>
+                        <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.date }}</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -68,26 +68,31 @@
         </div>
     </div>
 
-
+    <script>
+        let start_date = document.getElementById('start_date');start_date.value = '{{ start_date_calendar }}';
+        let end_date = document.getElementById('end_date');end_date.value = '{{ end_date_calendar }}';
+    </script>
 
     <script>
         $("#id_select_sort").change(function () {
             const url = $("#id_select_sort").attr("data-sort-url");
-            const id_sort = $('#id_select_sort').val();  // get the selected country ID from the HTML input
-            console.log(id_sort)
+            const id_sort = $('#id_select_sort').val();
+            const start_date = $('#start_date').val();
+            const end_date = $('#end_date').val();
 
-            $.ajax({                       // initialize an AJAX request
-                url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            $.ajax({
+                url: url,
                 data: {
-                    'id_sort': id_sort       // add the country id to the GET parameters
+                    'id_sort': id_sort,
+                    'start_date':start_date,
+                    'end_date':end_date
                 },
                 success: function (data) {
-                    $("#id_content").html(data);  // replace the contents of the city input with the data that came from the server
+                    $("#id_content").html(data);
 
                 }
             });
 
         });
-
     </script>
 {% endblock nariad %}

@@ -1,0 +1,86 @@
+{% extends "storage_goods/base.html" %}
+{% load static %}
+
+{% block title %} Добавление изделий {% endblock %}
+
+
+{% block storage_goods %}
+
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form method="post" enctype="multipart/form-data" id="goods_create_Form" data-goods-url="{% url 'ajax_load_goods' %}" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                {% csrf_token %}
+                <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px"> Добавить больше изделий на складе </h3>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for=""> Требуется изделий:</label>
+                        <input type="text" readonly value="{{ goodsstorage.customer_checkout.values }}" class="form-control-plaintext">
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="id_nariad_code">Количество на складе на данный момент: </label>
+                        <input type="number" value="{{ goodsstorage.value }}" readonly
+                               id="start_value" class="form-control-plaintext"><br>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="id_nariad_code">Введите сколько изделий хотите добавить: </label>
+                        <input type="number" id="change_value" class="form-control"><br>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="staticEmail">Количество изделий будет:</label>
+                        {{ form.value }}
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="staticEmail">Дата последнего изменения:</label>
+                        <input type="text" id="calendar_last_update" value="{{ goodsstorage.date }}">
+                    </div>
+                </div>
+
+            <div hidden>
+                {{ form.date }}
+                {{ form.goods_code }}
+                {{ form.customer_code }}
+                {{ form.customer_checkout }}
+            </div>
+                <span> {{ form.errors }}</span>
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        let start_value = document.getElementById('start_value').valueAsNumber;
+        let change_value = document.getElementById('change_value');
+
+        change_value.setAttribute('max', {{ goodsstorage.customer_checkout.values }});
+
+        let id_value = document.getElementById('id_value');
+        id_value.readOnly = 'true';
+        id_value.className="form-control-plaintext";
+        id_value.setAttribute('max', {{ goodsstorage.customer_checkout.values }});
+
+        change_value.onchange = function(){
+            let change = document.getElementById('change_value').valueAsNumber;
+            id_value.value = start_value + change;
+        }
+
+    </script>
+    <script>
+        let id_date = document.getElementById('id_date');
+        let id_date_last_update = document.getElementById('calendar_last_update');
+        id_date_last_update.className = 'form-control-plaintext';
+        id_date_last_update.readOnly = 'true';
+        document.getElementById('id_date').valueAsDate = new Date();
+    </script>
+{% endblock storage_goods %}

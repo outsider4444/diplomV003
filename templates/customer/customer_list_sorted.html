@@ -1,23 +1,16 @@
-{% for customer in customer_list %}
-    <div class="col-md-4 product-men">
-        <div class="product-shoe-info editContent text-center mt-lg-4" >
-            <div class="men-thumb-item">
-                <img src="bundles/images/s1.jpg" class="img-fluid" alt="" >
-            </div>
-            <div class="item-info-product">
-                <h4 class="">
-                    <a href="{{ customer.id }}" class="editContent" >
-                        {{ customer.name }}
-                    </a>
-                </h4>
-                <div class="product_price">
-                    <div class="grid-price">
-                        <a href="{{ customer.id }}">
-                            <span class="money editContent" >{{ customer.email }}</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endfor %}
+<table class="table table-bordered table-hover">
+    <thead>
+    <th>Имя заказчика</th>
+    <th>Номер телефона</th>
+    <th>Представитель</th>
+    </thead>
+    <tbody>
+    {% for customer in customer_list %}
+        <tr>
+            <td><a href="{{ customer.id }}" title="Перейти на страницу заказчика {{ customer.name }}">{{ customer.name }}</a></td>
+            <td><a href="{{ customer.id }}" title="Перейти на страницу заказчика {{ customer.name }}">{{ customer.phone_number }}</a></td>
+            <td><a href="{{ customer.id }}" title="Перейти на страницу заказчика {{ customer.name }}">{{ customer.representative }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -3,6 +3,19 @@ from django.forms import DateInput
 
 from .models import *
 
+# Заказы и поставки
+class SearchCheckoutGoodsFilter(django_filters.FilterSet):
+    start_date = django_filters.DateFilter(
+        field_name="date", lookup_expr='gte', widget=DateInput(attrs={'type': 'date'})
+    )
+    end_date = django_filters.DateFilter(
+        field_name="date", lookup_expr='lte', widget=DateInput(attrs={'type': 'date'})
+    )
+
+    class Meta:
+        model = CheckoutGoods
+        exclude = ['customer_name', 'date', 'code_goods', 'values']
+
 
 class SearchSuppliersDeliveryFilter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(

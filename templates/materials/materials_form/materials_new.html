@@ -40,6 +40,9 @@
                         {{ form.pallet_number }}
                     </div>
                 </div>
+                {% for foo in form %}
+                    {{ foo.errors }}
+                {% endfor %}
                 <span>{{ error }}</span>
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 15px; ">Подтвердить</button>
             </form>

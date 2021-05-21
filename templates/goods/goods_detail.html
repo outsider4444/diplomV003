@@ -9,14 +9,15 @@
             <form enctype="multipart/form-data" class="col-8" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
                 <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 5px">Изделие: {{ goods.code }}</h3>
             <!-- Фото -->
-            <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
-            <input type="button" value="Показать/Скрыть фото изделия" data-toggle="collapse" href="#goods_image" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
-            </div>
-
-            <div class="collapse" id="goods_image">
-                <img src="{{ goods.image.url }}" alt="" class="img-fluid">
-            </div>
-            <!-- //Фото -->
+                {% if goods.image %}
+                    <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
+                        <input type="button" value="Показать/Скрыть фото изделия" data-toggle="collapse" href="#goods_image" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+                    </div>
+                    <div class="collapse" id="goods_image">
+                        <img src="{{ goods.image.url }}" alt="" class="img-fluid">
+                    </div>
+                    <!-- //Фото -->
+                {% endif %}
                 <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
                     <input type="button" class="btn btn-info" onclick='location.href="update"' value="Редактировать изделие">
                     <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить изделие">

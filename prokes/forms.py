@@ -42,8 +42,8 @@ class WorkersForm(forms.ModelForm):
         model = Workers
         fields = '__all__'
         widgets ={
-            'birthday' : forms.DateInput(attrs={'type': 'date'}),
-            'email': forms.EmailInput(attrs={'type':'email'}),
+            'birthday' : forms.TextInput(attrs={'type': 'date'}),
+            'email': forms.EmailInput(attrs={'type': 'email'}),
         }
 
 
@@ -89,6 +89,9 @@ class GoodsStorageNewForm(forms.ModelForm):
     class Meta:
         model = GoodsStorage
         fields = '__all__'
+        widgets = {
+            'date': forms.TextInput(attrs={'type': 'date'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -99,18 +102,18 @@ class GoodsStorageNewForm(forms.ModelForm):
                 goods_code = int(self.data.get('goods_code'))
                 self.fields['customer_checkout'].queryset = CheckoutGoods.objects.filter(code_goods_id=goods_code).order_by('code_goods_id')
             except (ValueError, TypeError):
-                pass # invalid input from the client; ignore and fallback to empty City queryset
+                pass
         elif self.instance.pk:
-            self.fields['customer_checkout'].queryset = self.instance.goods.checkoutgoods_set.order_by('code_goods_id')
+            self.fields['customer_checkout'].queryset = self.instance.goods_code.checkoutgoods_set.order_by('code_goods_id')
 
         if 'customer_code' in self.data:
             try:
                 customer_code = int(self.data.get('customer_code'))
                 self.fields['customer_checkout'].queryset = CheckoutGoods.objects.filter(customer_name_id=customer_code).order_by('customer_name_id')
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
+                pass
         elif self.instance.pk:
-            self.fields['customer_checkout'].queryset = self.instance.goods.checkoutgoods_set.order_by('customer_name_id')
+            self.fields['customer_checkout'].queryset = self.instance.goods_code.checkoutgoods_set.order_by('customer_name_id')
 
 
 # Склад материалов
@@ -121,7 +124,7 @@ class MaterialsStorageNewForm(forms.ModelForm):
         model = MaterialStorage
         fields = '__all__'
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'date': forms.TextInput(attrs={'type': 'date'}),
         }
 
 
@@ -133,7 +136,7 @@ class NariadNewForm(forms.ModelForm):
         model = Nariad
         fields = '__all__'
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'date': forms.TextInput(attrs={'type': 'date'}),
         }
 
 
@@ -145,6 +148,6 @@ class OTKNewForm(forms.ModelForm):
         model = OTK
         fields = '__all__'
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'date': forms.TextInput(attrs={'type': 'date'}),
             'goods_value': forms.TextInput(attrs={'type': 'number', 'id': 'id_goods_value2'})
         }

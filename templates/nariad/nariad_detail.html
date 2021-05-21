@@ -2,33 +2,80 @@
 
 {% load static %}
 {% block title %}Наряд: {{ nariad.code }} {% endblock title %}
-{% block header_title %}Наряд: {{ nariad.code }} {% endblock header_title %}
 
 {% block nariad %}
-    <div class="left-ads-display col-lg-8">
-        <div class="container">
-            <div class="desc1-right col-md-6 pl-lg-4" >
-                <form>
-                    <input type="button" onclick='location.href="update"' value="Редактировать наряд">
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div enctype="multipart/form-data" class="col-8" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 5px">Наряд: {{ nariad.code }}</h3>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
+                    <input type="button" class="btn btn-info" onclick='location.href="update"' value="Редактировать наряд">
                     <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить наряд">
-                </form>
-                <ul style="margin-top: 15px">
-                    <li style="list-style: none"><span><b>Код наряда: </b>{{ nariad.code }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Код сотрудника: </b>{{ nariad.worker_code }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Код изделия: </b>{{ nariad.goods_code }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Код смеси: </b>{{ nariad.material_code }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Количество: </b>{{ nariad.goods_value }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Дата: </b>{{ nariad.date }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Расход смеси: </b>{{ nariad.used_materials }}</span>
-                    </li>
+                </div>
 
-                </ul>
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Код: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ nariad.code }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Код сотрудника: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ nariad.worker_code }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Код изделия: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ nariad.goods_code }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Код материала: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ nariad.material_code }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Количество: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ nariad.goods_value }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Расход смеси: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ nariad.used_materials }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Дата: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ nariad.date }}</label>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

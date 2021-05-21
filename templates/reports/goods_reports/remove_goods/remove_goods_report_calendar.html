@@ -2,7 +2,6 @@
 {% load poll_extras %}
 
 {% block title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock title %}
-{% block header_title %} Отчет о бракованных изделиях c {{ get_date }} до {{ get_date }} {% endblock header_title %}
 
 
 {% block tabs_bar %}
@@ -39,7 +38,7 @@
                 <a class="nav-link" href="{% url "storage_material_list" %}">Материалы на складе</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Отчеты</a>
+                <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Отчеты</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url "released_goods_report_month" %}">Всего изделий</a></li>
                     <li><a class="dropdown-item " href="{% url "good_goods_report_month" %}">Хороших изделий</a></li>
