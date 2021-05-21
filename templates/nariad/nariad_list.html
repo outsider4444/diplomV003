@@ -1,93 +1,42 @@
 {% extends 'nariad/base.html' %}
 
 {% block title %} Список нарядов {% endblock title %}
+{% block header_title %} Список нарядов {% endblock header_title %}
 
 
 {% block nariad %}
-    <style>
-        a{
-            color: black;
-        }
-        a:hover{
-            color: #007bff;
-        }
-    </style>
-    <style>
-        .bitbutton {
-            border: 2px solid black;
-            background-color: white;
-            color: black;
-        {#padding: 14px 28px;#}
-            font-size: 16px;
-            cursor: pointer;
-        }
-        /* Blue */
-        .info {
-            border-color: #2196F3;
-            color: dodgerblue;
-            border-radius: 8px 8px 8px 8px;
-        }
-        .info:hover {
-            background: #2196F3;
-            color: white;
-        }
-    </style>
         {% include 'include/sidebars/nariad_sidebar.html' %}
+    <!-- product right -->
     <div class="left-ads-display col-lg-9">
-        <div class="form-group row">
-            <input type="button" style="margin-left: 15px" class="bitbutton info" onclick='location.href="{% url "nariad_create" %}"' value="Добавить новый наряд">
-            <label style="margin-left: 15px" for="id_worker_select" class="col-form-label col-form-label-sm">Сортировать по:</label>
-            <div class="col-sm-4">
-                <select name="" id="id_select_sort" class="form-control" data-sort-url="{% url 'nariad_ajax' %}">
-                    <option value="0">----------------</option>
-                    <option value="1">Код наряда: Возрастание</option>
-                    <option value="2">Код наряда: Убывание</option>
-                </select>
-            </div>
-        </div>
+            <input type="button" onclick='location.href="{% url "nariad_create" %}"' value="Создать новый наряд">
+        <div class="row">
+            {% for nariad in nariad_list %}
+                <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{{ nariad.code }}" class="editContent" >
+                                    Код наряда: {{ nariad.code }}
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{{ nariad.code }}">
+                                        <span class="money editContent" >
+                                            Код сотрудника: {{ nariad.worker_code }}
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
 
-         <div class="" id="id_content" style="margin-top: 15px">
-            <table class="table table-bordered table-hover">
-                <thead>
-                <th>Код наряда</th>
-                <th>Код сотрудника</th>
-                <th>Код изделия</th>
-                <th>Дата</th>
-                </thead>
-                <tbody>
-                {% for nariad in nariad_list %}
-                    <tr>
-                        <td><a href="{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.code }}</a></td>
-                        <td><a href="{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.worker_code }}</a></td>
-                        <td><a href="{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.goods_code }}</a></td>
-                        <td><a href="{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.date }}</a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
         </div>
+{#        <div class="grid-img-right mt-4 text-right bg bg1" >#}
+{#            {% include 'include/pagination/goods_pagination.html' %}#}
+{#        </div>#}
     </div>
-
-
-
-    <script>
-        $("#id_select_sort").change(function () {
-            const url = $("#id_select_sort").attr("data-sort-url");
-            const id_sort = $('#id_select_sort').val();  // get the selected country ID from the HTML input
-            console.log(id_sort)
-
-            $.ajax({                       // initialize an AJAX request
-                url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
-                data: {
-                    'id_sort': id_sort       // add the country id to the GET parameters
-                },
-                success: function (data) {
-                    $("#id_content").html(data);  // replace the contents of the city input with the data that came from the server
-
-                }
-            });
-
-        });
-
-    </script>
+    <!-- //contact -->
 {% endblock nariad %}

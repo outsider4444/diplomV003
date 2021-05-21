@@ -1,96 +1,44 @@
 {% extends 'storage_goods/base.html' %}
 
 {% block title %} Склад изделий {% endblock title %}
+{% block header_title %} Склад изделий {% endblock header_title %}
 
 
 {% block storage_goods %}
-    <style>
-        a{
-            color: black;
-        }
-        a:hover{
-            color: #007bff;
-        }
-    </style>
-    <style>
-        .bitbutton {
-            border: 2px solid black;
-            background-color: white;
-            color: black;
-        {#padding: 14px 28px;#}
-            font-size: 16px;
-            cursor: pointer;
-        }
-        /* Blue */
-        .info {
-            border-color: #2196F3;
-            color: dodgerblue;
-            border-radius: 8px 8px 8px 8px;
-        }
-        .info:hover {
-            background: #2196F3;
-            color: white;
-        }
-    </style>
     {% include 'include/sidebars/storage_goods_sidebar.html' %}
+<!-- product right -->
     <div class="left-ads-display col-lg-9">
-        <div class="form-group row">
-            <input type="button" style="margin-left: 15px" class="bitbutton info" onclick='location.href="{% url "goods_storage_create" %}"' value="Создать новое изделие">
-            <div class="col-sm-4">
-                <select name="" id="id_select_sort" data-sort-url="{% url 'storage_goods_ajax' %}" class="form-control">
-                    <option value="0">----------------</option>
-                    <option value="1">Код изделия: Возрастанию</option>
-                    <option value="2">Код изделия: Убыванию</option>
-                    {#            <option value="3">Коду сотрудника: Возрастанию</option>#}
-                    {#            <option value="4">Коду сотрудника: Убыванию</option>#}
-                </select>
-            </div>
+    <input type="button" onclick='location.href="{% url "goods_storage_create" %}"' value="Создать новое изделие">
+        <div class="row">
+            {% for goods in goodsstorage_list %}
+                <div class="col-md-4 product-men">
+                    <div class="product-shoe-info editContent text-center mt-lg-4" >
+                        <div class="men-thumb-item">
+                            {% if goods.OTK_code.nariad_code.goods_code.image %}
+                                <img src="{{ goods.OTK_code.nariad_code.goods_code.image }}" class="img-fluid" alt="" >
+                            {% endif %}
+                        </div>
+                        <div class="item-info-product">
+                            <h4 class="">
+                                <a href="{{ goods.id }}" class="editContent" >
+                                    {{ goods.goods_code }}
+                                </a>
+                            </h4>
+                            <div class="product_price">
+                                <div class="grid-price">
+                                    <a href="{{ goods.id }}"><span class="money editContent" >Последнее редактирование: {{ goods.OTK_code.date }}</span></a>
+                                </div>
+                                <input type="button" onclick='location.href="{{ goods.id }}/update"' value="Редактировать изделие">
+                                <input type="button" onclick='location.href="{{ goods.id }}/delete"' value="Удалить изделие">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-        <div class="" id="id_content" style="margin-top: 15px">
-            <table class="table table-bordered table-hover">
-                <thead>
-                <th>Код изделия</th>
-                <th>Заказчик</th>
-                <th>Количество</th>
-                <th>Достаточно ли?</th>
-                </thead>
-                <tbody>
-                {% for goods in goodsstorage_list %}
-                    <tr>
-                        <td><a href="{{ goods.id }}" title="Перейти на страницу изделия {{ goods.goods_code.code }}">{{ goods.goods_code.code }}</a></td>
-                        <td><a href="{{ goods.id }}" title="Перейти на страницу изделия {{ goods.goods_code.code }}">{{ goods.customer_code.name }}</a></td>
-                        <td><a href="{{ goods.id }}" title="Перейти на страницу изделия {{ goods.goods_code.code }}">{{ goods.value }}</a></td>
-                        {% if material.value >= material.customer_checkout.values %}
-                            <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">Да</a></td>
-                        {% else %}
-                            <td><a href="{{ material.id }}" title="Перейти на страницу изделия {{ material.code }}">Нет</a></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+        <div class="grid-img-right mt-4 text-right bg bg1" >
+{#            {% include 'include/pagination/goods_pagination.html' %}#}
         </div>
     </div>
-
-    <script>
-        $("#id_select_sort").change(function () {
-            const url = $("#id_select_sort").attr("data-sort-url");
-            const id_sort = $('#id_select_sort').val();
-            console.log(id_sort)
-
-            $.ajax({
-                url: url,
-                data: {
-                    'id_sort': id_sort
-                },
-                success: function (data) {
-                    $("#id_content").html(data);
-
-                }
-            });
-
-        });
-
-    </script>
-
+    <!-- //contact -->
 {% endblock storage_goods %}
