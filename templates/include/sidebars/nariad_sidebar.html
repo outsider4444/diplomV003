@@ -4,23 +4,23 @@
         <h3 class="sear-head editContent" >Поиск наряда</h3>
         <form action="{% url "nariad_search" %}" method="get" class="d-flex editContent" >
             <input type="search" placeholder="Введите код наряда ..." name="q" class="form-control" required="">
-            <button type="submit" class="btn1 btn" ><span class="fa fa-search" aria-hidden="true" ></span></button>
+            <button type="submit" class="btn1 btn" style="color: #f0f2f5;"><span class="fa fa-search" aria-hidden="true" ></span></button>
         </form>
     </div>
-{#    <!--preference -->#}
-{#    <form action="{% url 'goods_filter' %}" method="get" name="filter">#}
-{#        <div class="left-side my-4">#}
-{#            <h3 class="sear-head editContent">Фильтры(старые)</h3>#}
-{#            <ul class="w3layouts-box-list">#}
-{#                <li class="editContent">#}
-{#                    <span class="span editContent">Минимальная температура</span>#}
-{#                    <input type="number" name="temp" value="" min="0">#}
-{#                </li>#}
-{#            </ul>#}
-{#        </div>#}
-{#        <!-- // preference -->#}
-{#        <!-- discounts -->#}
-{#        <button type="submit">Найти</button>#}
-{#    </form>#}
+    <form action="{% url 'nariad_filter' %}" method="get" name="filter">
+        <div class="left-side my-4">
+            <h3 class="sear-head editContent">Фильтры</h3>
+            <ul class="w3layouts-box-list">
+                <li class="editContent">
+                    <span class="span editContent">Дата наряда больше или равно:</span>
+                    <input type="date" id="start_date" name="start_date" class="form-control" required>
+                </li>
+                <li class="editContent">
+                    <span class="span editContent">Дата наряда меньше или равно:</span>
+                    <input type="date" id="end_date" name="end_date" class="form-control" required>
+                </li>
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
 </div>
-<!-- //product left -->

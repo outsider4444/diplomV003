@@ -1,37 +1,90 @@
 {% extends 'storage_materials/base.html' %}
 
 {% block title %} Склад материалов {% endblock title %}
-{% block header_title %} Склад материалов {% endblock header_title %}
 
 
 {% block storage_materials %}
+    <style>
+        a{
+            color: black;
+        }
+        a:hover{
+            color: #007bff;
+        }
+    </style>
+    <style>
+        .bitbutton {
+            border: 2px solid black;
+            background-color: white;
+            color: black;
+        {#padding: 14px 28px;#}
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /* Blue */
+        .info {
+            border-color: #2196F3;
+            color: dodgerblue;
+            border-radius: 8px 8px 8px 8px;
+        }
+        .info:hover {
+            background: #2196F3;
+            color: white;
+        }
+    </style>
 {% include 'include/sidebars/storage_goods_sidebar.html' %}
-<!-- product right -->
     <div class="left-ads-display col-lg-9">
-    <input type="button" onclick='location.href="{% url "storage_material_create" %}"' value="Создать новый материал">
-        <div class="row">
-            {% for material in materialstorage_list %}
-                <div class="col-md-4 product-men">
-                    <div class="product-shoe-info editContent text-center mt-lg-4" >
-                        <div class="item-info-product">
-                            <h4 class="">
-                                <a href="{{ material.id }}" class="editContent" >
-                                    {{ material.material_code}}
-                                </a>
-                            </h4>
-                            <div class="product_price">
-                                <div class="grid-price">
-                                    <a href="{{ material.id }}"><span class="money editContent" >Код материала: {{ material.material_code }}</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+        <div class="form-group row">
+        <input type="button" style="margin-left: 15px" class="bitbutton info" onclick='location.href="{% url "storage_material_create" %}"' value="Создать новый материал">
+        <div class="col-sm-4">
+                <select name="" id="id_select_sort" data-sort-url="{% url 'storage_material_ajax' %}" class="form-control">
+                    <option value="0">----------------</option>
+                    <option value="1">Код изделия: Возрастанию</option>
+                    <option value="2">Код изделия: Убыванию</option>
+                    {#            <option value="3">Коду сотрудника: Возрастанию</option>#}
+                    {#            <option value="4">Коду сотрудника: Убыванию</option>#}
+                </select>
+            </div>
         </div>
-        <div class="grid-img-right mt-4 text-right bg bg1" >
-{#            {% include 'include/pagination/goods_pagination.html' %}#}
+        <div class="" id="id_content" style="margin-top: 15px">
+            <table class="table table-bordered table-hover">
+                <thead class="table table-bordered table-hover">
+                <th>Код изделия</th>
+                <th>Поставщик</th>
+                <th>Количество</th>
+                </thead>
+                <tbody>
+                {% for material in materialstorage_list %}
+                    <tr>
+                        <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.material_code.code }}</a></td>
+                        <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.supplier_code.name }}</a></td>
+                        <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.value }}</a></td>
+
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-    <!-- //contact -->
+    <script>
+        $("#id_select_sort").change(function () {
+            const url = $("#id_select_sort").attr("data-sort-url");
+            const id_sort = $('#id_select_sort').val();
+            console.log(id_sort)
+
+            $.ajax({
+                url: url,
+                data: {
+                    'id_sort': id_sort
+                },
+                success: function (data) {
+                    $("#id_content").html(data);
+
+                }
+            });
+
+        });
+
+    </script>
 {% endblock storage_materials %}
