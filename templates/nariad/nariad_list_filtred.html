@@ -1,0 +1,98 @@
+{% extends 'nariad/base.html' %}
+
+{% block title %} Список нарядов {% endblock title %}
+
+
+{% block nariad %}
+    <style>
+        a{
+            color: black;
+        }
+        a:hover{
+            color: #007bff;
+        }
+    </style>
+    <style>
+        .bitbutton {
+            border: 2px solid black;
+            background-color: white;
+            color: black;
+        {#padding: 14px 28px;#}
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /* Blue */
+        .info {
+            border-color: #2196F3;
+            color: dodgerblue;
+            border-radius: 8px 8px 8px 8px;
+        }
+        .info:hover {
+            background: #2196F3;
+            color: white;
+        }
+    </style>
+        {% include 'include/sidebars/nariad_sidebar.html' %}
+    <div class="left-ads-display col-lg-9">
+        <div class="form-group row">
+            <input type="button" style="margin-left: 15px" class="bitbutton info" onclick='location.href="{% url "nariad_create" %}"' value="Добавить новый наряд">
+            <label style="margin-left: 15px" for="id_worker_select" class="col-form-label col-form-label-sm">Сортировать по:</label>
+            <div class="col-sm-4">
+                <select name="" id="id_select_sort" class="form-control" data-sort-url="{% url 'nariad_ajax_filter' %}">
+                    <option value="0">----------------</option>
+                    <option value="1">Код наряда: Возрастание</option>
+                    <option value="2">Код наряда: Убывание</option>
+                </select>
+            </div>
+        </div>
+
+         <div class="" id="id_content" style="margin-top: 15px">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <th>Код наряда</th>
+                <th>Код сотрудника</th>
+                <th>Код изделия</th>
+                <th>Дата</th>
+                </thead>
+                <tbody>
+                {% for nariad in nariad_list %}
+                    <tr>
+                        <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.code }}</a></td>
+                        <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.worker_code }}</a></td>
+                        <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.goods_code }}</a></td>
+                        <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.date }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let start_date = document.getElementById('start_date');start_date.value = '{{ start_date_calendar }}';
+        let end_date = document.getElementById('end_date');end_date.value = '{{ end_date_calendar }}';
+    </script>
+
+    <script>
+        $("#id_select_sort").change(function () {
+            const url = $("#id_select_sort").attr("data-sort-url");
+            const id_sort = $('#id_select_sort').val();
+            const start_date = $('#start_date').val();
+            const end_date = $('#end_date').val();
+
+            $.ajax({
+                url: url,
+                data: {
+                    'id_sort': id_sort,
+                    'start_date':start_date,
+                    'end_date':end_date
+                },
+                success: function (data) {
+                    $("#id_content").html(data);
+
+                }
+            });
+
+        });
+    </script>
+{% endblock nariad %}

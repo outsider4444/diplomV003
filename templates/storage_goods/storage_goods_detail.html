@@ -2,27 +2,63 @@
 
 {% load static %}
 {% block title %}Изделие: {{ goods.goods_code }} {% endblock title %}
-{% block header_title %}Изделие: {{ goods.goods_code }} {% endblock header_title %}
 
 {% block storage_goods %}
-    <div class="left-ads-display col-lg-8">
-        <div class="container">
-
-            <div class="desc1-right col-md-6 pl-lg-4" >
-
-                    <input type="button" onclick='location.href="update"' value="Редактировать изделие">
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form enctype="multipart/form-data" class="col-8" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 5px">Изделие: {{ goods.goods_code.code }}</h3>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
+                    <input type="button" class="btn btn-info" onclick='location.href="update"' value="Редактировать изделие">
+                    <input type="button" class="btn btn-success" onclick='location.href="more_goods"' value="Добавить изделий">
                     <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить изделие">
-                <ul style="margin-top: 15px">
-                    <li style="list-style: none"><span><b>Код изделия: </b>{{ goods.goods_code }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Количество на складе: </b>{{ goods.value }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Имя заказчика: </b>{{ goods.customer_code }}</span>
-                    </li>
-                    <li style="list-style: none"><span><b>Код заказа: </b>{{ goods.customer_checkout }}</span>
-                    </li>
-                </ul>
-            </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-6">
+                        <h5>Код: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ goods.goods_code }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-6">
+                        <h5>Количество на складе: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ goods.value }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-6">
+                        <h5>Имя заказчика: </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ goods.customer_code }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-6">
+                        <h5>Код заказа:  </h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ goods.customer_checkout }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-6">
+                        <h5>Дата последнего изменения:</h5>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label>{{ goods.date }}</label>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 

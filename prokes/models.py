@@ -180,7 +180,7 @@ class Nariad(models.Model):
 
 class OTK(models.Model):
     """ОТК"""
-    nariad_code = models.ForeignKey(Nariad, verbose_name='Код наряда', on_delete=models.PROTECT)
+    nariad_code = models.OneToOneField(Nariad, verbose_name='Код наряда', on_delete=models.PROTECT)
     goods_value = models.IntegerField('Количество хороших изделий')
     remote_value = models.IntegerField('Количество бракованных изделий')
     date = models.DateField('Дата проверки')
@@ -196,6 +196,7 @@ class OTK(models.Model):
 class MaterialStorage(models.Model):
     """Склад материалов"""
     material_code = models.ForeignKey(Materials, verbose_name='Код смеси', on_delete=models.PROTECT)
+    supplier_code = models.ForeignKey(Suppliers, verbose_name='Код поставщика', on_delete=models.PROTECT)
     value = models.IntegerField('Количество')
     date = models.DateField('Дата проверки')
 
@@ -213,6 +214,7 @@ class GoodsStorage(models.Model):
     value = models.IntegerField('Количество')
     customer_code = models.ForeignKey(Customer, verbose_name='Код заказчика', on_delete=models.PROTECT)
     customer_checkout = models.ForeignKey(CheckoutGoods, verbose_name='Код заказа', on_delete=models.PROTECT)
+    date = models.DateField('Дата проверки')
 
     def __str__(self):
         return str(self.goods_code)

@@ -1,0 +1,19 @@
+<table class="table table-bordered table-hover">
+    <thead>
+    <th>Фотография изделия</th>
+    <th>Код изделия</th>
+    <th>Название</th>
+    </thead>
+    <tbody>
+    {% for goods in goods_list %}
+        <tr><td>{% if goods.image %}
+            <a href="{{ goods.id }}" title="Перейти на страницу изделия {{ goods.code }}"><img src="{{ goods.image.url }}" class="img-fluid" alt="" width="100px" height="100px"></a>
+        {% else %}
+            Фото отсутсвует
+        {% endif %}</td>
+            <td><a href="{{ goods.id }}" title="Перейти на страницу сотрудника {{ goods.code }}">{{ goods.code }}</a></td>
+            <td><a href="{{ goods.id }}" title="Перейти на страницу сотрудника {{ goods.code }}">{{ goods.name }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

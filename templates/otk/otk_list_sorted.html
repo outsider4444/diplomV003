@@ -1,0 +1,16 @@
+<table class="table table-bordered table-hover">
+    <thead>
+    <th>Код проверки наряда</th>
+    <th>Код изделия</th>
+    <th>Дата проверки</th>
+    </thead>
+    <tbody>
+    {% for otk in otk_list %}
+        <tr>
+            <td><a href="{{ otk.id }}" title="Перейти на страницу ОТК {{ otk.nariad_code.code }}">{{ otk.nariad_code.code }}</a></td>
+            <td><a href="{{ otk.id }}" title="Перейти на страницу ОТК {{ otk.nariad_code.code }}">{{ otk.nariad_code.goods_code.code }}</a></td>
+            <td><a href="{{ otk.id }}" title="Перейти на страницу ОТК {{ otk.nariad_code.code }}">{{ otk.date }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

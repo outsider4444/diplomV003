@@ -33,7 +33,15 @@
                         {{ form.customer_checkout }}
                     </div>
                 </div>
-                <span>{{ error }}</span>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="id_nariad_code">Дата проверки: </label>
+                        {{ form.date }}
+                    </div>
+                </div>
+
+                {{ form.errors }}
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
             </form>
         </div>
@@ -45,19 +53,21 @@
     let id_value = document.getElementById('id_value'); id_value.className = 'form-control';
     let id_customer_code = document.getElementById('id_customer_code'); id_customer_code.className = 'form-control';
     let id_customer_checkout = document.getElementById('id_customer_checkout'); id_customer_checkout.className = 'form-control';
+    let id_date = document.getElementById('id_date'); id_date.className = 'form-control'; id_date.type = 'date';
+
     $("#id_goods_code").change(function () {
-        const url = $("#goods_create_Form").attr("data-goods-url");  // get the url of the `load_cities` view
-        const goods_code = $('#id_goods_code option:selected').text();  // get the selected country ID from the HTML input
+        const url = $("#goods_create_Form").attr("data-goods-url");
+        const goods_code = $('#id_goods_code option:selected').text();
         const customer_code = $('#id_customer_code option:selected').text();
 
-        $.ajax({                       // initialize an AJAX request
-            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+        $.ajax({
+            url: url,
             data: {
-                'id_customer_code': customer_code,       // add the country id to the GET parameters
-                'id_goods_code': goods_code       // add the country id to the GET parameters
+                'id_customer_code': customer_code,
+                'id_goods_code': goods_code
             },
-            success: function (data) {   // `data` is the return of the `load_cities` view function
-                $("#id_customer_checkout").html(data);  // replace the contents of the city input with the data that came from the server
+            success: function (data) {
+                $("#id_customer_checkout").html(data);
 
             }
         });
@@ -65,18 +75,18 @@
     });
 
     $("#id_customer_code").change(function () {
-        const url = $("#goods_create_Form").attr("data-goods-url");  // get the url of the `load_cities` view
-        const customer_code = $('#id_customer_code option:selected').text();  // get the selected country ID from the HTML input
+        const url = $("#goods_create_Form").attr("data-goods-url");
+        const customer_code = $('#id_customer_code option:selected').text();
         const goods_code = $('#id_goods_code option:selected').text();
 
-        $.ajax({                       // initialize an AJAX request
-            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+        $.ajax({
+            url: url,
             data: {
-                'id_customer_code': customer_code,       // add the country id to the GET parameters
-                'id_goods_code': goods_code       // add the country id to the GET parameters
+                'id_customer_code': customer_code,
+                'id_goods_code': goods_code
             },
-            success: function (data) {   // `data` is the return of the `load_cities` view function
-                $("#id_customer_checkout").html(data);  // replace the contents of the city input with the data that came from the server
+            success: function (data) {
+                $("#id_customer_checkout").html(data);
 
             }
         });

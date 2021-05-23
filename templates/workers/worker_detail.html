@@ -1,68 +1,79 @@
 {% extends 'workers/base.html' %}
 {% block title %} {{ workers.name }} {% endblock title %}
-{% block header_title %} {{ workers.name }} {% endblock header_title %}
 
 {% block worker %}
-    <!-- product right -->
-    <div class="left-ads-display col-lg-8">
-        {#                Изменить стили #}
-    <input type="button" onclick='location.href="update"' value="Редактировать сотрудника">
-    <input class="btn btn-danger" type="button" onclick='location.href="delete"' value="Удалить сотрудника">
-        <div class="row">
-            <div class="desc1-right col-md-6 pl-lg-4" >
-                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">{{ workers.name }}
-                </h3>
-                <span>{{ workers.category }}</span>
-                {#                            <h5 class="editContent"></h5>#}
-                <ul style="margin-top: 15px">
-                    <li style="list-style: none">
-                        <span><b>Код сотрудника: </b>{{ workers.code }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>ФИО сотрудника:</b> {{ workers.name }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>Должность сотрудника: </b>{{ workers.category }}<br></span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>Дата рождения: </b> {{ workers.birthday }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>Номер телефона сотрудника:</b> {{ workers.phone_number }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>Email: </b>{{ workers.email }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>Оклад:</b> {{ workers.salary }}</span>
-                    </li>
-        <br>
-                    <div class="share-desc">
-                        <div class="clearfix"></div>
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <form enctype="multipart/form-data" class="col-8" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 5px">Сотрудник: {{ workers.name }}</h3>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">{{ workers.category }} <br>
+                    <input class="btn btn-info" type="button" onclick='location.href="update"' value="Редактировать сотрудника">
+                    <input class="btn btn-danger" type="button" onclick='location.href="delete"' value="Удалить сотрудника">
+                </div>
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Код:</h5>
                     </div>
-                </ul>
-            </div>
-        </div>
-        <div class="row sub-para-w3layouts mt-5">
-            
-            <p>
-                <img src="bundles/images/about.jpg" class="img-fluid" alt="">
-                <img src="bundles/images/admin.jpg" class="img-fluid" alt="">
-                <img src="bundles/images/d1.jpg" class="img-fluid" alt="">
-            </p>
+                    <div class="form-group col-sm-4">
+                        <label>{{ workers.code }}</label>
+                    </div>
+                </div>
 
-        </div>
-        {#                    Полоска#}
-        {#                    <hr>#}
-        <div class="row">
-            <div class="single-form-left">
-                <!-- contact form grid -->
-                {#                Изменить стили #}
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-sm-4">
+                        <h5>ФИО:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ workers.name }}</label>
+                    </div>
+                </div>
 
-                <!--  //contact form grid ends here -->
-            </div>
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-sm-4">
+                        <h5>Должность:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ workers.category }}</label>
+                    </div>
+                </div>
 
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-sm-4">
+                        <h5>Дата рождения:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ workers.birthday }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-sm-4">
+                        <h5>Номер телефона:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ workers.phone_number }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-sm-4">
+                        <h5>Email:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label> <a href="mailto:{{ workers.email }}">{{ workers.email }}</a></label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-sm-4">
+                        <h5>Оклад:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ workers.salary }} рублей</label>
+                    </div>
+                </div>
+
+            </form>
         </div>
     </div>
-    <!-- //contact -->
 {% endblock worker %}

@@ -1,0 +1,18 @@
+<table class="table table-bordered table-hover">
+    <thead>
+    <th>Код наряда</th>
+    <th>Код сотрудника</th>
+    <th>Код изделия</th>
+    <th>Дата</th>
+    </thead>
+    <tbody>
+    {% for nariad in nariad_list %}
+        <tr>
+            <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.code }}</a></td>
+            <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.worker_code }}</a></td>
+            <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.goods_code }}</a></td>
+            <td><a href="../{{ nariad.code }}" title="Перейти на страницу наряда {{ nariad.code }}">{{ nariad.date }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

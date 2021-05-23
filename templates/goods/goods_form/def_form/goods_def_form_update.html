@@ -33,7 +33,9 @@
                         {{ form.percent_mass }}
                     </div>
                 </div>
-                <span>{{ error }}</span>
+                {% for foo in form %}
+                    {{ foo.errors }}
+                {% endfor %}
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
             </form>
         </div>

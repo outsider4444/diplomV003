@@ -12,7 +12,7 @@
                 <a class="nav-link"  href="{% url "main" %}">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url "workers_list" %}">Сотурудники</a>
+                <a class="nav-link" href="{% url "workers_list" %}">Сотрудники</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url "goods_list" %}">Изделия</a>
@@ -39,7 +39,7 @@
                 <a class="nav-link" href="{% url "storage_material_list" %}">Материалы на складе</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Отчеты</a>
+                <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Отчеты</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url "released_goods_report_month" %}">Всего изделий</a></li>
                     <li><a class="dropdown-item" href="{% url "good_goods_report_month" %}">Хороших изделий</a></li>

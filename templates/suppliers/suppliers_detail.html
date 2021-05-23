@@ -1,62 +1,130 @@
 {% extends 'suppliers/base.html' %}
+{% load poll_extras %}
 {% block title %}Поставщик: {{ supplier.name }} {% endblock title %}
-{% block header_title %}Поставщик: {{ supplier.name }} {% endblock header_title %}
-
 
 {% block suppliers %}
-<!-- product right -->
-    <div class="left-ads-display col-lg-8">
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div enctype="multipart/form-data" class="col-8" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 5px">Поставщик: {{ supplier.name }}</h3>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
+                    <input type="button" class="btn btn-info" onclick='location.href="update"' value="Изменить информацию о поставщике">
+                    <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить поставщика">
+                </div>
 
-{#    Сделать "изменение #}
-<input type="button" onclick='location.href="update"' value="Изменить информацию о заказчике">
-<input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить поставщика">
-{# Красиво выводить#}
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Имя поставщика:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ supplier.name }}</label>
+                    </div>
+                </div>
 
-        {#                Изменить стили #}
-        <div class="row">
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Email:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ supplier.email }}</label>
+                    </div>
+                </div>
 
-            <div class="desc1-right col-md-6 pl-lg-4" >
-                <h3 class="editContent" style="outline: none; cursor: inherit; margin-bottom: 0px">
-                    {{ supplier.name }}
-                </h3>
-                <ul style="margin-top: 15px">
-                    <li style="list-style: none">
-                        <span><b>Email: </b> {{ supplier.email }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>Номер телефона: </b> {{ supplier.phone_number }}</span>
-                    </li>
-                    <li style="list-style: none">
-                        <span><b>Представитель: </b> {{ supplier.representative }}</span>
-                    </li>
-                </ul>
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Номер телефона:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ supplier.phone_number }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Представитель:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ supplier.representative }}</label>
+                    </div>
+                </div>
+                <input type="button" value="Показать/Скрыть дополнительную информацию" data-toggle="collapse" href="#suppliers_orders" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+
+
+                <div id="suppliers_orders" class="collapse">
+                    <h4 style="text-align: center; margin-top: 15px; margin-bottom: 5px" class="editContent">Даты поставок:</h4>
+
+                            <form action="../{{ supplier.id }}_filter_calendar/" method="get">
+                                <div class="form-row justify-content-center" style="margin-top: 20px">
+                                    <div class="form-group col-sm-8">
+                                        {{ calendar_filters.form }}
+                                        <button type="submit" style="margin-top: 15px" class="btn btn-primary">Поиск</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <th>Дата</th>
+                                    <th>Код материала</th>
+                                    <th>Количество</th>
+                                    </thead>
+                                    <tbody>
+                                    {% for ms in materials|values:"date"|distinct %}
+                                        <tr>
+                                            <td>{{ ms }}</td>
+                                        <td>
+                                            {% for material in materials %}
+                                                {% if material.date == ms %}
+                                                    {{ material.code_material.code }} <br>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                            <td>
+                                                {% for material in materials %}
+                                                    {% if material.date == ms %}
+                                                        {{ material.values }} шт.<br>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                <input type="button" value="Показать/Скрыть ввод" data-toggle="collapse" href="#suppliers_orders_add" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+                <div id="suppliers_orders_add" class="collapse">
+                        <form method="post" enctype="multipart/form-data" name="create" id="form_goods_create">
+                            <h4 style="text-align: center; margin-top: 15px; margin-bottom: 5px" class="editContent">Добавить даты поставок:</h4>
+                            {% csrf_token %}
+                            {{ formset.management_form }}
+
+                            {% for form in formset %}
+                                <div class="form-row justify-content-center" style="margin-top: 20px">
+                                    <div class="form-group col-sm-8">
+                                        {{ form }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-{#        Календарь поставок#}
-    <h3>Даты поставок:</h3>
-        {% for material_date in date %}
-            <b>Дата поставки: </b>{{ material_date.date }}<br>
-                {% for material in materials %}
-                    {% if material.date == material_date.date %}
-                        <b>Код материала:</b> {{ material.code_material }}<br>
-                        Количество: {{ material.values }}<br>
-                    {% endif %}
-                {% endfor %}<hr>
-        {% endfor %}
 
-{#    Ввод данных #}
-        <div class="row sub-para-w3layouts mt-5">
-            <form method="post" enctype="multipart/form-data" name="create" id="form_goods_create">
-            <h3>Добавить дату поставки</h3><br>
-                {% csrf_token %}
-            {{ formset.management_form }}
-                {% for form in formset %}
-                    {{ form }}<hr>
-                {% endfor %}
-                <input type="submit" value="Подтвердить">
-            </form>
         </div>
-
     </div>
-    <!-- //contact -->
+        <script>
+            id_start_date = document.getElementById('id_start_date'); id_start_date.className = 'form-control'; id_start_date.required = true;
+            id_end_date = document.getElementById('id_end_date'); id_end_date.className = 'form-control'; id_end_date.required = true;
+
+            for (i=0; i<10; i++){
+                document.getElementById('id_deliveriesmaterials_set-'+ i +'-values').className = 'form-control';
+                document.getElementById('id_deliveriesmaterials_set-'+ i +'-date').className = 'form-control';
+                document.getElementById('id_deliveriesmaterials_set-'+ i +'-date').type = 'date';
+                document.getElementById('id_deliveriesmaterials_set-'+ i +'-code_material').className = 'form-control';
+            }
+        </script>
 {% endblock suppliers %}

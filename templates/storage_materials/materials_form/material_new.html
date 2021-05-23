@@ -1,13 +1,10 @@
 {% extends "storage_materials/base.html" %}
 
-{#Надпись в Title#}
-{% block title %}
-    Создание/редактирование материала
-{% endblock title %}
+{% block title %}Создание/редактирование материала{% endblock title %}
 
 
 {% block storage_materials %}
-<div class="container h-100">
+    <div class="container h-100">
         <div class="row h-100 justify-content-center align-items-center">
             <form method="post" enctype="multipart/form-data" name="create" class="col-6" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
                 {% csrf_token %}
@@ -19,6 +16,14 @@
                         {{ form.material_code }}
                     </div>
                 </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-10">
+                        <label for="id_material_code">Имя поставщика: </label>
+                        {{ form.supplier_code }}
+                    </div>
+                </div>
+
                 <div class="form-row justify-content-center">
                     <div class="form-group col-md-10">
                         <label for="id_value">Количество: </label>
@@ -32,12 +37,17 @@
                     </div>
                 </div>
 
-                <span>{{ error }}</span>
+                {% for foo in form %}
+                    {{ foo.errors }}
+                {% endfor %}
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
             </form>
+        </div>
+    </div>
             <script>
-                let id_material_code = document.getElementById('id_material_code'); id_material_code.className = 'form-control'
-                let id_value = document.getElementById('id_value'); id_value.className = 'form-control'
-                let id_date = document.getElementById('id_date'); id_date.className = 'form-control'
+                let id_material_code = document.getElementById('id_material_code'); id_material_code.className = 'form-control';
+                let id_supplier_code = document.getElementById('id_supplier_code'); id_supplier_code.className = 'form-control';
+                let id_value = document.getElementById('id_value'); id_value.className = 'form-control';
+                let id_date = document.getElementById('id_date'); id_date.className = 'form-control';
             </script>
 {% endblock storage_materials %}

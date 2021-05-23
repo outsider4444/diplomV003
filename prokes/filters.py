@@ -3,7 +3,34 @@ from django.forms import DateInput
 
 from .models import *
 
+# Заказы и поставки
+class SearchCheckoutGoodsFilter(django_filters.FilterSet):
+    start_date = django_filters.DateFilter(
+        field_name="date", lookup_expr='gte', widget=DateInput(attrs={'type': 'date'})
+    )
+    end_date = django_filters.DateFilter(
+        field_name="date", lookup_expr='lte', widget=DateInput(attrs={'type': 'date'})
+    )
 
+    class Meta:
+        model = CheckoutGoods
+        exclude = ['customer_name', 'date', 'code_goods', 'values']
+
+
+class SearchSuppliersDeliveryFilter(django_filters.FilterSet):
+    start_date = django_filters.DateFilter(
+        field_name="date", lookup_expr='gte', widget=DateInput(attrs={'type': 'date'})
+    )
+    end_date = django_filters.DateFilter(
+        field_name="date", lookup_expr='lte', widget=DateInput(attrs={'type': 'date'})
+    )
+
+    class Meta:
+        model = DeliveriesMaterials
+        exclude = ['supplier_name', 'date', 'code_material', 'values']
+
+
+# Отчеты
 class ReportRemoteGoodsFilter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(
         field_name="date", lookup_expr='gte', widget=DateInput(attrs={'type': 'date'})
@@ -14,7 +41,6 @@ class ReportRemoteGoodsFilter(django_filters.FilterSet):
 
     class Meta:
         model = OTK
-        fields = '__all__'
         exclude = ['date', 'nariad_code', 'goods_value', 'remote_value']
 
 
@@ -28,5 +54,4 @@ class ReportUsedMaterialFilter(django_filters.FilterSet):
 
     class Meta:
         model = Nariad
-        fields = '__all__'
         exclude = ['code', 'worker_code', 'goods_code', 'material_code', 'goods_value', 'date', 'used_materials']

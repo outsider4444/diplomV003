@@ -3,11 +3,11 @@
 
 {% block tabs_bar %}
         <ul class="nav nav-tabs">
-            <li class="nav-tabs">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url "main" %}">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url "workers_list" %}">Сотурудники</a>
+                <a class="nav-link" href="{% url "workers_list" %}">Сотрудники</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url "goods_list" %}">Изделия</a>
@@ -47,7 +47,7 @@
 {% endblock tabs_bar %}
 
 {% block content %}
-        <section class="ab-info-main py-md-5 py-4 editContent" style="min-width: 320px">
+        <section class="ab-info-main py-md-5 py-4 editContent px-lg-5" style="min-width: 320px">
             <div class="container-fluid py-md-3">
                 <div class="row">
                     {% block otk %}

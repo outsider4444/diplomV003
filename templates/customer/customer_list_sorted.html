@@ -1,0 +1,16 @@
+<table class="table table-bordered table-hover">
+    <thead>
+    <th>Имя заказчика</th>
+    <th>Номер телефона</th>
+    <th>Представитель</th>
+    </thead>
+    <tbody>
+    {% for customer in customer_list %}
+        <tr>
+            <td><a href="{{ customer.id }}" title="Перейти на страницу заказчика {{ customer.name }}">{{ customer.name }}</a></td>
+            <td><a href="{{ customer.id }}" title="Перейти на страницу заказчика {{ customer.name }}">{{ customer.phone_number }}</a></td>
+            <td><a href="{{ customer.id }}" title="Перейти на страницу заказчика {{ customer.name }}">{{ customer.representative }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

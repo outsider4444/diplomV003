@@ -43,7 +43,10 @@
                     <div class="form-group col-md-5"></div>
                 </div>
 
-                <span id="error">{{ error }}</span>
+                {% for foo in form %}
+                    {{ foo.errors }}
+                {% endfor %}
+            <span>{{ error }}</span>
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
             </form>
         </div>

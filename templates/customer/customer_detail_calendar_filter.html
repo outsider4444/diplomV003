@@ -1,0 +1,131 @@
+{% extends 'customer/base.html' %}
+{% load poll_extras %}
+{% block title %} Заказщик:  {{ customer.name }} {% endblock title %}
+
+{% block customer %}
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div enctype="multipart/form-data" class="col-8" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+            <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 5px">Заказчик: {{ customer.name }}</h3>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
+                    <input type="button" class="btn btn-info" onclick='location.href="update"' value="Изменить информацию о заказчике">
+                    <input type="button" class="btn btn-danger" onclick='location.href="delete"' value="Удалить заказчика">
+                </div>
+
+            <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Имя заказчика:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ customer.name }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Email:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ customer.email }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Номер телефона:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ customer.phone_number }}</label>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-center" style="margin-top: 20px">
+                    <div class="form-group col-sm-4">
+                        <h5>Представитель:</h5>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>{{ customer.representative }}</label>
+                    </div>
+                </div>
+        <input type="button" value="Показать/Скрыть дополнительную информацию" data-toggle="collapse" href="#suppliers_orders" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+
+            <div id="suppliers_orders" class="collapse">
+                <h4 style="text-align: center; margin-top: 15px; margin-bottom: 5px" class="editContent">Даты заказов:</h4>
+
+                <form action="../{{ customer.id }}_filter_calendar/" method="get">
+                    <div class="form-row justify-content-center" style="margin-top: 20px">
+                        <div class="form-group col-sm-8">
+                            {{ calendar_filters.form }}
+                            <button type="submit" style="margin-top: 15px" class="btn btn-primary">Поиск</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <th>Дата</th>
+                        <th>Код изделия</th>
+                        <th>Количество</th>
+                        </thead>
+                        <tbody>
+                        {% for day in delta_days %}
+                            {% for gs in goods|values:"date"|distinct %}
+                                <tr>
+                                    {% if day == gs|string %}
+                                    <td>{{ gs }}</td>
+                                    <td>
+                                        {% for good in goods %}
+                                            {% if good.date == gs %}
+                                                {{ good.code_goods.code }} <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for good in goods %}
+                                            {% if good.date == gs %}
+                                                {{ good.values }} шт. <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <input type="button" value="Показать/Скрыть ввод" data-toggle="collapse" href="#suppliers_orders_add" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+                <div id="suppliers_orders_add" class="collapse">
+                    <form method="post" enctype="multipart/form-data" name="create" id="form_goods_create">
+                        <h4 style="text-align: center; margin-top: 15px; margin-bottom: 5px" class="editContent">Добавить даты заказов:</h4>
+                        {% csrf_token %}
+                        {{ formset.management_form }}
+
+                        {% for form in formset %}
+                            <div class="form-row justify-content-center" style="margin-top: 20px">
+                                <div class="form-group col-sm-8">
+                                    {{ form }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">Подтвердить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+            </div>
+        </div>
+        <script>
+            id_start_date = document.getElementById('id_start_date'); id_start_date.className = 'form-control'; id_start_date.required = true;
+            id_end_date = document.getElementById('id_end_date'); id_end_date.className = 'form-control'; id_end_date.required = true;
+
+            for (i=0; i<10; i++){
+                document.getElementById('id_checkoutgoods_set-'+ i +'-values').className = 'form-control';
+                document.getElementById('id_checkoutgoods_set-'+ i +'-date').className = 'form-control';
+                document.getElementById('id_checkoutgoods_set-'+ i +'-date').type = 'date';
+                document.getElementById('id_checkoutgoods_set-'+ i +'-code_goods').className = 'form-control';
+            }
+        </script>
+{% endblock customer %}
