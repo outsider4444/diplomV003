@@ -1471,16 +1471,19 @@ def ReportGoodGoodsCalendar(request):
 
     # дата начала
     start_date = request.GET.get('start_date')
+    new_start_date = start_date
     start_date = start_date.split("-")
     start_date[0] = int(start_date[0])
     start_date[1] = int(start_date[1])
     start_date[2] = int(start_date[2])
     # дата окончания
     end_date = request.GET.get('end_date')
+    new_end_date = end_date
     end_date = end_date.split("-")
     end_date[0] = int(end_date[0])
     end_date[1] = int(end_date[1])
     end_date[2] = int(end_date[2])
+
 
     # дни для вывода
     delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
@@ -1495,7 +1498,7 @@ def ReportGoodGoodsCalendar(request):
         summa_good_goods += otks.goods_value
 
     context = {"report_remote_goods_filter": report_remote_goods_filter, "otk": otk, "delta_days": delta_days, "delta_date": delta_date,
-               "summa_good_goods": summa_good_goods}
+               "summa_good_goods": summa_good_goods, "new_start_date": new_start_date, "new_end_date": new_end_date}
     return render(request, 'reports/goods_reports/good_goods/good_goods_report_calendar.html', context)
 
 

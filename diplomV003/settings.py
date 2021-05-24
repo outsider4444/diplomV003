@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from prokes.templatetags import poll_extras
+# from prokes.templatetags import poll_extras
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
