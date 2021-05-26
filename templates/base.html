@@ -40,10 +40,11 @@
     <div class="">
         {% block tabs_bar %}{% endblock tabs_bar %}</div>
     </header>
+    <div id="bg"></div>
 
-
+    <div class="count-particles">
     {% block content %}{% endblock content %}
-
+    </div>
     {% include 'include/footer.html' %}
 
 </body>
@@ -107,4 +108,5 @@
         }
     }
 </style>
+
 </html>
