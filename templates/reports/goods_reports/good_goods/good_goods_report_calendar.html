@@ -76,7 +76,7 @@
                     <div class="form-group col-sm-12">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-responsive">
-                                <thead>
+                                <thead><th>#</th>
                                 {% for days in delta_date %}
                                     <th> {{ days }} </th>
                                 {% endfor %}
@@ -96,7 +96,9 @@
                                         {% endfor %}
                                     </tr>
                                 {% endfor %}
-                                <td>Всего:{{ summa_remote_goods }}</td>
+                                <tr>
+                                    <td>Всего:{{ summa_remote_goods }}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>

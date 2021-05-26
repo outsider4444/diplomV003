@@ -1342,12 +1342,14 @@ def ReportReleasedGoodsCalendar(request):
 
     # дата начала
     start_date = request.GET.get('start_date')
+    new_start_date = start_date
     start_date = start_date.split("-")
     start_date[0] = int(start_date[0])
     start_date[1] = int(start_date[1])
     start_date[2] = int(start_date[2])
     # дата окончания
     end_date = request.GET.get('end_date')
+    new_end_date = end_date
     end_date = end_date.split("-")
     end_date[0] = int(end_date[0])
     end_date[1] = int(end_date[1])
@@ -1366,8 +1368,8 @@ def ReportReleasedGoodsCalendar(request):
         summa_released_goods += nari.goods_value
 
     context = {"report_used_material_filter": report_used_material_filter, "nariad": nariad,
-               "delta_days": delta_days, "delta_date": delta_date,
-               "summa_released_goods": summa_released_goods}
+               "delta_days": delta_days, "delta_date": delta_date, "new_start_date": new_start_date,
+               "new_end_date": new_end_date, "summa_released_goods": summa_released_goods}
     return render(request, 'reports/goods_reports/released_goods/released_goods_report_calendar.html', context)
 
 

@@ -61,11 +61,12 @@
                 <input type="button" value="Показать/Скрыть поиск" data-toggle="collapse" href="#goods_dop_info" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
                 <div id="goods_dop_info" class="collapse">
                     <form action="{% url 'good_goods_report_calendar' %}" class="form-row justify-content-center" method="get">
-                        {% csrf_token %}<div class="form-group col-sm-4">
-                        <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 15px">Поиск по изделиям</h3>
-                        {{ report_remote_goods_filter.form }}
-                        <button type="submit" class="btn btn-primary" style="margin-top: 18px">Поиск</button>
-                    </div>
+                        {% csrf_token %}
+                        <div class="form-group col-sm-4">
+                            <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 15px">Поиск по изделиям</h3>
+                            {{ report_remote_goods_filter.form }}
+                            <button type="submit" class="btn btn-primary" style="margin-top: 18px">Поиск</button>
+                        </div>
                     </form>
                 </div>
 
@@ -73,7 +74,7 @@
                     <div class="form-group col-sm-12">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-responsive">
-                                <thead>
+                                <thead> <th>#</th>
                                 {% for date in week_now_days %}
                                     <th>{{ date }}</th>
                                 {% endfor %}
