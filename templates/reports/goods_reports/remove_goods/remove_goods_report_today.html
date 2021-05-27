@@ -61,12 +61,12 @@
                 </div>
                 <input type="button" value="Показать/Скрыть поиск" data-toggle="collapse" href="#goods_dop_info" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
                 <div id="goods_dop_info" class="collapse">
-                    <form action="{% url 'remove_goods_report_calendar' class="form-row justify-content-center" %}" method="get">
+                    <form action="{% url 'remove_goods_report_calendar' %}" class="form-row justify-content-center" method="get">
                         {% csrf_token %}
                         <div class="form-group col-sm-4">
                             <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 15px">Поиск по изделиям</h3>
                             {{ report_remote_goods_filter.form }}
-                            <button type="submit" class="btn btn-primary">Поиск</button>
+                            <button type="submit" class="btn btn-primary" style="margin-top: 18px">Поиск</button>
                         </div>
                     </form>
                 </div>
@@ -76,7 +76,7 @@
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-responsive">
                                 <thead>
-                                <th>Код изделия</th><th>Дата</th>
+                                <th>Код изделия</th><th>Количество</th>
                                 </thead>
                                 <tbody>
                                 {% for otks in otk.all|values:"nariad_code"|values:"goods_code"|distinct %}
@@ -100,7 +100,6 @@
             </div>
         </div>
     </div>
-
     <script>
         let id_start_date = document.getElementById('id_start_date'); id_start_date.className = 'form-control';
         let id_end_date = document.getElementById('id_end_date'); id_end_date.className = 'form-control';

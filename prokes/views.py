@@ -92,6 +92,11 @@ def ReportList(request):
     return render(request, "reports/reports_list.html")
 
 
+def help_page(request):
+    """Справка"""
+    return render(request, "include/help.html")
+
+
 # Выводы для фильтров
 class WorkerCategory:
     """Должности сотрудников"""
@@ -1759,4 +1764,3 @@ def ReportUsedMaterialCalendar(request):
                "delta_days": delta_days, "delta_date": delta_date,
                "summa_used_material": summa_used_material}
     return render(request, 'reports/goods_reports/used_materials/used_materials_report_calendar.html', context)
-

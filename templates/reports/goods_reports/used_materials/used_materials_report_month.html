@@ -6,87 +6,113 @@
 
 
 {% block tabs_bar %}
-        <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs">
 
-            <li class="nav-tabs">
-                <a class="nav-link"  href="{% url "main" %}">Главная</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "workers_list" %}">Сотрудники</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "goods_list" %}">Изделия</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "material_list" %}">Материалы</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "supplier_list" %}">Поставщики</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "customer_list" %}">Заказчики</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "nariad_list" %}">Наряды</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "otk_list" %}">ОТК</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "storage_goods_list" %}">Изделия на складе</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "storage_material_list" %}">Материалы на складе</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Отчеты</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{% url "released_goods_report_month" %}">Всего изделий</a></li>
-                    <li><a class="dropdown-item" href="{% url "good_goods_report_month" %}">Хороших изделий</a></li>
-                    <li><a class="dropdown-item" href="{% url "remove_goods_report_month" %}">Бракованных изделий</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item active" href="{% url "used_material_report_month" %}">Расход материала</a></li>
-                </ul>
-            </li>
-        </ul>
+        <li class="nav-tabs">
+            <a class="nav-link"  href="{% url "main" %}">Главная</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "workers_list" %}">Сотрудники</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "goods_list" %}">Изделия</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "material_list" %}">Материалы</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "supplier_list" %}">Поставщики</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "customer_list" %}">Заказчики</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "nariad_list" %}">Наряды</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "otk_list" %}">ОТК</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "storage_goods_list" %}">Изделия на складе</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "storage_material_list" %}">Материалы на складе</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" data-toggle="dropdown" href="#" role="button" aria-expanded="false">Отчеты</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url "released_goods_report_month" %}">Всего изделий</a></li>
+                <li><a class="dropdown-item" href="{% url "good_goods_report_month" %}">Хороших изделий</a></li>
+                <li><a class="dropdown-item" href="{% url "remove_goods_report_month" %}">Бракованных изделий</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item active" href="{% url "used_material_report_month" %}">Расход материала</a></li>
+            </ul>
+        </li>
+    </ul>
 {% endblock tabs_bar %}
 
 
 {% block report %}
-    <div style="width: 100%">
-        <a href="{% url 'used_material_report_month' %}" class="btn btn-success">Отчет за месяц</a>
-        <a href="{% url 'used_material_report_week' %}" class="btn btn-success">Отчет за неделю</a>
-        <a href="{% url 'used_material_report_today' %}" class="btn btn-success">Отчет за день</a>
-        <form action="{% url 'used_material_report_calendar' %}" method="get">
-            {% csrf_token %}
-            {{ report_used_material_filter.form }}
-            <button type="submit" class="btn btn-primary">Поиск</button>
-        </form>
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div enctype="multipart/form-data" class="col-10" style="min-width: 320px;background-color: #f0f2f5; border-radius: 5px;">
+                <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 15px">Отчет о расходе материалов за {{ get_date }}</h3>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px">
+                    <a href="{% url 'used_material_report_month' %}" class="btn btn-success">Отчет за месяц</a>
+                    <a href="{% url 'used_material_report_week' %}" class="btn btn-success">Отчет за неделю</a>
+                    <a href="{% url 'used_material_report_today' %}" class="btn btn-success">Отчет за день</a>
+                </div>
+                <input type="button" value="Показать/Скрыть поиск" data-toggle="collapse" href="#goods_dop_info" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+                <div id="goods_dop_info" class="collapse">
+                    <form action="{% url 'used_material_report_calendar' %}" method="get">
+                        {% csrf_token %}
+                        <div class="form-group col-sm-4">
+                            <h3 class="editContent" style="text-align: center; margin-top: 15px; margin-bottom: 15px">Поиск по материалам</h3>
+                            {{ report_used_material_filter.form }}
+                            <button type="submit" class="btn btn-primary" style="margin-top: 18px">Поиск</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-responsive">
+                                <thead><th>#</th>
+                                {% for date in date %}
+                                    <th>{{ date }}</th>
+                                {% endfor %}
+                                </thead>
+                                <tbody>
+                                {% for nar in nariad.all|values:"material_code"|values:"code"|distinct %}
+                                    <tr>
+                                        <td>{{ nar }}</td>
+                                        {% for day in date_days %}
+                                            <td>
+                                                {% for nari in nariad %}
+                                                    {% if nari.material_code.code == nar %}
+                                                        {% if nari.date.day == day|integer %}
+                                                            {{ nari.used_materials }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                <tr><td>Всего:{{ summa_good_goods }}</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <table border="1px" class="table table-bordered table-hover table-responsive">
-        <tr><td>Дата</td>
-            {% for date in date %}
-                <td>{{ date }}</td>
-            {% endfor %}
-        </tr>
-        {% for nar in nariad.all|values:"material_code"|values:"code"|distinct %}
-            <tr>
-                <td>{{ nar }}</td>
-                {% for day in date_days %}
-                    <td>
-                        {% for nari in nariad %}
-                            {% if nari.material_code.code == nar %}
-                                {% if nari.date.day == day|integer %}
-                                    {{ nari.used_materials }}
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                {% endfor %}
-            </tr>
-        <td>Всего:{{ summa_used_material }}</td>
-        {% endfor %}
-    </table>
-
+    <script>
+        let id_start_date = document.getElementById('id_start_date'); id_start_date.className = 'form-control';
+        let id_end_date = document.getElementById('id_end_date'); id_end_date.className = 'form-control';
+    </script>
 {% endblock report %}
