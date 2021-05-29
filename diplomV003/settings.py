@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'prokes',
-'django_filters',
-'prokes.templatetags.poll_extras',
+    'django_filters',
+    'prokes.templatetags.poll_extras',
 
 ]
 
@@ -113,10 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'ru'
 
