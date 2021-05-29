@@ -5,15 +5,9 @@
 {% block main %}
     <div class="left-ads-display col-lg-12">
         <div class="row">
-            <span>МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ
-ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ВЫСШЕГО ОБРАЗОВАНИЯ
-«Национальный исследовательский ядерный университет «МИФИ»
-Димитровградский инженерно-технологический институт –
-филиал федерального государственного автономного образовательного учреждения высшего образования
-«Национальный исследовательский ядерный университет «МИФИ»
-(ДИТИ НИЯУ МИФИ)</span>
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "workers_list" %}" class="editContent" style="color: lime">
+
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "workers_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Сотрудники</span>
@@ -22,8 +16,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "material_list" %}" class="editContent">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "material_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Материалы</span>
@@ -32,8 +26,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "goods_list" %}" class="editContent">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "goods_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Изделия
@@ -43,8 +37,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "supplier_list" %}" class="editContent">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "supplier_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Поставщики</span>
@@ -53,8 +47,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "customer_list" %}" class="editContent" style="color: lime">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "customer_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Заказчики</span>
@@ -63,8 +57,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "storage_goods_list" %}" class="editContent" style="color: lime">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "storage_goods_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Склад изделий
@@ -74,8 +68,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "storage_material_list" %}" class="editContent" style="color: lime;">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "storage_material_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Склад материалов
@@ -85,8 +79,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "nariad_list" %}" class="editContent" style="color: lime">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "nariad_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Наряды</span>
@@ -95,8 +89,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "otk_list" %}" class="editContent" style="color: lime">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "otk_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">ОТК</span>
@@ -105,8 +99,8 @@
                 </a>
             </div>
 
-            <div class="col-sm-3" style="background-color: white">
-                <a href="{% url "report_list" %}" class="editContent" style="color: lime">
+            <div class="col-sm-4" style="background-color: white">
+                <a href="{% url "report_list" %}" class="editContent" style="color: black">
                     <div class="product-shoe-info editContent text-center mt-lg-4" >
                         <div class="item-info-product">
                             <span class="content-text">Отчеты</span>
@@ -115,6 +109,13 @@
                 </a>
             </div>
         </div>
-
-    </div><span>Димитровград 2021</span>
+    </div>
+    {#            <span>МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ#}
+{#ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ВЫСШЕГО ОБРАЗОВАНИЯ#}
+{#«Национальный исследовательский ядерный университет «МИФИ»#}
+{#Димитровградский инженерно-технологический институт –#}
+{#филиал федерального государственного автономного образовательного учреждения высшего образования#}
+{#«Национальный исследовательский ядерный университет «МИФИ»#}
+{#(ДИТИ НИЯУ МИФИ)</span>#}
+{#    </div><span>Димитровград 2021</span>#}
 {% endblock main %}

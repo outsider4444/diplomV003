@@ -109,7 +109,7 @@ class WorkerCategory:
 class WorkerListView(WorkerCategory, ListView):
     """Список сотрудников"""
     model = Workers
-    queryset = Workers.objects.filter(fired=False)
+    queryset = Workers.objects.all()
     template_name = "workers/worker_list.html"
 
 
@@ -270,11 +270,6 @@ def load_sort_customer(request):
     elif id_sort == '4':
         customer_list = customer_list.order_by("-code").distinct()
 
-    # paginator = Paginator(workers_list, 3)
-
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
-
     context = {"customer_list": customer_list}
     return render(request, 'customer/customer_list_sorted.html', context)
 
@@ -357,7 +352,6 @@ def CustomerDetail_Calendar_Filter_View(request, pk):
     context = {"customer": customer, "formset": formset,
                "error": error, "goods": goods, "calendar_filters": calendar_filters, "delta_days":delta_days}
     return render(request, "customer/customer_detail_calendar_filter.html", context)
-
 
 
 class CustomerUpdateView(UpdateView):
@@ -867,7 +861,6 @@ def load_goods(request):
     checkout_list = CheckoutGoods.objects.filter(code_goods__code=goods_code).all()
     checkout_list = checkout_list.filter(customer_name__name=customer_code).all()
     return render(request, 'storage_goods/goods_form/checkout_dropdown_list_options.html', {'checkout_list': checkout_list})
-    # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 
 # Поиск изделий на складе

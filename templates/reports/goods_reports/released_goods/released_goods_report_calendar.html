@@ -60,7 +60,7 @@
                     <a href="{% url 'released_goods_report_week' %}" class="btn btn-success">Отчет за неделю</a>
                     <a href="{% url 'released_goods_report_today' %}" class="btn btn-success">Отчет за день</a>
                 </div>
-                <input type="button" value="Показать/Скрыть поиск" data-toggle="collapse" href="#goods_dop_info" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+                <input type="button" value="Показать/Скрыть поиск" class="btn btn-info form-row justify-content-center" data-toggle="collapse" href="#goods_dop_info" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
                 <div id="goods_dop_info" class="collapse">
                     <form action="{% url 'released_goods_report_calendar' %}" class="form-row justify-content-center" method="get">
                         {% csrf_token %}

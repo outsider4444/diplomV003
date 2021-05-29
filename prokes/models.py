@@ -1,6 +1,5 @@
 from django.db import models
 from datetime import datetime
-from smart_selects.db_fields import ChainedForeignKey
 
 
 # Create your models here.
@@ -15,12 +14,10 @@ class Workers(models.Model):
     code = models.IntegerField('Код сотрудника', unique=True)
     name = models.CharField('ФИО', max_length=100)
     email = models.EmailField('Email', blank=True)
-    phone_number = models.CharField('Номер телефона', max_length=11, default='+7')
+    phone_number = models.CharField('Номер телефона', max_length=11, default='8')
     birthday = models.DateField('Дата рождения')
     category = models.CharField('Категория', max_length=50)
     salary = models.PositiveIntegerField('Оклад', help_text='Вводить в рублях')
-    # статус увольнения
-    fired = models.BooleanField("Уволен", default=False)
 
     def __str__(self):
         return str(self.code)
@@ -31,8 +28,8 @@ class Workers(models.Model):
 
 
 class Materials(models.Model):
-    """Смеси"""
-    code = models.CharField('Код смеси', max_length=120)
+    """Материалы"""
+    code = models.CharField('Код материала', max_length=120)
     weight = models.IntegerField('Вес смеси')
     batch_number = models.IntegerField('Номер партии')
     pallet_number = models.IntegerField('Номер поддона')
@@ -103,7 +100,7 @@ class Customer(models.Model):
     """Заказчики"""
     name = models.CharField("Имя заказчика", max_length=120)
     email = models.EmailField("Email", unique=True)
-    phone_number = models.CharField("Номер телефона", max_length=15)
+    phone_number = models.CharField("Номер телефона", max_length=11, default='8')
     representative = models.CharField("Представитель (ФИО)", max_length=100)
 
     def __str__(self):
@@ -118,7 +115,7 @@ class CheckoutGoods(models.Model):
     """Заказчики и изделия"""
     customer_name = models.ForeignKey(Customer, verbose_name="Имя заказчика", on_delete=models.CASCADE)
     date = models.DateField("Дата заказа", default='')
-    code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.CASCADE)
+    code_goods = models.ForeignKey(Goods, verbose_name="Код изделия", on_delete=models.SET_NULL, null=True)
     values = models.IntegerField("Количество")
 
     def __str__(self):
@@ -134,7 +131,7 @@ class Suppliers(models.Model):
     """Поставщики"""
     name = models.CharField('Наименование поставщика', max_length=150)
     email = models.EmailField('Email')
-    phone_number = models.CharField('Номер телефона', max_length=11, default='+7')
+    phone_number = models.CharField('Номер телефона', max_length=11, default='8')
     representative = models.CharField("Представитель (ФИО)", max_length=100)
 
     def __str__(self):
@@ -149,7 +146,7 @@ class DeliveriesMaterials(models.Model):
     """Поставщики и материалы"""
     supplier_name = models.ForeignKey(Suppliers, verbose_name="Имя поставщика", on_delete=models.CASCADE)
     date = models.DateField("Дата заказа", default=default_datetime)
-    code_material = models.ForeignKey(Materials, verbose_name="Код смеси", on_delete=models.CASCADE)
+    code_material = models.ForeignKey(Materials, verbose_name="Код смеси", on_delete=models.SET_NULL, null=True)
     values = models.IntegerField("Количество")
 
     def __str__(self):
@@ -163,9 +160,9 @@ class DeliveriesMaterials(models.Model):
 class Nariad(models.Model):
     """Наряды"""
     code = models.IntegerField('Номер наряда', unique=True)
-    worker_code = models.ForeignKey(Workers, verbose_name='Код сотрудника', on_delete=models.PROTECT)
-    goods_code = models.ForeignKey(Goods, verbose_name='Код изделия', on_delete=models.PROTECT)
-    material_code = models.ForeignKey(Materials, verbose_name='Код смеси', on_delete=models.PROTECT)
+    worker_code = models.ForeignKey(Workers, verbose_name='Код сотрудника', on_delete=models.SET_NULL, null=True)
+    goods_code = models.ForeignKey(Goods, verbose_name='Код изделия', on_delete=models.SET_NULL, null=True)
+    material_code = models.ForeignKey(Materials, verbose_name='Код материала', on_delete=models.SET_NULL, null=True)
     goods_value = models.IntegerField('Количество выпущенных изделий')
     date = models.DateField('Дата')
     used_materials = models.FloatField('Расход смеси', default=0)
@@ -180,7 +177,7 @@ class Nariad(models.Model):
 
 class OTK(models.Model):
     """ОТК"""
-    nariad_code = models.OneToOneField(Nariad, verbose_name='Код наряда', on_delete=models.PROTECT)
+    nariad_code = models.OneToOneField(Nariad, verbose_name='Код наряда', on_delete=models.CASCADE)
     goods_value = models.IntegerField('Количество хороших изделий')
     remote_value = models.IntegerField('Количество бракованных изделий')
     date = models.DateField('Дата проверки')
@@ -195,9 +192,9 @@ class OTK(models.Model):
 
 class MaterialStorage(models.Model):
     """Склад материалов"""
-    material_code = models.ForeignKey(Materials, verbose_name='Код смеси', on_delete=models.PROTECT)
-    supplier_code = models.ForeignKey(Suppliers, verbose_name='Код поставщика', on_delete=models.PROTECT)
-    value = models.IntegerField('Количество')
+    material_code = models.ForeignKey(Materials, verbose_name='Код смеси', on_delete=models.CASCADE)
+    supplier_code = models.ForeignKey(Suppliers, verbose_name='Код поставщика', on_delete=models.SET_NULL, null=True, blank=True)
+    value = models.IntegerField('Количество', default=0)
     date = models.DateField('Дата проверки')
 
     def __str__(self):
@@ -210,10 +207,10 @@ class MaterialStorage(models.Model):
 
 class GoodsStorage(models.Model):
     """Склад изделий"""
-    goods_code = models.ForeignKey(Goods, verbose_name='Код изделия', on_delete=models.PROTECT)
-    value = models.IntegerField('Количество')
-    customer_code = models.ForeignKey(Customer, verbose_name='Код заказчика', on_delete=models.PROTECT)
-    customer_checkout = models.ForeignKey(CheckoutGoods, verbose_name='Код заказа', on_delete=models.PROTECT)
+    goods_code = models.ForeignKey(Goods, verbose_name='Код изделия', on_delete=models.CASCADE)
+    value = models.IntegerField('Количество', default=0)
+    customer_code = models.ForeignKey(Customer, verbose_name='Код заказчика', on_delete=models.SET_NULL, null=True)
+    customer_checkout = models.OneToOneField(CheckoutGoods, verbose_name='Код заказа', on_delete=models.SET_NULL, null=True)
     date = models.DateField('Дата проверки')
 
     def __str__(self):
