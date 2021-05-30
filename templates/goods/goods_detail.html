@@ -58,7 +58,7 @@
                         <label>{{ goods.used_materials }}</label>
                     </div>
                 </div>
-                <input type="button" value="Показать/Скрыть дополнительную информацию" data-toggle="collapse" href="#goods_dop_info" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+                <input type="button" value="Показать/Скрыть дополнительную информацию" class="btn btn-info" data-toggle="collapse" href="#goods_dop_info" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
                 <div id="goods_dop_info" class="collapse">
                     <h4 style="text-align: center; margin-top: 15px; margin-bottom: 5px" class="editContent">Форма изделия</h4>
                     {% if goods_form %}
@@ -99,7 +99,7 @@
                     {% else %}
                         <div class="form-row justify-content-center">
                         <label style="margin-bottom: 15px">У данного изделия нет формы</label>
-                        <input type="button" onclick='location.href="create_goods_form"' value="Добавить форму" style="margin-left: 15px; margin-bottom: 15px">
+                        <input type="button" class="btn btn-warning" onclick='location.href="create_goods_form"' value="Добавить форму" style="margin-left: 15px; margin-bottom: 15px">
                         </div>
                     {% endif %}
 
@@ -136,7 +136,7 @@
                             </div>
                         </div>
                     </div>
-                <input type="button" value="Показать/Скрыть добавление даты в календарь" data-toggle="collapse" href="#goods_calendar_add" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
+                <input type="button" class="btn btn-info" value="Показать/Скрыть добавление даты в календарь" data-toggle="collapse" href="#goods_calendar_add" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom: 15px">
                 <div id="goods_calendar_add" class="collapse">
                     <h4 style="text-align: center; margin-top: 15px; margin-bottom: 5px" class="editContent">Добавить месяц в календарь</h4>
                     <form method="post" enctype="multipart/form-data" name="calendar" class="col-8" onchange="remote_calculate()">

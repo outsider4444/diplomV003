@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from prokes.templatetags import poll_extras
+# from prokes.templatetags import poll_extras
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'prokes',
-
     'django_filters',
     'prokes.templatetags.poll_extras',
+
 ]
 
 MIDDLEWARE = [
@@ -114,10 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
-
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
@@ -130,9 +126,6 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')

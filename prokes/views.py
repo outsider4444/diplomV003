@@ -92,6 +92,11 @@ def ReportList(request):
     return render(request, "reports/reports_list.html")
 
 
+def help_page(request):
+    """Справка"""
+    return render(request, "include/help.html")
+
+
 # Выводы для фильтров
 class WorkerCategory:
     """Должности сотрудников"""
@@ -104,7 +109,7 @@ class WorkerCategory:
 class WorkerListView(WorkerCategory, ListView):
     """Список сотрудников"""
     model = Workers
-    queryset = Workers.objects.filter(fired=False)
+    queryset = Workers.objects.all()
     template_name = "workers/worker_list.html"
 
 
@@ -265,11 +270,6 @@ def load_sort_customer(request):
     elif id_sort == '4':
         customer_list = customer_list.order_by("-code").distinct()
 
-    # paginator = Paginator(workers_list, 3)
-
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
-
     context = {"customer_list": customer_list}
     return render(request, 'customer/customer_list_sorted.html', context)
 
@@ -352,7 +352,6 @@ def CustomerDetail_Calendar_Filter_View(request, pk):
     context = {"customer": customer, "formset": formset,
                "error": error, "goods": goods, "calendar_filters": calendar_filters, "delta_days":delta_days}
     return render(request, "customer/customer_detail_calendar_filter.html", context)
-
 
 
 class CustomerUpdateView(UpdateView):
@@ -862,7 +861,6 @@ def load_goods(request):
     checkout_list = CheckoutGoods.objects.filter(code_goods__code=goods_code).all()
     checkout_list = checkout_list.filter(customer_name__name=customer_code).all()
     return render(request, 'storage_goods/goods_form/checkout_dropdown_list_options.html', {'checkout_list': checkout_list})
-    # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 
 # Поиск изделий на складе
@@ -1342,12 +1340,14 @@ def ReportReleasedGoodsCalendar(request):
 
     # дата начала
     start_date = request.GET.get('start_date')
+    new_start_date = start_date
     start_date = start_date.split("-")
     start_date[0] = int(start_date[0])
     start_date[1] = int(start_date[1])
     start_date[2] = int(start_date[2])
     # дата окончания
     end_date = request.GET.get('end_date')
+    new_end_date = end_date
     end_date = end_date.split("-")
     end_date[0] = int(end_date[0])
     end_date[1] = int(end_date[1])
@@ -1366,8 +1366,8 @@ def ReportReleasedGoodsCalendar(request):
         summa_released_goods += nari.goods_value
 
     context = {"report_used_material_filter": report_used_material_filter, "nariad": nariad,
-               "delta_days": delta_days, "delta_date": delta_date,
-               "summa_released_goods": summa_released_goods}
+               "delta_days": delta_days, "delta_date": delta_date, "new_start_date": new_start_date,
+               "new_end_date": new_end_date, "summa_released_goods": summa_released_goods}
     return render(request, 'reports/goods_reports/released_goods/released_goods_report_calendar.html', context)
 
 
@@ -1471,16 +1471,19 @@ def ReportGoodGoodsCalendar(request):
 
     # дата начала
     start_date = request.GET.get('start_date')
+    new_start_date = start_date
     start_date = start_date.split("-")
     start_date[0] = int(start_date[0])
     start_date[1] = int(start_date[1])
     start_date[2] = int(start_date[2])
     # дата окончания
     end_date = request.GET.get('end_date')
+    new_end_date = end_date
     end_date = end_date.split("-")
     end_date[0] = int(end_date[0])
     end_date[1] = int(end_date[1])
     end_date[2] = int(end_date[2])
+
 
     # дни для вывода
     delta_days = calendar(s_date=start_date, e_date=end_date, strdate='%Y-%m-%d')
@@ -1495,7 +1498,7 @@ def ReportGoodGoodsCalendar(request):
         summa_good_goods += otks.goods_value
 
     context = {"report_remote_goods_filter": report_remote_goods_filter, "otk": otk, "delta_days": delta_days, "delta_date": delta_date,
-               "summa_good_goods": summa_good_goods}
+               "summa_good_goods": summa_good_goods, "new_start_date": new_start_date, "new_end_date": new_end_date}
     return render(request, 'reports/goods_reports/good_goods/good_goods_report_calendar.html', context)
 
 
@@ -1754,4 +1757,3 @@ def ReportUsedMaterialCalendar(request):
                "delta_days": delta_days, "delta_date": delta_date,
                "summa_used_material": summa_used_material}
     return render(request, 'reports/goods_reports/used_materials/used_materials_report_calendar.html', context)
-

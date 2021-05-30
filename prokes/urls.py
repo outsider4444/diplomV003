@@ -152,6 +152,8 @@ urlpatterns = [
     # Отчеты
     path("report_list/", login_required(login_url='login')(views.ReportList), name="report_list"),
 
+    path('help_page/', login_required(login_url='login')(views.help_page), name="help_page"),
+
 
     # Авторизация
     path("login/", views.loginPage, name='login'),

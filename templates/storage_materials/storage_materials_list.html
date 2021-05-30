@@ -57,7 +57,11 @@
                 {% for material in materialstorage_list %}
                     <tr>
                         <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.material_code.code }}</a></td>
+                        {% if material.supplier_code %}
                         <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.supplier_code.name }}</a></td>
+                        {% else %}
+                        <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">Поставщик не указан</a></td>
+                        {% endif %}
                         <td><a href="{{ material.id }}" title="Перейти на страницу материала {{ material.code }}">{{ material.value }}</a></td>
 
 
