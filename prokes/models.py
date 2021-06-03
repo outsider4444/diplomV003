@@ -30,7 +30,7 @@ class Workers(models.Model):
 class Materials(models.Model):
     """Материалы"""
     code = models.CharField('Код материала', max_length=120)
-    weight = models.IntegerField('Вес смеси')
+    weight = models.IntegerField('Вес материала')
     batch_number = models.IntegerField('Номер партии')
     pallet_number = models.IntegerField('Номер поддона')
 
@@ -49,7 +49,7 @@ class Goods(models.Model):
     image = models.ImageField("Фотография изделия", upload_to="goods/", blank=True)
     weight_clean = models.FloatField('Вес чистой детали', default=0)
     norma_na_vigruzku = models.FloatField('Норма на выгрузку', default=0)
-    used_materials = models.FloatField('Расход смеси', default=0)
+    used_materials = models.FloatField('Расход материала', default=0)
 
     def __str__(self):
         return self.code
@@ -146,7 +146,7 @@ class DeliveriesMaterials(models.Model):
     """Поставщики и материалы"""
     supplier_name = models.ForeignKey(Suppliers, verbose_name="Имя поставщика", on_delete=models.CASCADE)
     date = models.DateField("Дата заказа", default=default_datetime)
-    code_material = models.ForeignKey(Materials, verbose_name="Код смеси", on_delete=models.SET_NULL, null=True)
+    code_material = models.ForeignKey(Materials, verbose_name="Код материала", on_delete=models.SET_NULL, null=True)
     values = models.IntegerField("Количество")
 
     def __str__(self):
@@ -165,7 +165,7 @@ class Nariad(models.Model):
     material_code = models.ForeignKey(Materials, verbose_name='Код материала', on_delete=models.SET_NULL, null=True)
     goods_value = models.IntegerField('Количество выпущенных изделий')
     date = models.DateField('Дата')
-    used_materials = models.FloatField('Расход смеси', default=0)
+    used_materials = models.FloatField('Расход материала', default=0)
 
     def __str__(self):
         return str(self.code)
@@ -192,7 +192,7 @@ class OTK(models.Model):
 
 class MaterialStorage(models.Model):
     """Склад материалов"""
-    material_code = models.ForeignKey(Materials, verbose_name='Код смеси', on_delete=models.CASCADE)
+    material_code = models.ForeignKey(Materials, verbose_name='Код материаа', on_delete=models.CASCADE)
     supplier_code = models.ForeignKey(Suppliers, verbose_name='Код поставщика', on_delete=models.SET_NULL, null=True, blank=True)
     value = models.IntegerField('Количество', default=0)
     date = models.DateField('Дата проверки')
